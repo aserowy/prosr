@@ -40,8 +40,6 @@ type HubStatement struct {
 	Value Expression
 }
 
-func (ls *HubStatement) statementNode() {}
-
 // TokenLiteral returns
 func (ls *HubStatement) TokenLiteral() string {
 	return ls.Token.Literal
@@ -53,9 +51,11 @@ type Identifier struct {
 	Value string
 }
 
-func (i *Identifier) expressionNode() {}
-
 // TokenLiteral returns
 func (i *Identifier) TokenLiteral() string {
 	return i.Token.Literal
 }
+
+func (i *Identifier) expressionNode() {}
+
+func (ls *HubStatement) statementNode() {}

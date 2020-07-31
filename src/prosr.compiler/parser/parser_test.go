@@ -11,6 +11,12 @@ func TestHubStatements(t *testing.T) {
 	input := `
 	hub SearchHub {
 		action Search(SearchRequest) returns (SearchResponse) to caller;
+	}
+	
+	hub CommentHub {
+		action AddComment(CommentRequest);
+
+		returns CommentAdded(CommentResponse) to all;
 	}`
 
 	l := lexer.New(input)
@@ -21,7 +27,7 @@ func TestHubStatements(t *testing.T) {
 		t.Fatalf("ParseProgram() returned nil")
 	}
 
-	if len(program.Statements) != 3 {
+	if len(program.Statements) != 2 {
 		t.Fatalf("program.Statements does not contain 3 statements. got=%d",
 			len(program.Statements))
 	}
@@ -29,9 +35,8 @@ func TestHubStatements(t *testing.T) {
 	tests := []struct {
 		expectedIdentifier string
 	}{
-		{"x"},
-		{"y"},
-		{"foobar"},
+		{"SearchHub"},
+		{"CommentHub"},
 	}
 
 	for i, tt := range tests {
@@ -43,7 +48,7 @@ func TestHubStatements(t *testing.T) {
 }
 
 func testHubStatement(t *testing.T, s ast.Statement, name string) bool {
-	if s.TokenLiteral() != "Hub" {
+	if s.TokenLiteral() != "hub" {
 		t.Errorf("s.TokenLiteral not 'hub'. got=%q", s.TokenLiteral())
 		return false
 	}
