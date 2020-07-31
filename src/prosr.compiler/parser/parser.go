@@ -55,6 +55,8 @@ func (p *Parser) parseStatement() ast.Statement {
 	switch p.currentToken.Type {
 	case token.HUB:
 		return p.parseHubStatement()
+	case token.RETURNS:
+		return p.parseReturnsStatement()
 	default:
 		return nil
 	}
@@ -66,8 +68,8 @@ func (p *Parser) parseHubStatement() *ast.HubStatement {
 	if !p.expectPeekAndAdvance(token.IDENT) {
 		return nil
 	}
-
 	stmt.Name = &ast.Identifier{Token: p.currentToken, Value: p.currentToken.Literal}
+
 	if !p.expectPeekAndAdvance(token.LBRACE) {
 		return nil
 	}
@@ -75,6 +77,39 @@ func (p *Parser) parseHubStatement() *ast.HubStatement {
 	// TODO: We're skipping the expressions until }
 	for !p.currentTokenIs(token.RBRACE) {
 		p.nextToken()
+	}
+
+	return stmt
+}
+
+func (p *Parser) parseReturnsStatement() *ast.ReturnsStatement {
+	stmt := &ast.ReturnsStatement{Token: p.currentToken}
+
+	if !p.expectPeekAndAdvance(token.LPAREN) {
+		return nil
+	}
+
+	if !p.expectPeekAndAdvance(token.IDENT) {
+		return nil
+	}
+	stmt.Name = &ast.Identifier{Token: p.currentToken, Value: p.currentToken.Literal}
+	// stmt.Returns =
+
+	if !p.expectPeekAndAdvance(token.RPAREN) {
+		return nil
+	}
+
+	if !p.expectPeekAndAdvance(token.TO) {
+		return nil
+	}
+
+	if !p.expectPeekAndAdvance(token.IDENT) {
+		return nil
+	}
+	// stmt.Target =
+
+	for !p.expectPeekAndAdvance(token.SEMICOLON) {
+		return nil
 	}
 
 	return stmt

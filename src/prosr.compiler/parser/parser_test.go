@@ -16,7 +16,7 @@ func TestHubStatements(t *testing.T) {
 	hub CommentHub {
 		action AddComment(CommentRequest);
 
-		returns CommentAdded(CommentResponse) to all;
+		returns (CommentAddedResponse) to all;
 	}`
 
 	l := lexer.New(input)
@@ -30,7 +30,7 @@ func TestHubStatements(t *testing.T) {
 	}
 
 	if len(program.Statements) != 2 {
-		t.Fatalf("program.Statements does not contain 3 statements. got=%d",
+		t.Fatalf("program.Statements does not contain 2 statements. got=%d",
 			len(program.Statements))
 	}
 
@@ -47,18 +47,6 @@ func TestHubStatements(t *testing.T) {
 			return
 		}
 	}
-}
-
-func checkParserErrors(t *testing.T, p *Parser) {
-	errors := p.Errors()
-	if len(errors) == 0 {
-		return
-	}
-	t.Errorf("parser has %d errors", len(errors))
-	for _, msg := range errors {
-		t.Errorf("parser error: %q", msg)
-	}
-	t.FailNow()
 }
 
 func testHubStatement(t *testing.T, s ast.Statement, name string) bool {
@@ -84,4 +72,64 @@ func testHubStatement(t *testing.T, s ast.Statement, name string) bool {
 	}
 
 	return true
+}
+
+func TestReturnsStatements(t *testing.T) {
+	input := `
+	returns (CommentAddedResponse) to all;`
+
+	l := lexer.New(input)
+	p := New(l)
+
+	program := p.ParseProgram()
+	checkParserErrors(t, p)
+
+	if program == nil {
+		t.Fatalf("ParseProgram() returned nil")
+	}
+
+	if len(program.Statements) != 1 {
+		t.Fatalf("program.Statements does not contain 1 statements. got=%d",
+			len(program.Statements))
+	}
+
+	tests := []struct {
+		expectedIdentifier string
+	}{
+		{"CommentAddedResponse"},
+	}
+
+	for i, tt := range tests {
+		stmt := program.Statements[i]
+		if !testReturnsStatement(t, stmt, tt.expectedIdentifier) {
+			return
+		}
+	}
+}
+
+func testReturnsStatement(t *testing.T, s ast.Statement, name string) bool {
+	if s.TokenLiteral() != "returns" {
+		t.Errorf("s.TokenLiteral not 'returns'. got=%q", s.TokenLiteral())
+		return false
+	}
+
+	_, ok := s.(*ast.ReturnsStatement)
+	if !ok {
+		t.Errorf("s not *ast.ReturnsStatement. got=%T", s)
+		return false
+	}
+
+	return true
+}
+
+func checkParserErrors(t *testing.T, p *Parser) {
+	errors := p.Errors()
+	if len(errors) == 0 {
+		return
+	}
+	t.Errorf("parser has %d errors", len(errors))
+	for _, msg := range errors {
+		t.Errorf("parser error: %q", msg)
+	}
+	t.FailNow()
 }

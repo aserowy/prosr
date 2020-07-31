@@ -45,6 +45,8 @@ func (ls *HubStatement) TokenLiteral() string {
 	return ls.Token.Literal
 }
 
+func (ls *HubStatement) statementNode() {}
+
 // Identifier for statements
 type Identifier struct {
 	Token token.Token // the token.IDENT token
@@ -58,4 +60,17 @@ func (i *Identifier) TokenLiteral() string {
 
 func (i *Identifier) expressionNode() {}
 
-func (ls *HubStatement) statementNode() {}
+// ReturnsStatement represents statements with keyword returns
+type ReturnsStatement struct {
+	Token   token.Token
+	Name    *Identifier
+	Returns Expression
+	Target  Expression
+}
+
+// TokenLiteral returns
+func (rs *ReturnsStatement) TokenLiteral() string {
+	return rs.Token.Literal
+}
+
+func (rs *ReturnsStatement) statementNode() {}
