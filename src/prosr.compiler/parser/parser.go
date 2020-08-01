@@ -8,6 +8,11 @@ import (
 	"prosr.compiler/token"
 )
 
+type (
+	prefixParseFunc func() ast.Expression
+	infixParseFunc  func(ast.Expression) ast.Expression
+)
+
 // Parser is parsing token of a lexer
 type Parser struct {
 	l            *lexer.Lexer
@@ -53,6 +58,8 @@ func (p *Parser) Errors() []string {
 
 func (p *Parser) parseStatement() ast.Statement {
 	switch p.currentToken.Type {
+	case token.ACTION:
+		return p.parseActionStatement()
 	case token.HUB:
 		return p.parseHubStatement()
 	case token.RETURNS:
@@ -60,6 +67,40 @@ func (p *Parser) parseStatement() ast.Statement {
 	default:
 		return nil
 	}
+}
+
+func (p *Parser) parseActionStatement() *ast.ActionStatement {
+	stmt := &ast.ActionStatement{Token: p.currentToken}
+
+	if !p.expectPeekAndAdvance(token.IDENT) {
+		return nil
+	}
+	stmt.Name = &ast.Identifier{Token: p.currentToken, Value: p.currentToken.Literal}
+
+	if !p.expectPeekAndAdvance(token.LPAREN) {
+		return nil
+	}
+
+	if !p.expectPeekAndAdvance(token.IDENT) {
+		return nil
+	}
+	stmt.InputType = &ast.TypeExpression{
+		Token: p.currentToken,
+		Name:  &ast.Identifier{Token: p.currentToken, Value: p.currentToken.Literal},
+	}
+
+	if !p.expectPeekAndAdvance(token.RPAREN) {
+		return nil
+	}
+
+	p.nextToken()
+	if p.currentTokenIs(token.SEMICOLON) {
+		return stmt
+	}
+
+	stmt.Returns = p.parseReturnsStatement()
+
+	return stmt
 }
 
 func (p *Parser) parseHubStatement() *ast.HubStatement {
@@ -74,7 +115,7 @@ func (p *Parser) parseHubStatement() *ast.HubStatement {
 		return nil
 	}
 
-	// TODO: We're skipping the expressions until }
+	// TODO: Skipping until }
 	for !p.currentTokenIs(token.RBRACE) {
 		p.nextToken()
 	}
@@ -93,7 +134,7 @@ func (p *Parser) parseReturnsStatement() *ast.ReturnsStatement {
 		return nil
 	}
 	stmt.Name = &ast.Identifier{Token: p.currentToken, Value: p.currentToken.Literal}
-	// stmt.Returns =
+	stmt.OutputType = &ast.TypeExpression{Token: p.currentToken, Name: stmt.Name}
 
 	if !p.expectPeekAndAdvance(token.RPAREN) {
 		return nil
@@ -106,7 +147,10 @@ func (p *Parser) parseReturnsStatement() *ast.ReturnsStatement {
 	if !p.expectPeekAndAdvance(token.IDENT) {
 		return nil
 	}
-	// stmt.Target =
+	stmt.Target = &ast.TargetExpression{
+		Token: p.currentToken,
+		Name:  &ast.Identifier{Token: p.currentToken, Value: p.currentToken.Literal},
+	}
 
 	for !p.expectPeekAndAdvance(token.SEMICOLON) {
 		return nil

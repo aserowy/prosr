@@ -105,6 +105,10 @@ func TestReturnsStatements(t *testing.T) {
 			return
 		}
 	}
+
+	if program.String() != "returns (CommentAddedResponse) to all;" {
+		t.Errorf("program.String() wrong. got=%q", program.String())
+	}
 }
 
 func testReturnsStatement(t *testing.T, s ast.Statement, name string) bool {
@@ -116,6 +120,60 @@ func testReturnsStatement(t *testing.T, s ast.Statement, name string) bool {
 	_, ok := s.(*ast.ReturnsStatement)
 	if !ok {
 		t.Errorf("s not *ast.ReturnsStatement. got=%T", s)
+		return false
+	}
+
+	return true
+}
+
+func TestActionStatements(t *testing.T) {
+	input := `
+	action TestI(TestTypeI) returns (TestTypeII) to all;
+	action TestII(TestTypeII);`
+
+	l := lexer.New(input)
+	p := New(l)
+
+	program := p.ParseProgram()
+	checkParserErrors(t, p)
+
+	if program == nil {
+		t.Fatalf("ParseProgram() returned nil")
+	}
+
+	if len(program.Statements) != 2 {
+		t.Fatalf("program.Statements does not contain 2 statements. got=%d",
+			len(program.Statements))
+	}
+
+	tests := []struct {
+		expectedIdentifier string
+	}{
+		{"TestI"},
+		{"TestII"},
+	}
+
+	for i, tt := range tests {
+		stmt := program.Statements[i]
+		if !testActionStatement(t, stmt, tt.expectedIdentifier) {
+			return
+		}
+	}
+
+	if program.String() != "action TestI(TestTypeI) returns (TestTypeII) to all;action TestII(TestTypeII);" {
+		t.Errorf("program.String() wrong. got=%q", program.String())
+	}
+}
+
+func testActionStatement(t *testing.T, s ast.Statement, name string) bool {
+	if s.TokenLiteral() != "action" {
+		t.Errorf("s.TokenLiteral not 'returns'. got=%q", s.TokenLiteral())
+		return false
+	}
+
+	_, ok := s.(*ast.ActionStatement)
+	if !ok {
+		t.Errorf("s not *ast.ActionStatement. got=%T", s)
 		return false
 	}
 
