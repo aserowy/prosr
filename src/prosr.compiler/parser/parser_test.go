@@ -1,6 +1,7 @@
 package parser
 
 import (
+	"strconv"
 	"testing"
 
 	"prosr.compiler/ast"
@@ -35,21 +36,22 @@ func TestHubStatements(t *testing.T) {
 	}
 
 	tests := []struct {
-		expectedIdentifier string
+		expectedIdentifier      string
+		expectedSignatureLength int
 	}{
-		{"SearchHub"},
-		{"CommentHub"},
+		{"SearchHub", 1},
+		{"CommentHub", 2},
 	}
 
 	for i, tt := range tests {
 		stmt := program.Statements[i]
-		if !testHubStatement(t, stmt, tt.expectedIdentifier) {
+		if !testHubStatement(t, stmt, tt.expectedIdentifier, tt.expectedSignatureLength) {
 			return
 		}
 	}
 }
 
-func testHubStatement(t *testing.T, s ast.Statement, name string) bool {
+func testHubStatement(t *testing.T, s ast.Statement, name string, signatureLength int) bool {
 	if s.TokenLiteral() != "hub" {
 		t.Errorf("s.TokenLiteral not 'hub'. got=%q", s.TokenLiteral())
 		return false
@@ -71,12 +73,19 @@ func testHubStatement(t *testing.T, s ast.Statement, name string) bool {
 		return false
 	}
 
+	if len(hubStmt.Signature) != signatureLength {
+		t.Errorf("len(hubStmt.Signature) not '%s'. got=%s", strconv.Itoa(signatureLength), strconv.Itoa(len(hubStmt.Signature)))
+		return false
+	}
+
 	return true
 }
 
 func TestReturnsStatements(t *testing.T) {
 	input := `
-	returns (CommentAddedResponse) to all;`
+	hub Test {
+		returns (CommentAddedResponse) to all;
+	}`
 
 	l := lexer.New(input)
 	p := New(l)
@@ -88,9 +97,13 @@ func TestReturnsStatements(t *testing.T) {
 		t.Fatalf("ParseProgram() returned nil")
 	}
 
-	if len(program.Statements) != 1 {
-		t.Fatalf("program.Statements does not contain 1 statements. got=%d",
-			len(program.Statements))
+	stmt, ok := program.Statements[0].(*ast.HubStatement)
+	if !ok {
+		t.Fatalf("program.Statements[0] is not ast.HubStatement. got=%T", program.Statements[0])
+	}
+
+	if len(stmt.Signature) != 1 {
+		t.Fatalf("stmt.Signature does not contain 1 statements. got=%d", len(stmt.Signature))
 	}
 
 	tests := []struct {
@@ -100,13 +113,13 @@ func TestReturnsStatements(t *testing.T) {
 	}
 
 	for i, tt := range tests {
-		stmt := program.Statements[i]
+		stmt := stmt.Signature[i]
 		if !testReturnsStatement(t, stmt, tt.expectedIdentifier) {
 			return
 		}
 	}
 
-	if program.String() != "returns (CommentAddedResponse) to all;" {
+	if program.String() != "hub Test { returns (CommentAddedResponse) to all; }" {
 		t.Errorf("program.String() wrong. got=%q", program.String())
 	}
 }
@@ -128,8 +141,10 @@ func testReturnsStatement(t *testing.T, s ast.Statement, name string) bool {
 
 func TestActionStatements(t *testing.T) {
 	input := `
-	action TestI(TestTypeI) returns (TestTypeII) to all;
-	action TestII(TestTypeII);`
+	hub Test {
+		action TestI(TestTypeI) returns (TestTypeII) to all;
+		action TestII(TestTypeII);
+	}`
 
 	l := lexer.New(input)
 	p := New(l)
@@ -141,9 +156,13 @@ func TestActionStatements(t *testing.T) {
 		t.Fatalf("ParseProgram() returned nil")
 	}
 
-	if len(program.Statements) != 2 {
-		t.Fatalf("program.Statements does not contain 2 statements. got=%d",
-			len(program.Statements))
+	stmt, ok := program.Statements[0].(*ast.HubStatement)
+	if !ok {
+		t.Fatalf("program.Statements[0] is not ast.HubStatement. got=%T", program.Statements[0])
+	}
+
+	if len(stmt.Signature) != 2 {
+		t.Fatalf("stmt.Signature does not contain 2 statements. got=%d", len(stmt.Signature))
 	}
 
 	tests := []struct {
@@ -154,13 +173,13 @@ func TestActionStatements(t *testing.T) {
 	}
 
 	for i, tt := range tests {
-		stmt := program.Statements[i]
+		stmt := stmt.Signature[i]
 		if !testActionStatement(t, stmt, tt.expectedIdentifier) {
 			return
 		}
 	}
 
-	if program.String() != "action TestI(TestTypeI) returns (TestTypeII) to all;action TestII(TestTypeII);" {
+	if program.String() != "hub Test { action TestI(TestTypeI) returns (TestTypeII) to all; action TestII(TestTypeII); }" {
 		t.Errorf("program.String() wrong. got=%q", program.String())
 	}
 }

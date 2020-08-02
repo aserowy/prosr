@@ -2,6 +2,7 @@ package ast
 
 import (
 	"bytes"
+	"strings"
 
 	"prosr.compiler/token"
 )
@@ -42,16 +43,16 @@ func (p *Program) TokenLiteral() string {
 func (p *Program) String() string {
 	var out bytes.Buffer
 	for _, s := range p.Statements {
-		out.WriteString(s.String())
+		out.WriteString(s.String() + " ")
 	}
-	return out.String()
+	return strings.Trim(out.String(), " ")
 }
 
 // HubStatement represents statements with keyword hub
 type HubStatement struct {
-	Token token.Token
-	Name  *Identifier
-	Value Expression
+	Token     token.Token
+	Name      *Identifier
+	Signature []Statement
 }
 
 // TokenLiteral returns
@@ -67,11 +68,11 @@ func (hs *HubStatement) String() string {
 	out.WriteString(hs.Name.String())
 	out.WriteString(" { ")
 
-	if hs.Value != nil {
-		out.WriteString(hs.Value.String())
+	for i := 0; i < len(hs.Signature); i++ {
+		out.WriteString(hs.Signature[i].String() + " ")
 	}
 
-	out.WriteString(" }")
+	out.WriteString("}")
 
 	return out.String()
 }

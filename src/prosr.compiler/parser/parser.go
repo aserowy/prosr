@@ -58,12 +58,8 @@ func (p *Parser) Errors() []string {
 
 func (p *Parser) parseStatement() ast.Statement {
 	switch p.currentToken.Type {
-	case token.ACTION:
-		return p.parseActionStatement()
 	case token.HUB:
 		return p.parseHubStatement()
-	case token.RETURNS:
-		return p.parseReturnsStatement()
 	default:
 		return nil
 	}
@@ -95,6 +91,7 @@ func (p *Parser) parseActionStatement() *ast.ActionStatement {
 
 	p.nextToken()
 	if p.currentTokenIs(token.SEMICOLON) {
+		p.nextToken()
 		return stmt
 	}
 
@@ -115,12 +112,28 @@ func (p *Parser) parseHubStatement() *ast.HubStatement {
 		return nil
 	}
 
-	// TODO: Skipping until }
+	p.nextToken()
 	for !p.currentTokenIs(token.RBRACE) {
-		p.nextToken()
+		sign := p.parseHubSignatureStatement()
+		if sign != nil {
+			stmt.Signature = append(stmt.Signature, sign)
+		} else {
+			p.nextToken()
+		}
 	}
 
 	return stmt
+}
+
+func (p *Parser) parseHubSignatureStatement() ast.Statement {
+	switch p.currentToken.Type {
+	case token.ACTION:
+		return p.parseActionStatement()
+	case token.RETURNS:
+		return p.parseReturnsStatement()
+	default:
+		return nil
+	}
 }
 
 func (p *Parser) parseReturnsStatement() *ast.ReturnsStatement {

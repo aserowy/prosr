@@ -6,12 +6,17 @@ prosr1 is based on [proto3](https://developers.google.com/protocol-buffers/docs/
 > #### Important
 > If something is not listed in this documentation, although it is available as a feature in proto3, it is still not supported.
 
+# Syntax
+Syntax specifies the given version used to describe hubs and clients.
+
+```
+syntax = "prosr1";
+```
+
 # Message types
 As in [proto3](https://developers.google.com/protocol-buffers/docs/proto3#simple), messages form the basis of a class that can be used in a hub or hub client.
 
 ```
-syntax = "prosr1";
-
 message SearchRequest {
   string query = 1;
   int32 page_number = 2;
