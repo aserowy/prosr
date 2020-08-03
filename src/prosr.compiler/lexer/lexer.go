@@ -36,6 +36,8 @@ func (l *Lexer) NextToken() token.Token {
 		tok = newToken(token.LBRACE, l.currentChar)
 	case '}':
 		tok = newToken(token.RBRACE, l.currentChar)
+	case '"':
+		tok = newToken(token.QUOTE, l.currentChar)
 	case 0:
 		tok.Literal = ""
 		tok.Type = token.EOF

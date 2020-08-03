@@ -20,6 +20,7 @@ const (
 	// operators and punctuation
 	ASSIGN    = "="
 	SEMICOLON = ";"
+	QUOTE     = "\""
 
 	LPAREN = "("
 	RPAREN = ")"
@@ -31,6 +32,7 @@ const (
 	HUB     = "HUB"
 	MESSAGE = "MESSAGE"
 	RETURNS = "RETURNS"
+	SYNTAX  = "SYNTAX"
 	TO      = "TO"
 )
 
@@ -39,6 +41,7 @@ var keywords = map[string]TokenType{
 	"hub":     HUB,
 	"message": MESSAGE,
 	"returns": RETURNS,
+	"syntax":  SYNTAX,
 	"to":      TO,
 }
 

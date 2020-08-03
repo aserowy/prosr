@@ -49,6 +49,31 @@ func (p *Program) String() string {
 	return strings.Trim(out.String(), " ")
 }
 
+// SyntaxStatement represents statements with keyword Syntax
+type SyntaxStatement struct {
+	Token token.Token
+	Name  *Identifier
+}
+
+// TokenLiteral returns
+func (ss *SyntaxStatement) TokenLiteral() string {
+	return ss.Token.Literal
+}
+
+// String returns a string representation of this node
+func (ss *SyntaxStatement) String() string {
+	var out bytes.Buffer
+
+	out.WriteString(ss.TokenLiteral() + " = ")
+	out.WriteString(`"`)
+	out.WriteString(ss.Name.String())
+	out.WriteString(`";`)
+
+	return out.String()
+}
+
+func (ss *SyntaxStatement) statementNode() {}
+
 // HubStatement represents statements with keyword hub
 type HubStatement struct {
 	Token     token.Token

@@ -8,6 +8,29 @@ import (
 	"prosr.compiler/lexer"
 )
 
+func TestSyntaxStatements(t *testing.T) {
+	input := `syntax = "prosr1";`
+
+	l := lexer.New(input)
+	p := New(l)
+
+	program := p.ParseProgram()
+	checkParserErrors(t, p)
+
+	if program == nil {
+		t.Fatalf("ParseProgram() returned nil")
+	}
+
+	if len(program.Statements) != 1 {
+		t.Fatalf("program.Statements does not contain 1 statements. got=%d",
+			len(program.Statements))
+	}
+
+	if program.String() != `syntax = "prosr1";` {
+		t.Errorf("program.String() wrong. got=%q", program.String())
+	}
+}
+
 func TestMessageStatements(t *testing.T) {
 	input := `
 	message SearchRequest {

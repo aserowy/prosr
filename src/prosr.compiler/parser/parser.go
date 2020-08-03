@@ -63,6 +63,8 @@ func (p *Parser) parseStatement() ast.Statement {
 		return p.parseHubStatement()
 	case token.MESSAGE:
 		return p.parseMessageStatement()
+	case token.SYNTAX:
+		return p.parseSyntaxStatement()
 	default:
 		return nil
 	}
@@ -137,6 +139,35 @@ func (p *Parser) parseHubSignatureStatement() ast.Statement {
 	default:
 		return nil
 	}
+}
+
+func (p *Parser) parseSyntaxStatement() ast.Statement {
+	stmt := &ast.SyntaxStatement{Token: p.currentToken}
+
+	if !p.expectPeekAndAdvance(token.ASSIGN) {
+		return nil
+	}
+
+	if !p.expectPeekAndAdvance(token.QUOTE) {
+		return nil
+	}
+
+	if !p.expectPeekAndAdvance(token.IDENT) {
+		return nil
+	}
+	stmt.Name = &ast.Identifier{Token: p.currentToken, Value: p.currentToken.Literal}
+
+	if !p.expectPeekAndAdvance(token.QUOTE) {
+		return nil
+	}
+
+	if !p.expectPeekAndAdvance(token.SEMICOLON) {
+		return nil
+	}
+
+	p.nextToken()
+
+	return stmt
 }
 
 func (p *Parser) parseMessageStatement() ast.Statement {
