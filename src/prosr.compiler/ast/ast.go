@@ -2,6 +2,7 @@ package ast
 
 import (
 	"bytes"
+	"strconv"
 	"strings"
 
 	"prosr.compiler/token"
@@ -138,6 +139,61 @@ func (rs *ReturnsStatement) String() string {
 }
 
 func (rs *ReturnsStatement) statementNode() {}
+
+// MessageStatement represents statements with keyword message
+type MessageStatement struct {
+	Token     token.Token
+	Name      *Identifier
+	Signature []Statement
+}
+
+// TokenLiteral returns
+func (ms *MessageStatement) TokenLiteral() string {
+	return ms.Token.Literal
+}
+
+// String returns a string representation of this node
+func (ms *MessageStatement) String() string {
+	var out bytes.Buffer
+
+	out.WriteString(ms.TokenLiteral() + " ")
+	out.WriteString(ms.Name.String() + " { ")
+
+	for i := 0; i < len(ms.Signature); i++ {
+		out.WriteString(ms.Signature[i].String() + " ")
+	}
+
+	out.WriteString("}")
+
+	return out.String()
+}
+func (ms *MessageStatement) statementNode() {}
+
+// MessageDefinitionStatement represents statements
+type MessageDefinitionStatement struct {
+	Token    token.Token
+	Name     *Identifier
+	Type     Expression
+	Position int
+}
+
+// TokenLiteral returns
+func (mds *MessageDefinitionStatement) TokenLiteral() string {
+	return mds.Token.Literal
+}
+
+// String returns a string representation of this node
+func (mds *MessageDefinitionStatement) String() string {
+	var out bytes.Buffer
+
+	out.WriteString(mds.Type.String() + " ")
+	out.WriteString(mds.Name.String() + " = ")
+	out.WriteString(strconv.Itoa(mds.Position) + ";")
+
+	return out.String()
+}
+
+func (mds *MessageDefinitionStatement) statementNode() {}
 
 // TargetExpression represents a message type
 type TargetExpression struct {

@@ -40,7 +40,7 @@ func (l *Lexer) NextToken() token.Token {
 		tok.Literal = ""
 		tok.Type = token.EOF
 	default:
-		if isValidLiteral(l.currentChar) {
+		if isValidFirstLiteral(l.currentChar) {
 			tok.Literal = l.readIdentifier()
 			tok.Type = token.LookupTokenType(tok.Literal)
 			return tok
@@ -75,9 +75,14 @@ func (l *Lexer) readChar() {
 
 func (l *Lexer) readIdentifier() string {
 	position := l.position
-	for isValidLiteral(l.currentChar) {
+	if isValidFirstLiteral(l.currentChar) {
 		l.readChar()
+
+		for isValidLiteral(l.currentChar) {
+			l.readChar()
+		}
 	}
+
 	return l.input[position:l.position]
 }
 
@@ -89,12 +94,16 @@ func (l *Lexer) readNumber() string {
 	return l.input[position:l.position]
 }
 
-func isValidLiteral(ch byte) bool {
+func isValidFirstLiteral(ch byte) bool {
 	return 'a' <= ch && ch <= 'z' || 'A' <= ch && ch <= 'Z'
 }
 
 func isValidNumber(ch byte) bool {
 	return '0' <= ch && ch <= '9'
+}
+
+func isValidLiteral(ch byte) bool {
+	return isValidFirstLiteral(ch) || isValidNumber(ch) || '_' == ch
 }
 
 func newToken(tokenType token.TokenType, ch byte) token.Token {

@@ -2,6 +2,7 @@ package parser
 
 import (
 	"fmt"
+	"strconv"
 
 	"prosr.compiler/ast"
 	"prosr.compiler/lexer"
@@ -60,6 +61,8 @@ func (p *Parser) parseStatement() ast.Statement {
 	switch p.currentToken.Type {
 	case token.HUB:
 		return p.parseHubStatement()
+	case token.MESSAGE:
+		return p.parseMessageStatement()
 	default:
 		return nil
 	}
@@ -136,6 +139,71 @@ func (p *Parser) parseHubSignatureStatement() ast.Statement {
 	}
 }
 
+func (p *Parser) parseMessageStatement() ast.Statement {
+	stmt := &ast.MessageStatement{Token: p.currentToken}
+
+	if !p.expectPeekAndAdvance(token.IDENT) {
+		return nil
+	}
+	stmt.Name = &ast.Identifier{Token: p.currentToken, Value: p.currentToken.Literal}
+
+	if !p.expectPeekAndAdvance(token.LBRACE) {
+		return nil
+	}
+
+	p.nextToken()
+	for !p.currentTokenIs(token.RBRACE) {
+		sign := p.parseMessageDefinitionStatement()
+		if sign != nil {
+			stmt.Signature = append(stmt.Signature, sign)
+		} else {
+			p.nextToken()
+		}
+	}
+
+	return stmt
+}
+
+func (p *Parser) parseMessageDefinitionStatement() ast.Statement {
+	stmt := &ast.MessageDefinitionStatement{Token: p.currentToken}
+
+	if !p.currentTokenIs(token.IDENT) {
+		return nil
+	}
+	stmt.Type = &ast.TypeExpression{
+		Token: p.currentToken,
+		Name:  &ast.Identifier{Token: p.currentToken, Value: p.currentToken.Literal},
+	}
+
+	if !p.expectPeekAndAdvance(token.IDENT) {
+		return nil
+	}
+	stmt.Name = &ast.Identifier{Token: p.currentToken, Value: p.currentToken.Literal}
+
+	if !p.expectPeekAndAdvance(token.ASSIGN) {
+		return nil
+	}
+
+	if !p.expectPeekAndAdvance(token.INT32) {
+		return nil
+	}
+
+	pos, err := strconv.Atoi(p.currentToken.Literal)
+	if err != nil {
+		return nil
+	}
+
+	stmt.Position = pos
+
+	if !p.expectPeekAndAdvance(token.SEMICOLON) {
+		return nil
+	}
+
+	p.nextToken()
+
+	return stmt
+}
+
 func (p *Parser) parseReturnsStatement() *ast.ReturnsStatement {
 	stmt := &ast.ReturnsStatement{Token: p.currentToken}
 
@@ -165,9 +233,11 @@ func (p *Parser) parseReturnsStatement() *ast.ReturnsStatement {
 		Name:  &ast.Identifier{Token: p.currentToken, Value: p.currentToken.Literal},
 	}
 
-	for !p.expectPeekAndAdvance(token.SEMICOLON) {
+	if !p.expectPeekAndAdvance(token.SEMICOLON) {
 		return nil
 	}
+
+	p.nextToken()
 
 	return stmt
 }
