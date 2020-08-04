@@ -4,6 +4,7 @@
 	"recommendations": [
         "golang.go",
         "hbenl.vscode-test-explorer",
-        "ethan-reesor.vscode-go-test-adapter"
+		"ethan-reesor.vscode-go-test-adapter",
+		"mike-lischke.vscode-antlr4"
 	]
 }
