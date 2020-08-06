@@ -8,8 +8,8 @@ import "github.com/antlr/antlr4/runtime/Go/antlr"
 type Prosr1Listener interface {
 	antlr.ParseTreeListener
 
-	// EnterMain is called when entering the main production.
-	EnterMain(c *MainContext)
+	// EnterContent is called when entering the content production.
+	EnterContent(c *ContentContext)
 
 	// EnterSyntax is called when entering the syntax production.
 	EnterSyntax(c *SyntaxContext)
@@ -23,8 +23,14 @@ type Prosr1Listener interface {
 	// EnterSending is called when entering the sending production.
 	EnterSending(c *SendingContext)
 
+	// EnterSendingTarget is called when entering the sendingTarget production.
+	EnterSendingTarget(c *SendingTargetContext)
+
 	// EnterReturning is called when entering the returning production.
 	EnterReturning(c *ReturningContext)
+
+	// EnterReturningTarget is called when entering the returningTarget production.
+	EnterReturningTarget(c *ReturningTargetContext)
 
 	// EnterMessage is called when entering the message production.
 	EnterMessage(c *MessageContext)
@@ -32,14 +38,17 @@ type Prosr1Listener interface {
 	// EnterField is called when entering the field production.
 	EnterField(c *FieldContext)
 
+	// EnterTypeIdent is called when entering the typeIdent production.
+	EnterTypeIdent(c *TypeIdentContext)
+
 	// EnterQuote is called when entering the quote production.
 	EnterQuote(c *QuoteContext)
 
 	// EnterHubIdent is called when entering the hubIdent production.
 	EnterHubIdent(c *HubIdentContext)
 
-	// EnterActionIdent is called when entering the actionIdent production.
-	EnterActionIdent(c *ActionIdentContext)
+	// EnterSendingIdent is called when entering the sendingIdent production.
+	EnterSendingIdent(c *SendingIdentContext)
 
 	// EnterMessageIdent is called when entering the messageIdent production.
 	EnterMessageIdent(c *MessageIdentContext)
@@ -47,8 +56,8 @@ type Prosr1Listener interface {
 	// EnterFieldIdent is called when entering the fieldIdent production.
 	EnterFieldIdent(c *FieldIdentContext)
 
-	// ExitMain is called when exiting the main production.
-	ExitMain(c *MainContext)
+	// ExitContent is called when exiting the content production.
+	ExitContent(c *ContentContext)
 
 	// ExitSyntax is called when exiting the syntax production.
 	ExitSyntax(c *SyntaxContext)
@@ -62,8 +71,14 @@ type Prosr1Listener interface {
 	// ExitSending is called when exiting the sending production.
 	ExitSending(c *SendingContext)
 
+	// ExitSendingTarget is called when exiting the sendingTarget production.
+	ExitSendingTarget(c *SendingTargetContext)
+
 	// ExitReturning is called when exiting the returning production.
 	ExitReturning(c *ReturningContext)
+
+	// ExitReturningTarget is called when exiting the returningTarget production.
+	ExitReturningTarget(c *ReturningTargetContext)
 
 	// ExitMessage is called when exiting the message production.
 	ExitMessage(c *MessageContext)
@@ -71,14 +86,17 @@ type Prosr1Listener interface {
 	// ExitField is called when exiting the field production.
 	ExitField(c *FieldContext)
 
+	// ExitTypeIdent is called when exiting the typeIdent production.
+	ExitTypeIdent(c *TypeIdentContext)
+
 	// ExitQuote is called when exiting the quote production.
 	ExitQuote(c *QuoteContext)
 
 	// ExitHubIdent is called when exiting the hubIdent production.
 	ExitHubIdent(c *HubIdentContext)
 
-	// ExitActionIdent is called when exiting the actionIdent production.
-	ExitActionIdent(c *ActionIdentContext)
+	// ExitSendingIdent is called when exiting the sendingIdent production.
+	ExitSendingIdent(c *SendingIdentContext)
 
 	// ExitMessageIdent is called when exiting the messageIdent production.
 	ExitMessageIdent(c *MessageIdentContext)

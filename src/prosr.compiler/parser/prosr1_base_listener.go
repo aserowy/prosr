@@ -21,11 +21,11 @@ func (s *BaseProsr1Listener) EnterEveryRule(ctx antlr.ParserRuleContext) {}
 // ExitEveryRule is called when any rule is exited.
 func (s *BaseProsr1Listener) ExitEveryRule(ctx antlr.ParserRuleContext) {}
 
-// EnterMain is called when production main is entered.
-func (s *BaseProsr1Listener) EnterMain(ctx *MainContext) {}
+// EnterContent is called when production content is entered.
+func (s *BaseProsr1Listener) EnterContent(ctx *ContentContext) {}
 
-// ExitMain is called when production main is exited.
-func (s *BaseProsr1Listener) ExitMain(ctx *MainContext) {}
+// ExitContent is called when production content is exited.
+func (s *BaseProsr1Listener) ExitContent(ctx *ContentContext) {}
 
 // EnterSyntax is called when production syntax is entered.
 func (s *BaseProsr1Listener) EnterSyntax(ctx *SyntaxContext) {}
@@ -51,11 +51,23 @@ func (s *BaseProsr1Listener) EnterSending(ctx *SendingContext) {}
 // ExitSending is called when production sending is exited.
 func (s *BaseProsr1Listener) ExitSending(ctx *SendingContext) {}
 
+// EnterSendingTarget is called when production sendingTarget is entered.
+func (s *BaseProsr1Listener) EnterSendingTarget(ctx *SendingTargetContext) {}
+
+// ExitSendingTarget is called when production sendingTarget is exited.
+func (s *BaseProsr1Listener) ExitSendingTarget(ctx *SendingTargetContext) {}
+
 // EnterReturning is called when production returning is entered.
 func (s *BaseProsr1Listener) EnterReturning(ctx *ReturningContext) {}
 
 // ExitReturning is called when production returning is exited.
 func (s *BaseProsr1Listener) ExitReturning(ctx *ReturningContext) {}
+
+// EnterReturningTarget is called when production returningTarget is entered.
+func (s *BaseProsr1Listener) EnterReturningTarget(ctx *ReturningTargetContext) {}
+
+// ExitReturningTarget is called when production returningTarget is exited.
+func (s *BaseProsr1Listener) ExitReturningTarget(ctx *ReturningTargetContext) {}
 
 // EnterMessage is called when production message is entered.
 func (s *BaseProsr1Listener) EnterMessage(ctx *MessageContext) {}
@@ -69,6 +81,12 @@ func (s *BaseProsr1Listener) EnterField(ctx *FieldContext) {}
 // ExitField is called when production field is exited.
 func (s *BaseProsr1Listener) ExitField(ctx *FieldContext) {}
 
+// EnterTypeIdent is called when production typeIdent is entered.
+func (s *BaseProsr1Listener) EnterTypeIdent(ctx *TypeIdentContext) {}
+
+// ExitTypeIdent is called when production typeIdent is exited.
+func (s *BaseProsr1Listener) ExitTypeIdent(ctx *TypeIdentContext) {}
+
 // EnterQuote is called when production quote is entered.
 func (s *BaseProsr1Listener) EnterQuote(ctx *QuoteContext) {}
 
@@ -81,11 +99,11 @@ func (s *BaseProsr1Listener) EnterHubIdent(ctx *HubIdentContext) {}
 // ExitHubIdent is called when production hubIdent is exited.
 func (s *BaseProsr1Listener) ExitHubIdent(ctx *HubIdentContext) {}
 
-// EnterActionIdent is called when production actionIdent is entered.
-func (s *BaseProsr1Listener) EnterActionIdent(ctx *ActionIdentContext) {}
+// EnterSendingIdent is called when production sendingIdent is entered.
+func (s *BaseProsr1Listener) EnterSendingIdent(ctx *SendingIdentContext) {}
 
-// ExitActionIdent is called when production actionIdent is exited.
-func (s *BaseProsr1Listener) ExitActionIdent(ctx *ActionIdentContext) {}
+// ExitSendingIdent is called when production sendingIdent is exited.
+func (s *BaseProsr1Listener) ExitSendingIdent(ctx *SendingIdentContext) {}
 
 // EnterMessageIdent is called when production messageIdent is entered.
 func (s *BaseProsr1Listener) EnterMessageIdent(ctx *MessageIdentContext) {}

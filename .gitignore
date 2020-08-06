@@ -6,7 +6,7 @@
 *.dylib
 
 # Token files of antlr4 parser generation
-*.token
+*.tokens
 .antlr/
 
 # Test binary, built with `go test -c`

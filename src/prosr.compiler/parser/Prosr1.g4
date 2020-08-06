@@ -5,9 +5,7 @@ SYNTAX : 'syntax';
 MESSAGE : 'message';
 HUB : 'hub';
 ACTION : 'action';
-ACTIONTARGET: ('caller' | 'all');
 RETURNS : 'returns';
-RETURNSTARGET: 'all';
 TO : 'to';
 TYPE : 'string' | 'bool' | 'int32';
 IDENT : [a-zA-Z]([a-zA-Z0-9] | '_')+;
@@ -15,21 +13,24 @@ NUMBER : [0-9]+;
 WHITESPACE : [ \r\n\t]+ -> skip;
 
 // parser rules
-main : syntax definition EOF;
+content : syntax definition* EOF;
 syntax : SYNTAX '=' quote 'prosr1' quote';';
-definition : (hub | message)*;
+definition : (hub | message);
 
 hub : HUB hubIdent '{' (sending | returning)+ '}';
-sending : ACTION actionIdent'('messageIdent')' (RETURNS '('messageIdent')' TO ACTIONTARGET';')';';
-returning : RETURNS '('messageIdent')' TO RETURNSTARGET';';
+sending : ACTION sendingIdent'('inputType=messageIdent')' (RETURNS '('outputType=messageIdent')' TO sendingTarget) ';';
+sendingTarget : ('caller' | 'all');
+returning : RETURNS '('messageIdent')' TO returningTarget ';';
+returningTarget : 'all';
 
 message : MESSAGE messageIdent '{' (field)* '}';
-field : (messageIdent | TYPE) fieldIdent '=' NUMBER';';
+field : typeIdent fieldIdent '=' NUMBER';';
+typeIdent : (messageIdent | TYPE);
 
 // literals & identifier
 quote : '\'' | '"';
 
 hubIdent : IDENT;
-actionIdent : IDENT;
+sendingIdent : IDENT;
 messageIdent : IDENT;
 fieldIdent : IDENT;
