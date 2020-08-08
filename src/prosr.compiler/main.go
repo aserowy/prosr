@@ -43,9 +43,9 @@ func main() {
 	pl := compiler.NewProsr1Listener()
 	antlr.ParseTreeWalkerDefault.Walk(pl, p.Content())
 
-	b := compiler.NewBuilder("csharp", pl.Ast, map[string]string{
+	b := compiler.NewBuilder(map[string]string{
 		"path":      "c:\\temp\\compilation\\",
 		"namespace": "TestNamespace.Test",
 	})
-	b.Build()
+	b.Build(pl.Ast())
 }

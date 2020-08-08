@@ -5,6 +5,7 @@
         "golang.go",
         "hbenl.vscode-test-explorer",
 		"ethan-reesor.vscode-go-test-adapter",
-		"mike-lischke.vscode-antlr4"
+		"mike-lischke.vscode-antlr4",
+		"casualjim.gotemplate"
 	]
 }

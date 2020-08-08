@@ -10,22 +10,28 @@ import (
 type Prosr1Listener struct {
 	*parser.BaseProsr1Listener
 
-	Ast   *Ast
+	ast   *Ast
 	stack *Stack
 }
 
 // NewProsr1Listener ctor for Prosr1Listener
 func NewProsr1Listener() *Prosr1Listener {
 	l := new(Prosr1Listener)
-	l.Ast = NewAst()
+	l.ast = NewAst()
 	l.stack = NewStack()
 
 	return l
 }
 
+// Ast validates and returns the parsed Ast
+func (l *Prosr1Listener) Ast() *Ast {
+	// TODO: Validate Ast
+	return l.ast
+}
+
 // ExitHub is called when production hub is exited.
 func (l *Prosr1Listener) ExitHub(ctx *parser.HubContext) {
-	l.Ast.Push(NewHub(ctx, l.stack))
+	l.ast.Push(NewHub(ctx, l.stack))
 }
 
 // ExitSending is called when production sending is exited.
@@ -40,7 +46,7 @@ func (l *Prosr1Listener) ExitReturning(ctx *parser.ReturningContext) {
 
 // ExitMessage is called when production message is exited.
 func (l *Prosr1Listener) ExitMessage(ctx *parser.MessageContext) {
-	l.Ast.Push(NewMessage(ctx, l.stack))
+	l.ast.Push(NewMessage(ctx, l.stack))
 }
 
 // ExitField is called when production field is exited.

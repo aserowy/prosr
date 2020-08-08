@@ -1,0 +1,78 @@
+{{- range . -}}
+	{{- if eq .Token "hub"}}
+		{{template "interface" .}}
+		{{template "client" .}}
+		{{template "hub" .}}
+	{{- else if eq .Token "message" -}}
+		{{template "message" .}}
+	{{- end -}}
+{{- end -}}
+
+{{define "interface"}}
+		public interface I{{- .Ident -}}Client
+		{
+			{{- range .Nodes | unifyReturnings}}
+			Task Recieve{{- .ResponseType -}}To{{- .Target | capitalizeFirstLetter -}}Async({{- .ResponseType}} message);
+			{{- end}}
+		}
+{{end}}
+
+{{define "client"}}
+		public abstract class {{.Ident -}}ClientBase : I{{- .Ident -}}Client
+		{
+			{{- range .Nodes | unifyReturnings}}
+			public abstract Task Recieve{{- .ResponseType -}}To{{- .Target | capitalizeFirstLetter -}}Async({{- .ResponseType}} message);
+			{{- end}}
+		}
+{{end}}
+
+{{define "hub"}}
+		public abstract class {{.Ident -}}Base : Hub<I{{- .Ident -}}Client>
+		{
+			{{- range .Nodes -}}
+				{{- if eq .Token "sending" -}}
+					{{template "hubSending" .}}
+				{{- else if eq .Token "returning" -}}
+					{{template "hubReturning" .}}
+				{{- end -}}
+			{{- end}}
+		}
+{{end}}
+
+{{define "hubSending"}}
+			public async Task {{.Ident -}}({{- .InputType}} message)
+			{
+				{{- if eq .Returns nil}}
+				await Handle{{- .Ident -}}Async(message).ConfigureAwait(false);
+				{{- else}}
+				var result = await Handle{{- .Ident -}}Async(message).ConfigureAwait(false);
+
+				await Clients
+					.{{- .Returns.Target | capitalizeFirstLetter}}
+					.Recieve{{- .Returns.ResponseType -}}To{{- .Returns.Target | capitalizeFirstLetter -}}Async(message)
+					.ConfigureAwait(false);
+				{{- end}}
+			}
+
+			{{- if eq .Returns nil}}
+			protected abstract Task Handle{{- .Ident -}}Async({{- .InputType}}message);
+			{{- else}}
+			protected abstract Task<{{- .Returns.ResponseType -}}> Handle{{- .Ident -}}Async({{- .InputType}}message);
+			{{- end}}
+{{end}}
+
+{{define "hubReturning"}}
+			protected async Task Send{{- .ResponseType -}}To{{- .Target | capitalizeFirstLetter -}}Async({{- .ResponseType}} message)
+			{
+				await Clients.{{- .Target | capitalizeFirstLetter -}}.Recieve{{- .ResponseType -}}To{{- .Target | capitalizeFirstLetter -}}Async(message);
+			}
+{{end}}
+
+{{define "message"}}
+		public class {{.Ident}}
+		{
+			{{- range .Nodes}}
+			public {{.Type}} {{.Ident}} { get; set; }
+			{{- end}}
+		}
+{{end}}
