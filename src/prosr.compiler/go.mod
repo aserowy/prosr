@@ -1,4 +1,4 @@
-module prosr.compiler
+module prosr
 
 go 1.14
 

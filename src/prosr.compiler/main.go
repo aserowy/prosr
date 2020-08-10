@@ -7,8 +7,8 @@ import (
 	"strings"
 
 	"github.com/antlr/antlr4/runtime/Go/antlr"
-	"prosr.compiler/compiler"
-	"prosr.compiler/parser"
+	"prosr/compiler"
+	"prosr/parser"
 )
 
 var (

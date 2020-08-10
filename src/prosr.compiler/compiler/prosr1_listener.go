@@ -3,7 +3,7 @@ package compiler
 import (
 	"fmt"
 
-	"prosr.compiler/parser"
+	"prosr/parser"
 )
 
 // Prosr1Listener implements concrete handling of parser events for compiling

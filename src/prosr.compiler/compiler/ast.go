@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"strconv"
 
-	"prosr.compiler/parser"
+	"prosr/parser"
 )
 
 // Ast represents the whole body of the parsed tree
