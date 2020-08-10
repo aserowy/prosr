@@ -18,9 +18,11 @@ syntax : SYNTAX '=' quote 'prosr1' quote';';
 definition : (hub | message);
 
 hub : HUB hubIdent '{' (sending | returning)+ '}';
-sending : ACTION sendingIdent'('inputType=messageIdent')' (RETURNS '('outputType=messageIdent')' TO sendingTarget) ';';
+sending : ACTION sendingIdent'('inputType=sendingMessageIdent')' (RETURNS '('outputType=returningMessageIdent')' TO sendingTarget) ';';
+sendingMessageIdent : messageIdent;
 sendingTarget : ('caller' | 'all');
-returning : RETURNS '('messageIdent')' TO returningTarget ';';
+returning : RETURNS '('returningMessageIdent')' TO returningTarget ';';
+returningMessageIdent : messageIdent;
 returningTarget : 'all';
 
 message : MESSAGE messageIdent '{' (field)* '}';

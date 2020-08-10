@@ -124,7 +124,7 @@ type Returning struct {
 
 // NewReturning ctor for Returning
 func NewReturning(ctx *parser.ReturningContext) *Returning {
-	return NewReturningByValues(ctx.MessageIdent().GetText(), ctx.ReturningTarget().GetText())
+	return NewReturningByValues(ctx.ReturningMessageIdent().GetText(), ctx.ReturningTarget().GetText())
 }
 
 // NewReturningByValues ctor for Returning

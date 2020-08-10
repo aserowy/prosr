@@ -23,11 +23,17 @@ type Prosr1Listener interface {
 	// EnterSending is called when entering the sending production.
 	EnterSending(c *SendingContext)
 
+	// EnterSendingMessageIdent is called when entering the sendingMessageIdent production.
+	EnterSendingMessageIdent(c *SendingMessageIdentContext)
+
 	// EnterSendingTarget is called when entering the sendingTarget production.
 	EnterSendingTarget(c *SendingTargetContext)
 
 	// EnterReturning is called when entering the returning production.
 	EnterReturning(c *ReturningContext)
+
+	// EnterReturningMessageIdent is called when entering the returningMessageIdent production.
+	EnterReturningMessageIdent(c *ReturningMessageIdentContext)
 
 	// EnterReturningTarget is called when entering the returningTarget production.
 	EnterReturningTarget(c *ReturningTargetContext)
@@ -71,11 +77,17 @@ type Prosr1Listener interface {
 	// ExitSending is called when exiting the sending production.
 	ExitSending(c *SendingContext)
 
+	// ExitSendingMessageIdent is called when exiting the sendingMessageIdent production.
+	ExitSendingMessageIdent(c *SendingMessageIdentContext)
+
 	// ExitSendingTarget is called when exiting the sendingTarget production.
 	ExitSendingTarget(c *SendingTargetContext)
 
 	// ExitReturning is called when exiting the returning production.
 	ExitReturning(c *ReturningContext)
+
+	// ExitReturningMessageIdent is called when exiting the returningMessageIdent production.
+	ExitReturningMessageIdent(c *ReturningMessageIdentContext)
 
 	// ExitReturningTarget is called when exiting the returningTarget production.
 	ExitReturningTarget(c *ReturningTargetContext)

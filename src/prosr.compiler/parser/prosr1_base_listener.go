@@ -51,6 +51,12 @@ func (s *BaseProsr1Listener) EnterSending(ctx *SendingContext) {}
 // ExitSending is called when production sending is exited.
 func (s *BaseProsr1Listener) ExitSending(ctx *SendingContext) {}
 
+// EnterSendingMessageIdent is called when production sendingMessageIdent is entered.
+func (s *BaseProsr1Listener) EnterSendingMessageIdent(ctx *SendingMessageIdentContext) {}
+
+// ExitSendingMessageIdent is called when production sendingMessageIdent is exited.
+func (s *BaseProsr1Listener) ExitSendingMessageIdent(ctx *SendingMessageIdentContext) {}
+
 // EnterSendingTarget is called when production sendingTarget is entered.
 func (s *BaseProsr1Listener) EnterSendingTarget(ctx *SendingTargetContext) {}
 
@@ -62,6 +68,12 @@ func (s *BaseProsr1Listener) EnterReturning(ctx *ReturningContext) {}
 
 // ExitReturning is called when production returning is exited.
 func (s *BaseProsr1Listener) ExitReturning(ctx *ReturningContext) {}
+
+// EnterReturningMessageIdent is called when production returningMessageIdent is entered.
+func (s *BaseProsr1Listener) EnterReturningMessageIdent(ctx *ReturningMessageIdentContext) {}
+
+// ExitReturningMessageIdent is called when production returningMessageIdent is exited.
+func (s *BaseProsr1Listener) ExitReturningMessageIdent(ctx *ReturningMessageIdentContext) {}
 
 // EnterReturningTarget is called when production returningTarget is entered.
 func (s *BaseProsr1Listener) EnterReturningTarget(ctx *ReturningTargetContext) {}
