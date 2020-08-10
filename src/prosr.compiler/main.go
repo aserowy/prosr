@@ -1,6 +1,8 @@
 package main
 
 import (
+	"os"
+
 	"github.com/antlr/antlr4/runtime/Go/antlr"
 	"prosr.compiler/compiler"
 	"prosr.compiler/parser"
@@ -43,9 +45,13 @@ func main() {
 	pl := compiler.NewProsr1Listener()
 	antlr.ParseTreeWalkerDefault.Walk(pl, p.Content())
 
-	b := compiler.NewBuilder(map[string]string{
-		"path":      "c:\\temp\\compilation\\",
+	wd, err := os.Getwd()
+	if err != nil {
+		panic(err)
+	}
+
+	b := compiler.NewBuilder(wd, pl.Ast(), map[string]string{
 		"namespace": "TestNamespace.Test",
 	})
-	b.Build(pl.Ast())
+	b.Build()
 }

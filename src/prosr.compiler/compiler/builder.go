@@ -9,25 +9,32 @@ import (
 
 // Builder creates files for the specified language
 type Builder struct {
-	options map[string]string
+	Options map[string]string
+	Ast     []Node
 }
 
 // NewBuilder ctor for Builder
-func NewBuilder(options map[string]string) *Builder {
+func NewBuilder(path string, ast *Ast, options map[string]string) *Builder {
 	b := new(Builder)
-	b.options = options
+	b.Options = options
+	b.Ast = ast.Nodes
 
 	return b
 }
 
 // Build creates files by Ast
-func (b *Builder) Build(ast *Ast) {
-	fmt.Println(executeParse(buildTemplate(), ast.Nodes))
+func (b *Builder) Build() {
+	fmt.Println(executeParse(buildTemplate(), b))
 }
 
 func buildTemplate() *template.Template {
+	tm := map[string]string{}
+
 	fm := template.FuncMap{
+		"addType":               func(key string, value string) bool { tm[key] = value; return true },
+		"type":                  func(key string) string { return resolveOption(tm, key) },
 		"capitalizeFirstLetter": capitalizeFirstLetter,
+		"resolveOption":         resolveOption,
 		"unifyReturnings":       unifyReturnings,
 	}
 
@@ -62,6 +69,14 @@ func capitalizeFirstLetter(v string) string {
 	default:
 		return strings.ToUpper(string(v[0])) + strings.ToLower(v[1:])
 	}
+}
+
+func resolveOption(options map[string]string, key string) string {
+	if v, ok := options[key]; ok {
+		return v
+	}
+
+	return key
 }
 
 func unifyReturnings(nodes []Node) []Returning {
