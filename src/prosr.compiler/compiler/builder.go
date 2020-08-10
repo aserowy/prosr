@@ -15,7 +15,7 @@ type Builder struct {
 }
 
 // NewBuilder ctor for Builder
-func NewBuilder(language string, path string, ast *Ast, Options map[string]string) *Builder {
+func NewBuilder(language string, ast *Ast, Options map[string]string) *Builder {
 	b := new(Builder)
 	b.language = language
 	b.Options = Options
@@ -25,16 +25,26 @@ func NewBuilder(language string, path string, ast *Ast, Options map[string]strin
 }
 
 // Build creates files by Ast
-func (b *Builder) Build() {
-	fmt.Println(executeParse(buildTemplate(b), b))
+func (b *Builder) Build() (*string, string) {
+	tmpl, fe := buildTemplate(b)
+	out := executeParse(tmpl, b)
+	out = strings.Trim(out, " \r\n")
+
+	if *fe == "" {
+		panic("No file extension in template set!")
+	}
+
+	return fe, out
 }
 
-func buildTemplate(b *Builder) *template.Template {
+func buildTemplate(b *Builder) (*template.Template, *string) {
+	fe := ""
 	tm := map[string]string{}
 
 	fm := template.FuncMap{
-		"addType": func(key string, value string) string { tm[key] = value; return "" },
-		"type":    func(key string) string { return resolveOption(tm, key) },
+		"registerFileExtension": func(extension string) string { fe = extension; return "" },
+		"addType":               func(key string, value string) string { tm[key] = value; return "" },
+		"type":                  func(key string) string { return resolveOption(tm, key) },
 
 		"capitalizeFirstLetter": capitalizeFirstLetter,
 		"resolveOption":         resolveOption,
@@ -50,7 +60,7 @@ func buildTemplate(b *Builder) *template.Template {
 		panic(err)
 	}
 
-	return tmpl
+	return tmpl, &fe
 }
 
 func executeParse(tmpl *template.Template, data interface{}) string {
@@ -84,18 +94,18 @@ func resolveOption(Options map[string]string, key string) string {
 	return key
 }
 
-func unifyReturnings(nodes []Node) []Returning {
-	ns := map[string]Returning{}
+func unifyReturnings(nodes []Node) []*Returning {
+	ns := map[string]*Returning{}
 	for _, n := range nodes {
 		re := resolveReturning(n)
 		if re == nil {
 			continue
 		}
 
-		ns[re.String()] = (*re)
+		ns[re.String()] = re
 	}
 
-	r := []Returning{}
+	r := []*Returning{}
 	for _, n := range ns {
 		r = append(r, n)
 	}

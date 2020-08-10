@@ -1,43 +1,34 @@
 package main
 
 import (
-	"fmt"
-	"os"
+	"flag"
+	"io/ioutil"
+	"path/filepath"
+	"strings"
 
 	"github.com/antlr/antlr4/runtime/Go/antlr"
 	"prosr.compiler/compiler"
 	"prosr.compiler/parser"
 )
 
+var (
+	path      = flag.String("p", "", "Path to .prosr file.")
+	language  = flag.String("l", "csharp", "Language used for client and hub generation. The given language must have a valid .tmpl file under /compiler/.")
+	namespace = flag.String("namespace", "", "Optional: Specify namespace to be able to use this value in Template. E.g. {{resolveOption .Options \"namespace\"}}")
+)
+
 func main() {
-	definition := `
-	syntax = "prosr1";
+	flag.Parse()
 
-	hub SearchHub {
-		action Search(SearchRequest) returns (SearchResponse) to caller;
-	  
-		returns (SearchRequest) to all;
+	fp, err := filepath.Abs((*path))
+	if err != nil {
+		panic(err)
 	}
 
-	message SearchRequest {
-		string query = 1;
-		int32 page_number = 2;
-		int32 result_per_page = 3;
+	is, err := antlr.NewFileStream(fp)
+	if err != nil {
+		panic(err)
 	}
-	
-	message SearchResponse {
-		Result result = 1;
-	}
-	
-	message Result {
-		string url = 1;
-		string title = 2;
-		string snippets = 3;
-	}`
-
-	fmt.Println(os.Args)
-
-	is := antlr.NewInputStream(definition)
 
 	l := parser.NewProsr1Lexer(is)
 	s := antlr.NewCommonTokenStream(l, antlr.TokenDefaultChannel)
@@ -48,13 +39,16 @@ func main() {
 	pl := compiler.NewProsr1Listener()
 	antlr.ParseTreeWalkerDefault.Walk(pl, p.Content())
 
-	wd, err := os.Getwd()
+	b := compiler.NewBuilder("csharp", pl.Ast(), map[string]string{
+		"namespace": (*namespace),
+	})
+	fe, out := b.Build()
+
+	d, fn := filepath.Split(fp)
+	nfn := d + strings.Replace(fn, ".prosr", *fe, -1)
+
+	err = ioutil.WriteFile(nfn, []byte(out), 0644)
 	if err != nil {
 		panic(err)
 	}
-
-	b := compiler.NewBuilder("csharp", wd, pl.Ast(), map[string]string{
-		"namespace": "TestNamespace.Test",
-	})
-	b.Build()
 }

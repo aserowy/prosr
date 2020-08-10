@@ -1,4 +1,6 @@
+{{- registerFileExtension ".cs" -}}
 {{- addType "int32" "int" -}}
+
 // Generated with prosr1 by compiler 0.9, template 0.1
 
 using Microsoft.AspNetCore.SignalR;
@@ -37,7 +39,6 @@ namespace {{resolveOption .Options "namespace"}}
 		{{- end}}
 	}
 {{end}}
-
 {{define "client"}}
 	public abstract class {{.Ident -}}ClientBase : I{{- .Ident -}}Client
 	{
@@ -108,41 +109,40 @@ namespace {{resolveOption .Options "namespace"}}
 		}
 
 		public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
+		{
+			Dispose(true);
+			GC.SuppressFinalize(this);
+		}
 		
 		protected virtual void Dispose(bool disposing)
-        {
-            if (!_disposed)
-            {
-                if (disposing)
-                {
-                    if (!(_connection is null))
-                    {
-                        var result = _connection
-                            .DisposeAsync()
-                            .Wait(1000);
+		{
+			if (!_disposed)
+			{
+				if (disposing)
+				{
+					if (!(_connection is null))
+					{
+						var result = _connection
+							.DisposeAsync()
+							.Wait(1000);
 
-                        if (!result)
-                        {
-                            throw new TimeoutException($"Timeout of one second reached while closing hub connection for {HubUrl}!");
-                        }
-                    }
-                }
+						if (!result)
+						{
+							throw new TimeoutException($"Timeout of one second reached while closing hub connection for {HubUrl}!");
+						}
+					}
+				}
 
-                _disposed = true;
-            }
-        }
+				_disposed = true;
+			}
+		}
 		
 		~{{.Ident -}}ClientBase()
-        {
-            Dispose(false);
-        }
+		{
+			Dispose(false);
+		}
 	}
 {{end}}
-
 {{define "hub"}}
 	public abstract class {{.Ident -}}Base : Hub<I{{- .Ident -}}ClientBase>
 	{
@@ -155,7 +155,6 @@ namespace {{resolveOption .Options "namespace"}}
 		{{- end}}
 	}
 {{end}}
-
 {{define "hubSending"}}
 		public async Task {{.Ident -}}({{- .InputType}} message)
 		{
@@ -176,14 +175,12 @@ namespace {{resolveOption .Options "namespace"}}
 		protected abstract Task<{{- .Returns.ResponseType -}}> Handle{{- .Ident -}}Async({{- .InputType}} message);
 		{{- end -}}
 {{end}}
-
 {{define "hubReturning"}}
 		protected Task Send{{- .ResponseType -}}To{{- .Target | capitalizeFirstLetter -}}Async({{- .ResponseType}} message)
 		{
 			return Clients.{{- .Target | capitalizeFirstLetter -}}.Recieve{{- .ResponseType -}}To{{- .Target | capitalizeFirstLetter -}}Async(message);
 		}
 {{end}}
-
 {{define "message"}}
 	public class {{.Ident}}
 	{
