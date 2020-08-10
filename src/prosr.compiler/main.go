@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"os"
 
 	"github.com/antlr/antlr4/runtime/Go/antlr"
@@ -34,6 +35,8 @@ func main() {
 		string snippets = 3;
 	}`
 
+	fmt.Println(os.Args)
+
 	is := antlr.NewInputStream(definition)
 
 	l := parser.NewProsr1Lexer(is)
@@ -50,7 +53,7 @@ func main() {
 		panic(err)
 	}
 
-	b := compiler.NewBuilder(wd, pl.Ast(), map[string]string{
+	b := compiler.NewBuilder("csharp", wd, pl.Ast(), map[string]string{
 		"namespace": "TestNamespace.Test",
 	})
 	b.Build()

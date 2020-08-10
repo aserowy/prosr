@@ -9,14 +9,16 @@ import (
 
 // Builder creates files for the specified language
 type Builder struct {
-	Options map[string]string
-	Ast     []Node
+	language string
+	Options  map[string]string
+	Ast      []Node
 }
 
 // NewBuilder ctor for Builder
-func NewBuilder(path string, ast *Ast, options map[string]string) *Builder {
+func NewBuilder(language string, path string, ast *Ast, Options map[string]string) *Builder {
 	b := new(Builder)
-	b.Options = options
+	b.language = language
+	b.Options = Options
 	b.Ast = ast.Nodes
 
 	return b
@@ -24,24 +26,25 @@ func NewBuilder(path string, ast *Ast, options map[string]string) *Builder {
 
 // Build creates files by Ast
 func (b *Builder) Build() {
-	fmt.Println(executeParse(buildTemplate(), b))
+	fmt.Println(executeParse(buildTemplate(b), b))
 }
 
-func buildTemplate() *template.Template {
+func buildTemplate(b *Builder) *template.Template {
 	tm := map[string]string{}
 
 	fm := template.FuncMap{
-		"addType":               func(key string, value string) bool { tm[key] = value; return true },
-		"type":                  func(key string) string { return resolveOption(tm, key) },
+		"addType": func(key string, value string) string { tm[key] = value; return "" },
+		"type":    func(key string) string { return resolveOption(tm, key) },
+
 		"capitalizeFirstLetter": capitalizeFirstLetter,
 		"resolveOption":         resolveOption,
 		"unifyReturnings":       unifyReturnings,
 	}
 
 	tmpl, err := template.
-		New("charp.tmpl").
+		New(b.language + ".tmpl").
 		Funcs(fm).
-		ParseFiles("compiler/charp.tmpl")
+		ParseFiles("compiler/" + b.language + ".tmpl")
 
 	if err != nil {
 		panic(err)
@@ -71,10 +74,12 @@ func capitalizeFirstLetter(v string) string {
 	}
 }
 
-func resolveOption(options map[string]string, key string) string {
-	if v, ok := options[key]; ok {
+func resolveOption(Options map[string]string, key string) string {
+	if v, ok := Options[key]; ok {
 		return v
 	}
+
+	fmt.Println("Options key " + key + " was not found. Returned key instead.")
 
 	return key
 }
