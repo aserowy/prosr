@@ -5,8 +5,8 @@ SYNTAX : 'syntax';
 MESSAGE : 'message';
 HUB : 'hub';
 ACTION : 'action';
-RETURNS : 'returns';
-TO : 'to';
+CALLS : 'calls';
+ON : 'on';
 TYPE : 'string' | 'bool' | 'int32';
 IDENT : [a-zA-Z]([a-zA-Z0-9] | '_')+;
 NUMBER : [0-9]+;
@@ -18,11 +18,11 @@ syntax : SYNTAX '=' quote 'prosr1' quote';';
 definition : (hub | message);
 
 hub : HUB hubIdent '{' (sending | returning)+ '}';
-sending : ACTION sendingIdent'('inputType=sendingMessageIdent')' (RETURNS '('outputType=returningMessageIdent')' TO sendingTarget) ';';
-sendingMessageIdent : messageIdent;
+sending : ACTION sendingIdent'('sendingMessageIdent')' (CALLS returningIdent'('returningMessageIdent')' ON sendingTarget) ';';
+sendingMessageIdent : (messageIdent)?;
 sendingTarget : ('caller' | 'all');
-returning : RETURNS '('returningMessageIdent')' TO returningTarget ';';
-returningMessageIdent : messageIdent;
+returning : CALLS returningIdent'('returningMessageIdent')' ON returningTarget ';';
+returningMessageIdent : (messageIdent)?;
 returningTarget : 'all';
 
 message : MESSAGE messageIdent '{' (field)* '}';
@@ -33,6 +33,7 @@ typeIdent : (messageIdent | TYPE);
 quote : '\'' | '"';
 
 hubIdent : IDENT;
-sendingIdent : IDENT;
-messageIdent : IDENT;
 fieldIdent : IDENT;
+messageIdent : IDENT;
+returningIdent : IDENT;
+sendingIdent : IDENT;

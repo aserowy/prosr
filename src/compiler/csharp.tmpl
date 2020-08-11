@@ -12,11 +12,11 @@ namespace {{resolveOption .Options "namespace"}}
 {
 {{- range .Ast -}}
 	{{- if eq .Token "hub" -}}
-		{{template "interface" .}}
-		{{template "client" .}}
-		{{template "hub" .}}
+		{{- template "interface" .}}
+		{{- template "client" .}}
+		{{- template "hub" .}}
 	{{- else if eq .Token "message" -}}
-		{{template "message" .}}
+		{{- template "message" .}}
 	{{- end -}}
 {{- end -}}
 }
@@ -35,7 +35,7 @@ namespace {{resolveOption .Options "namespace"}}
 	public interface I{{- .Ident -}}ClientBase
 	{
 		{{- range .Nodes | unifyReturnings}}
-		Task Recieve{{- .ResponseType -}}To{{- .Target | capitalizeFirstLetter -}}Async({{- .ResponseType}} message);
+		Task {{.Ident -}}On{{- .Target | capitalizeFirstLetter -}}Async({{- .ResponseType}} message);
 		{{- end}}
 	}
 {{end}}
@@ -59,7 +59,7 @@ namespace {{resolveOption .Options "namespace"}}
 			await GetConnection().ConfigureAwait(false);
 		}
 		{{range .Nodes | unifyReturnings}}
-		public abstract Task Recieve{{- .ResponseType -}}To{{- .Target | capitalizeFirstLetter -}}Async({{- .ResponseType}} message);
+		public abstract Task {{.Ident -}}On{{- .Target | capitalizeFirstLetter -}}Async({{- .ResponseType}} message);
 		{{end}}
 
 		{{- range .Nodes }}
@@ -68,7 +68,9 @@ namespace {{resolveOption .Options "namespace"}}
 		{
 			var connection = await GetConnection().ConfigureAwait(false);
 
-			await connection.SendAsync("{{- .Ident -}}", message);
+			await connection
+				.SendAsync("{{- .Ident -}}", message)
+				.ConfigureAwait(false);
 		}
 		{{- end}}
 		{{- end}}
@@ -102,7 +104,7 @@ namespace {{resolveOption .Options "namespace"}}
 		private HubConnection BindClientMethods(ref HubConnection connection)
 		{
 			{{- range .Nodes | unifyReturnings}}
-			connection.On<{{- .ResponseType -}}>("Recieve{{- .ResponseType -}}To{{- .Target | capitalizeFirstLetter -}}Async", message => Recieve{{- .ResponseType -}}To{{- .Target | capitalizeFirstLetter -}}Async(message));
+			connection.On<{{- .ResponseType -}}>("{{.Ident -}}On{{- .Target | capitalizeFirstLetter -}}Async", message => {{.Ident -}}On{{- .Target | capitalizeFirstLetter -}}Async(message));
 			{{- end}}
 
 			return connection;
@@ -158,27 +160,27 @@ namespace {{resolveOption .Options "namespace"}}
 {{define "hubSending"}}
 		public async Task {{.Ident -}}({{- .InputType}} message)
 		{
-			{{- if eq .Returns nil}}
+			{{- if eq .Calls nil}}
 			await Handle{{- .Ident -}}Async(message).ConfigureAwait(false);
 			{{- else}}
 			var result = await Handle{{- .Ident -}}Async(message).ConfigureAwait(false);
 
 			await Clients
-				.{{- .Returns.Target | capitalizeFirstLetter}}
-				.Recieve{{- .Returns.ResponseType -}}To{{- .Returns.Target | capitalizeFirstLetter -}}Async(result)
+				.{{- .Calls.Target | capitalizeFirstLetter}}
+				.{{.Calls.Ident -}}On{{- .Calls.Target | capitalizeFirstLetter -}}Async(result)
 				.ConfigureAwait(false);
 			{{- end}}
 		}
-		{{if eq .Returns nil}}
+		{{if eq .Calls nil}}
 		protected abstract Task Handle{{- .Ident -}}Async({{- .InputType}} message);
 		{{- else}}
-		protected abstract Task<{{- .Returns.ResponseType -}}> Handle{{- .Ident -}}Async({{- .InputType}} message);
+		protected abstract Task<{{- .Calls.ResponseType -}}> Handle{{- .Ident -}}Async({{- .InputType}} message);
 		{{- end -}}
 {{end}}
 {{define "hubReturning"}}
-		protected Task Send{{- .ResponseType -}}To{{- .Target | capitalizeFirstLetter -}}Async({{- .ResponseType}} message)
+		protected Task Send{{- .Ident -}}On{{- .Target | capitalizeFirstLetter -}}Async({{- .ResponseType}} message)
 		{
-			return Clients.{{- .Target | capitalizeFirstLetter -}}.Recieve{{- .ResponseType -}}To{{- .Target | capitalizeFirstLetter -}}Async(message);
+			return Clients.{{- .Target | capitalizeFirstLetter -}}.{{.Ident -}}On{{- .Target | capitalizeFirstLetter -}}Async(message);
 		}
 {{end}}
 {{define "message"}}

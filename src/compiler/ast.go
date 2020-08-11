@@ -77,7 +77,7 @@ type Sending struct {
 	Token     string
 	Ident     string
 	InputType string
-	Returns   Node
+	Calls     Node
 }
 
 // NewSending ctor for Sending
@@ -85,10 +85,13 @@ func NewSending(ctx *parser.SendingContext) *Sending {
 	s := new(Sending)
 	s.Token = SENDING
 	s.Ident = ctx.SendingIdent().GetText()
-	s.InputType = ctx.GetInputType().GetText()
+	s.InputType = ctx.SendingMessageIdent().GetText()
 
-	if ctx.GetOutputType() != nil && ctx.SendingTarget() != nil {
-		s.Returns = NewReturningByValues(ctx.GetOutputType().GetText(), ctx.SendingTarget().GetText())
+	if ctx.ReturningIdent() != nil && ctx.SendingTarget() != nil {
+		s.Calls = NewReturningByValues(
+			ctx.ReturningIdent().GetText(),
+			ctx.ReturningMessageIdent().GetText(),
+			ctx.SendingTarget().GetText())
 	}
 
 	return s
@@ -106,8 +109,8 @@ func (s *Sending) String() string {
 	b.WriteString(s.Ident + "(")
 	b.WriteString(s.InputType + ") ")
 
-	if s.Returns != nil {
-		b.WriteString(s.Returns.String())
+	if s.Calls != nil {
+		b.WriteString(s.Calls.String())
 	} else {
 		b.WriteString(";")
 	}
@@ -115,22 +118,27 @@ func (s *Sending) String() string {
 	return b.String()
 }
 
-// Returning defines the node for returns
+// Returning defines the node for calls
 type Returning struct {
 	Token        string
+	Ident        string
 	ResponseType string
 	Target       string
 }
 
 // NewReturning ctor for Returning
 func NewReturning(ctx *parser.ReturningContext) *Returning {
-	return NewReturningByValues(ctx.ReturningMessageIdent().GetText(), ctx.ReturningTarget().GetText())
+	return NewReturningByValues(
+		ctx.ReturningIdent().GetText(),
+		ctx.ReturningMessageIdent().GetText(),
+		ctx.ReturningTarget().GetText())
 }
 
 // NewReturningByValues ctor for Returning
-func NewReturningByValues(responseType string, target string) *Returning {
+func NewReturningByValues(ident string, responseType string, target string) *Returning {
 	r := new(Returning)
 	r.Token = RETURNING
+	r.Ident = ident
 	r.ResponseType = responseType
 	r.Target = target
 
@@ -145,9 +153,10 @@ func (r *Returning) TokenLiteral() string {
 // String returns string representation of object
 func (r *Returning) String() string {
 	b := new(bytes.Buffer)
-	b.WriteString(r.Token + " (")
+	b.WriteString(r.Token + " ")
+	b.WriteString(r.Ident + "(")
 	b.WriteString(r.ResponseType + ") ")
-	b.WriteString("to ")
+	b.WriteString("on ")
 	b.WriteString(r.Target + ";")
 
 	return b.String()

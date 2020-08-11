@@ -48,36 +48,36 @@ message Result {
 
 # Defining hubs and hub clients
 ## Hub
-A hub consists of at least one action and thus describes which interface the hub provides to the outside.
+A hub consists of at least one action and thus describes which interface the hub provides to the outside. Besides actions, calls can be defined independently of actions. These describe pure endpoints of the client.
 
 ```
 hub SearchHub {
-  action Search(SearchRequest) returns (SearchResponse) to caller;
+  action Search(SearchRequest) calls Search(SearchResponse) on caller;
 
-  returns (SearchRequest) to all;
+  calls SearchCalled(SearchRequest) on all;
 }
 ```
 
-## Actions and returns
+## Actions and calls
 An action consists of a method name and an optional transfer parameter. The transfer parameter must be of type message.
 
-You can also define a return with a type for an action. Like the transfer parameter, the return type must be of type message. For the return, the target must also be described using "to".
+You can also define a "calls" with an identifier and a type for an action. Like the transfer parameter, the return type must be of type message. For the call, the target must also be described using "on".
 The following values are currently supported as possible targets: caller, all
 
 Unlike the proto definitions of grpc services, the concept of stream does not exist in SignalR. Each definition of an action and corresponding responses under hub can be executed multiple times. For example, multiple requests can be sent to the hub without each request getting its own response.
 
 ```
-action ActionWithParameterAndReturnToCaller(OptionalParameter) returns (MandatoryParameter) to caller;
+action ActionWithParameterAndReturnToCaller(OptionalParameter) calls CallIdent(OptionalParameter) on caller;
 
 action ActionWithParameterWithoutReturn(OptionalParameter);
 
-action ActionWithReturnToAll() returns (MandatoryParameter) to all;
+action ActionWithReturnToAll() calls CallIdent(OptionalParameter) on all;
 
-action ActionWithParameterAndReturnToAll(OptionalParameter) returns (MandatoryParameter) to all;
+action ActionWithParameterAndReturnToAll(OptionalParameter) calls CallIdent(OptionalParameter) on all;
 ```
 
-Beyond actions, pure returns can also be defined in a hub. These are not available as end points in the hub, but can only be used for clients. Since the caller is unclear in such a scenario, only the target "all" can be used (as long as group is not yet available).
+Beyond actions, pure "calls" can also be defined in a hub. These are not available as end points in the hub, but can only be used for clients. Since the caller is unclear in such a scenario, only the target "all" can be used (as long as group is not yet available).
 
 ```
-returns (MandatoryParameter) to all;
+calls CallIdent(OptionalParameter) on all;
 ```

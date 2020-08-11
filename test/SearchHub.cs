@@ -15,11 +15,10 @@ namespace Test.TestNamespace
 
 	public interface ISearchHubClientBase
 	{
-		Task RecieveSearchRequestToAllAsync(SearchRequest message);
-		Task RecieveSearchResponseToCallerAsync(SearchResponse message);
+		Task SearchCalledOnAllAsync(SearchRequest message);
+		Task SearchOnCallerAsync(SearchResponse message);
 	}
 
-		
 	public abstract class SearchHubClientBase : ISearchHubClient
 	{
 		private readonly IHubConnectionBuilder _hubConnectionBuilder;
@@ -39,9 +38,9 @@ namespace Test.TestNamespace
 			await GetConnection().ConfigureAwait(false);
 		}
 		
-		public abstract Task RecieveSearchRequestToAllAsync(SearchRequest message);
+		public abstract Task SearchCalledOnAllAsync(SearchRequest message);
 		
-		public abstract Task RecieveSearchResponseToCallerAsync(SearchResponse message);
+		public abstract Task SearchOnCallerAsync(SearchResponse message);
 		
 		public async Task CallSearchOnHub(SearchRequest message)
 		{
@@ -78,8 +77,8 @@ namespace Test.TestNamespace
 
 		private HubConnection BindClientMethods(ref HubConnection connection)
 		{
-			connection.On<SearchRequest>("RecieveSearchRequestToAllAsync", message => RecieveSearchRequestToAllAsync(message));
-			connection.On<SearchResponse>("RecieveSearchResponseToCallerAsync", message => RecieveSearchResponseToCallerAsync(message));
+			connection.On<SearchRequest>("SearchCalledOnAllAsync", message => SearchCalledOnAllAsync(message));
+			connection.On<SearchResponse>("SearchOnCallerAsync", message => SearchOnCallerAsync(message));
 
 			return connection;
 		}
@@ -119,12 +118,11 @@ namespace Test.TestNamespace
 		}
 	}
 
-		
 	public abstract class SearchHubBase : Hub<ISearchHubClientBase>
 	{
-		protected Task SendSearchRequestToAllAsync(SearchRequest message)
+		protected Task SendSearchCalledOnAllAsync(SearchRequest message)
 		{
-			return Clients.All.RecieveSearchRequestToAllAsync(message);
+			return Clients.All.SearchCalledOnAllAsync(message);
 		}
 
 		public async Task Search(SearchRequest message)
@@ -133,7 +131,7 @@ namespace Test.TestNamespace
 
 			await Clients
 				.Caller
-				.RecieveSearchResponseToCallerAsync(result)
+				.SearchOnCallerAsync(result)
 				.ConfigureAwait(false);
 		}
 		

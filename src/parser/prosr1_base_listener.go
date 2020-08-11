@@ -1,4 +1,4 @@
-// Code generated from c:\Users\serow_000\source\repos\prosr\src\prosr.compiler\parser\Prosr1.g4 by ANTLR 4.8. DO NOT EDIT.
+// Code generated from c:\Users\serow_000\source\repos\prosr\src\parser\Prosr1.g4 by ANTLR 4.8. DO NOT EDIT.
 
 package parser // Prosr1
 
@@ -111,11 +111,11 @@ func (s *BaseProsr1Listener) EnterHubIdent(ctx *HubIdentContext) {}
 // ExitHubIdent is called when production hubIdent is exited.
 func (s *BaseProsr1Listener) ExitHubIdent(ctx *HubIdentContext) {}
 
-// EnterSendingIdent is called when production sendingIdent is entered.
-func (s *BaseProsr1Listener) EnterSendingIdent(ctx *SendingIdentContext) {}
+// EnterFieldIdent is called when production fieldIdent is entered.
+func (s *BaseProsr1Listener) EnterFieldIdent(ctx *FieldIdentContext) {}
 
-// ExitSendingIdent is called when production sendingIdent is exited.
-func (s *BaseProsr1Listener) ExitSendingIdent(ctx *SendingIdentContext) {}
+// ExitFieldIdent is called when production fieldIdent is exited.
+func (s *BaseProsr1Listener) ExitFieldIdent(ctx *FieldIdentContext) {}
 
 // EnterMessageIdent is called when production messageIdent is entered.
 func (s *BaseProsr1Listener) EnterMessageIdent(ctx *MessageIdentContext) {}
@@ -123,8 +123,14 @@ func (s *BaseProsr1Listener) EnterMessageIdent(ctx *MessageIdentContext) {}
 // ExitMessageIdent is called when production messageIdent is exited.
 func (s *BaseProsr1Listener) ExitMessageIdent(ctx *MessageIdentContext) {}
 
-// EnterFieldIdent is called when production fieldIdent is entered.
-func (s *BaseProsr1Listener) EnterFieldIdent(ctx *FieldIdentContext) {}
+// EnterReturningIdent is called when production returningIdent is entered.
+func (s *BaseProsr1Listener) EnterReturningIdent(ctx *ReturningIdentContext) {}
 
-// ExitFieldIdent is called when production fieldIdent is exited.
-func (s *BaseProsr1Listener) ExitFieldIdent(ctx *FieldIdentContext) {}
+// ExitReturningIdent is called when production returningIdent is exited.
+func (s *BaseProsr1Listener) ExitReturningIdent(ctx *ReturningIdentContext) {}
+
+// EnterSendingIdent is called when production sendingIdent is entered.
+func (s *BaseProsr1Listener) EnterSendingIdent(ctx *SendingIdentContext) {}
+
+// ExitSendingIdent is called when production sendingIdent is exited.
+func (s *BaseProsr1Listener) ExitSendingIdent(ctx *SendingIdentContext) {}

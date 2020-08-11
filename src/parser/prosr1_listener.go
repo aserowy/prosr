@@ -1,4 +1,4 @@
-// Code generated from c:\Users\serow_000\source\repos\prosr\src\prosr.compiler\parser\Prosr1.g4 by ANTLR 4.8. DO NOT EDIT.
+// Code generated from c:\Users\serow_000\source\repos\prosr\src\parser\Prosr1.g4 by ANTLR 4.8. DO NOT EDIT.
 
 package parser // Prosr1
 
@@ -53,14 +53,17 @@ type Prosr1Listener interface {
 	// EnterHubIdent is called when entering the hubIdent production.
 	EnterHubIdent(c *HubIdentContext)
 
-	// EnterSendingIdent is called when entering the sendingIdent production.
-	EnterSendingIdent(c *SendingIdentContext)
+	// EnterFieldIdent is called when entering the fieldIdent production.
+	EnterFieldIdent(c *FieldIdentContext)
 
 	// EnterMessageIdent is called when entering the messageIdent production.
 	EnterMessageIdent(c *MessageIdentContext)
 
-	// EnterFieldIdent is called when entering the fieldIdent production.
-	EnterFieldIdent(c *FieldIdentContext)
+	// EnterReturningIdent is called when entering the returningIdent production.
+	EnterReturningIdent(c *ReturningIdentContext)
+
+	// EnterSendingIdent is called when entering the sendingIdent production.
+	EnterSendingIdent(c *SendingIdentContext)
 
 	// ExitContent is called when exiting the content production.
 	ExitContent(c *ContentContext)
@@ -107,12 +110,15 @@ type Prosr1Listener interface {
 	// ExitHubIdent is called when exiting the hubIdent production.
 	ExitHubIdent(c *HubIdentContext)
 
-	// ExitSendingIdent is called when exiting the sendingIdent production.
-	ExitSendingIdent(c *SendingIdentContext)
+	// ExitFieldIdent is called when exiting the fieldIdent production.
+	ExitFieldIdent(c *FieldIdentContext)
 
 	// ExitMessageIdent is called when exiting the messageIdent production.
 	ExitMessageIdent(c *MessageIdentContext)
 
-	// ExitFieldIdent is called when exiting the fieldIdent production.
-	ExitFieldIdent(c *FieldIdentContext)
+	// ExitReturningIdent is called when exiting the returningIdent production.
+	ExitReturningIdent(c *ReturningIdentContext)
+
+	// ExitSendingIdent is called when exiting the sendingIdent production.
+	ExitSendingIdent(c *SendingIdentContext)
 }

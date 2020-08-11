@@ -80,7 +80,7 @@ func capitalizeFirstLetter(v string) string {
 	case 1:
 		return strings.ToUpper(string(v[0]))
 	default:
-		return strings.ToUpper(string(v[0])) + strings.ToLower(v[1:])
+		return strings.ToUpper(string(v[0])) + v[1:]
 	}
 }
 
@@ -116,11 +116,11 @@ func unifyReturnings(nodes []Node) []*Returning {
 func resolveReturning(node Node) *Returning {
 	switch n := node.(type) {
 	case *Sending:
-		if n.Returns == nil {
+		if n.Calls == nil {
 			return nil
 		}
 
-		return resolveReturning(n.Returns)
+		return resolveReturning(n.Calls)
 	case *Returning:
 		return n
 	default:

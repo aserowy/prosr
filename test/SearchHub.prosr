@@ -1,9 +1,9 @@
 syntax = "prosr1";
 
 hub SearchHub {
-    action Search(SearchRequest) returns (SearchResponse) to caller;
+    action Search(SearchRequest) calls Search(SearchResponse) on caller;
     
-    returns (SearchRequest) to all;
+    calls SearchCalled(SearchRequest) on all;
 }
 
 message SearchRequest {
