@@ -192,7 +192,7 @@ namespace {{resolveOption .Options "namespace"}}
 	public class {{.Ident}}
 	{
 		{{- range .Nodes}}
-		public {{.Type | type}} {{.Ident}} { get; set; }
+		public {{if .IsRepeated}}IEnumerable<{{- .Type | type -}}>{{else}}{{.Type | type}}{{end}} {{.Ident}} { get; set; }
 		{{- end}}
 	}
 {{end}}

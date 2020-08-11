@@ -15,7 +15,7 @@ message SearchRequest {
 }
 
 message SearchResponse {
-    Result result = 1;
+    repeated Result result = 1;
 }
 
 message Result {

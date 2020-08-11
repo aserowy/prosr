@@ -7,6 +7,7 @@ HUB : 'hub';
 ACTION : 'action';
 CALLS : 'calls';
 ON : 'on';
+REPEATED : 'repeated';
 TYPE : 'string' | 'bool' | 'int32';
 IDENT : [a-zA-Z]([a-zA-Z0-9] | '_')+;
 NUMBER : [0-9]+;
@@ -26,7 +27,7 @@ returningMessageIdent : (messageIdent)?;
 returningTarget : 'all';
 
 message : MESSAGE messageIdent '{' (field)* '}';
-field : typeIdent fieldIdent '=' NUMBER';';
+field : (REPEATED)? typeIdent fieldIdent '=' NUMBER';';
 typeIdent : (messageIdent | TYPE);
 
 // literals & identifier

@@ -1,4 +1,4 @@
-// Generated with prosr1 by compiler 0.9, template 0.1
+// Generated with prosr1 by compiler 0.9, template csharp.tmpl 0.1
 
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.AspNetCore.SignalR.Client;
@@ -17,9 +17,9 @@ namespace Test.TestNamespace
 
 	public interface ISearchHubClientBase
 	{
-		Task SearchCalledOnAllAsync(SearchRequest message);
 		Task SearchTreeRefreshedOnCallerAsync();
 		Task SearchOnCallerAsync(SearchResponse message);
+		Task SearchCalledOnAllAsync(SearchRequest message);
 	}
 
 	public abstract class SearchHubClientBase : ISearchHubClient
@@ -41,11 +41,11 @@ namespace Test.TestNamespace
 			await GetConnection().ConfigureAwait(false);
 		}
 
-		public abstract Task SearchOnCallerAsync(SearchResponse message);
-
 		public abstract Task SearchCalledOnAllAsync(SearchRequest message);
 
 		public abstract Task SearchTreeRefreshedOnCallerAsync();
+
+		public abstract Task SearchOnCallerAsync(SearchResponse message);
 
 		public async Task CallRefreshSearchTreeOnHub()
 		{
@@ -192,7 +192,7 @@ namespace Test.TestNamespace
 
 	public class SearchResponse
 	{
-		public Result result { get; set; }
+		public IEnumerable<Result> result { get; set; }
 	}
 
 	public class Result

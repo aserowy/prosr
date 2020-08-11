@@ -208,10 +208,11 @@ func (m *Message) String() string {
 
 // Field defines the node for fields
 type Field struct {
-	Token  string
-	Type   string
-	Ident  string
-	Number int
+	Token      string
+	Type       string
+	Ident      string
+	IsRepeated bool
+	Number     int
 }
 
 // NewField ctor for Field
@@ -220,6 +221,10 @@ func NewField(ctx *parser.FieldContext) *Field {
 	s.Token = FIELD
 	s.Type = ctx.TypeIdent().GetText()
 	s.Ident = ctx.FieldIdent().GetText()
+
+	if ctx.REPEATED() != nil {
+		s.IsRepeated = true
+	}
 
 	n, err := strconv.Atoi(ctx.NUMBER().GetText())
 	if err != nil {
@@ -238,6 +243,11 @@ func (f *Field) TokenLiteral() string {
 // String returns string representation of object
 func (f *Field) String() string {
 	b := new(bytes.Buffer)
+
+	if f.IsRepeated {
+		b.WriteString("repeated ")
+	}
+
 	b.WriteString(f.Type + " ")
 	b.WriteString(f.Ident + " = ")
 	b.WriteString(strconv.Itoa(f.Number) + ";")

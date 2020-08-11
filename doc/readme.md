@@ -31,6 +31,13 @@ message SearchRequest {
 | bool | bool |
 | string | string |
 
+# Enumeration with repeated
+With repeated every type can be enumerated. The listing retains the sequence.
+
+|.prosr | C# type |
+|---|---|
+| repeated | IEnumerable<> |
+
 # Using other message types
 References to complex objects must be resolved [exactly as in proto3](https://developers.google.com/protocol-buffers/docs/proto3#other).
 
