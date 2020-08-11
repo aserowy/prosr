@@ -10,12 +10,15 @@ namespace Test.TestNamespace
 	public interface ISearchHubClient : ISearchHubClientBase, IDisposable
 	{
 		Task InitializeHubConnection();
+		Task CallRefreshSearchTreeOnHub();
+		Task CallTriggerOnHub();
 		Task CallSearchOnHub(SearchRequest message);
 	}
 
 	public interface ISearchHubClientBase
 	{
 		Task SearchCalledOnAllAsync(SearchRequest message);
+		Task SearchTreeRefreshedOnCallerAsync();
 		Task SearchOnCallerAsync(SearchResponse message);
 	}
 
@@ -37,16 +40,38 @@ namespace Test.TestNamespace
 		{
 			await GetConnection().ConfigureAwait(false);
 		}
-		
-		public abstract Task SearchCalledOnAllAsync(SearchRequest message);
-		
+
 		public abstract Task SearchOnCallerAsync(SearchResponse message);
-		
+
+		public abstract Task SearchCalledOnAllAsync(SearchRequest message);
+
+		public abstract Task SearchTreeRefreshedOnCallerAsync();
+
+		public async Task CallRefreshSearchTreeOnHub()
+		{
+			var connection = await GetConnection().ConfigureAwait(false);
+
+			await connection
+				.SendAsync("RefreshSearchTree")
+				.ConfigureAwait(false);
+		}
+
+		public async Task CallTriggerOnHub()
+		{
+			var connection = await GetConnection().ConfigureAwait(false);
+
+			await connection
+				.SendAsync("Trigger")
+				.ConfigureAwait(false);
+		}
+
 		public async Task CallSearchOnHub(SearchRequest message)
 		{
 			var connection = await GetConnection().ConfigureAwait(false);
 
-			await connection.SendAsync("Search", message);
+			await connection
+				.SendAsync("Search", message)
+				.ConfigureAwait(false);
 		}
 
 		private async Task<HubConnection> GetConnection()
@@ -78,6 +103,7 @@ namespace Test.TestNamespace
 		private HubConnection BindClientMethods(ref HubConnection connection)
 		{
 			connection.On<SearchRequest>("SearchCalledOnAllAsync", message => SearchCalledOnAllAsync(message));
+			connection.On("SearchTreeRefreshedOnCallerAsync", () => SearchTreeRefreshedOnCallerAsync());
 			connection.On<SearchResponse>("SearchOnCallerAsync", message => SearchOnCallerAsync(message));
 
 			return connection;
@@ -125,6 +151,24 @@ namespace Test.TestNamespace
 			return Clients.All.SearchCalledOnAllAsync(message);
 		}
 
+		public async Task RefreshSearchTree()
+		{
+			await HandleRefreshSearchTreeAsync().ConfigureAwait(false);
+
+			await Clients
+				.Caller
+				.SearchTreeRefreshedOnCallerAsync()
+				.ConfigureAwait(false);
+		}
+
+		protected abstract Task HandleRefreshSearchTreeAsync();
+		
+		public async Task Trigger()
+		{
+			await HandleTriggerAsync().ConfigureAwait(false);
+		}
+
+		protected abstract Task HandleTriggerAsync();
 		public async Task Search(SearchRequest message)
 		{
 			var result = await HandleSearchAsync(message).ConfigureAwait(false);
@@ -134,8 +178,9 @@ namespace Test.TestNamespace
 				.SearchOnCallerAsync(result)
 				.ConfigureAwait(false);
 		}
-		
+
 		protected abstract Task<SearchResponse> HandleSearchAsync(SearchRequest message);
+		
 	}
 
 	public class SearchRequest

@@ -18,7 +18,7 @@ syntax : SYNTAX '=' quote 'prosr1' quote';';
 definition : (hub | message);
 
 hub : HUB hubIdent '{' (sending | returning)+ '}';
-sending : ACTION sendingIdent'('sendingMessageIdent')' (CALLS returningIdent'('returningMessageIdent')' ON sendingTarget) ';';
+sending : ACTION sendingIdent'('sendingMessageIdent')' (CALLS returningIdent'('returningMessageIdent')' ON sendingTarget)? ';';
 sendingMessageIdent : (messageIdent)?;
 sendingTarget : ('caller' | 'all');
 returning : CALLS returningIdent'('returningMessageIdent')' ON returningTarget ';';

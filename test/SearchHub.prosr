@@ -2,6 +2,8 @@ syntax = "prosr1";
 
 hub SearchHub {
     action Search(SearchRequest) calls Search(SearchResponse) on caller;
+    action Trigger();
+    action RefreshSearchTree() calls SearchTreeRefreshed() on caller;
     
     calls SearchCalled(SearchRequest) on all;
 }

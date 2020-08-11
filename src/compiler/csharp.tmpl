@@ -1,7 +1,7 @@
 {{- registerFileExtension ".cs" -}}
 {{- addType "int32" "int" -}}
 
-// Generated with prosr1 by compiler 0.9, template 0.1
+// Generated with prosr1 by compiler 0.9, template csharp.tmpl 0.1
 
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.AspNetCore.SignalR.Client;
@@ -27,7 +27,7 @@ namespace {{resolveOption .Options "namespace"}}
 		Task InitializeHubConnection();
 		{{- range .Nodes }}
 		{{- if eq .Token "sending" }}
-		Task Call{{.Ident -}}OnHub({{- .InputType}} message);
+		Task Call{{.Ident -}}OnHub({{if .InputType}}{{- .InputType}} message{{end}});
 		{{- end}}
 		{{- end}}
 	}
@@ -35,7 +35,7 @@ namespace {{resolveOption .Options "namespace"}}
 	public interface I{{- .Ident -}}ClientBase
 	{
 		{{- range .Nodes | unifyReturnings}}
-		Task {{.Ident -}}On{{- .Target | capitalizeFirstLetter -}}Async({{- .ResponseType}} message);
+		Task {{.Ident -}}On{{- .Target | capitalizeFirstLetter -}}Async({{if .ResponseType}}{{- .ResponseType}} message{{end}});
 		{{- end}}
 	}
 {{end}}
@@ -58,18 +58,21 @@ namespace {{resolveOption .Options "namespace"}}
 		{
 			await GetConnection().ConfigureAwait(false);
 		}
-		{{range .Nodes | unifyReturnings}}
-		public abstract Task {{.Ident -}}On{{- .Target | capitalizeFirstLetter -}}Async({{- .ResponseType}} message);
-		{{end}}
 
-		{{- range .Nodes }}
-		{{- if eq .Token "sending" }}
-		public async Task Call{{.Ident -}}OnHub({{- .InputType}} message)
+		{{- range .Nodes | unifyReturnings}}
+
+		public abstract Task {{.Ident -}}On{{- .Target | capitalizeFirstLetter -}}Async({{- if .ResponseType}}{{- .ResponseType}} message{{end -}});
+		{{- end}}
+
+		{{- range .Nodes -}}
+		{{- if eq .Token "sending"}}
+
+		public async Task Call{{.Ident -}}OnHub({{if .InputType}}{{- .InputType}} message{{end}})
 		{
 			var connection = await GetConnection().ConfigureAwait(false);
 
 			await connection
-				.SendAsync("{{- .Ident -}}", message)
+				.SendAsync("{{- .Ident -}}"{{if .InputType}}, message{{end}})
 				.ConfigureAwait(false);
 		}
 		{{- end}}
@@ -104,7 +107,7 @@ namespace {{resolveOption .Options "namespace"}}
 		private HubConnection BindClientMethods(ref HubConnection connection)
 		{
 			{{- range .Nodes | unifyReturnings}}
-			connection.On<{{- .ResponseType -}}>("{{.Ident -}}On{{- .Target | capitalizeFirstLetter -}}Async", message => {{.Ident -}}On{{- .Target | capitalizeFirstLetter -}}Async(message));
+			connection.On{{if .ResponseType}}<{{- .ResponseType -}}>{{end}}("{{.Ident -}}On{{- .Target | capitalizeFirstLetter -}}Async", {{if .ResponseType}}message{{else}}(){{end}} => {{.Ident -}}On{{- .Target | capitalizeFirstLetter -}}Async({{- if .ResponseType -}}message{{- end -}}));
 			{{- end}}
 
 			return connection;
@@ -158,24 +161,26 @@ namespace {{resolveOption .Options "namespace"}}
 	}
 {{end}}
 {{define "hubSending"}}
-		public async Task {{.Ident -}}({{- .InputType}} message)
+		public async Task {{.Ident -}}({{if .InputType}}{{- .InputType}} message{{end}})
 		{
-			{{- if eq .Calls nil}}
-			await Handle{{- .Ident -}}Async(message).ConfigureAwait(false);
-			{{- else}}
-			var result = await Handle{{- .Ident -}}Async(message).ConfigureAwait(false);
+		{{- if eq .Calls nil}}
+			await Handle{{- .Ident -}}Async({{if .InputType}}message{{end}}).ConfigureAwait(false);
+		{{- else}}
+			{{if .Calls.ResponseType}}var result = {{end}}await Handle{{- .Ident -}}Async({{if .InputType}}message{{end}}).ConfigureAwait(false);
 
 			await Clients
 				.{{- .Calls.Target | capitalizeFirstLetter}}
-				.{{.Calls.Ident -}}On{{- .Calls.Target | capitalizeFirstLetter -}}Async(result)
+				.{{.Calls.Ident -}}On{{- .Calls.Target | capitalizeFirstLetter -}}Async({{if .Calls.ResponseType}}result{{end}})
 				.ConfigureAwait(false);
-			{{- end}}
+		{{- end}}
 		}
-		{{if eq .Calls nil}}
-		protected abstract Task Handle{{- .Ident -}}Async({{- .InputType}} message);
+		{{- if eq .Calls nil}}
+
+		protected abstract Task Handle{{- .Ident -}}Async({{if .InputType}}{{- .InputType}} message{{end}});
 		{{- else}}
-		protected abstract Task<{{- .Calls.ResponseType -}}> Handle{{- .Ident -}}Async({{- .InputType}} message);
-		{{- end -}}
+
+		protected abstract Task{{if .Calls.ResponseType}}<{{- .Calls.ResponseType -}}>{{end}} Handle{{- .Ident -}}Async({{if .InputType}}{{- .InputType}} message{{end}});
+		{{end -}}
 {{end}}
 {{define "hubReturning"}}
 		protected Task Send{{- .Ident -}}On{{- .Target | capitalizeFirstLetter -}}Async({{- .ResponseType}} message)
