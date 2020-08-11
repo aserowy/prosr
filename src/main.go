@@ -6,9 +6,10 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/antlr/antlr4/runtime/Go/antlr"
 	"prosr/compiler"
 	"prosr/parser"
+
+	"github.com/antlr/antlr4/runtime/Go/antlr"
 )
 
 var (
