@@ -6,6 +6,7 @@
     "configurations": [
         {
             "name": "Launch",
+            "preLaunchTask": "pkger",
             "type": "go",
             "request": "launch",
             "mode": "auto",
@@ -15,6 +16,7 @@
         },
         {
             "name": "Test",
+            "preLaunchTask": "pkger",
             "type": "go",
             "request": "launch",
             "mode": "test",

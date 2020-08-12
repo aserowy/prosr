@@ -10,15 +10,19 @@ import (
 	"prosr/parser"
 
 	"github.com/antlr/antlr4/runtime/Go/antlr"
+	"github.com/markbates/pkger"
 )
 
 var (
 	path      = flag.String("p", "", "Path to .prosr file.")
 	language  = flag.String("l", "csharp", "Language used for client and hub generation. The given language must have a valid .tmpl file under /compiler/.")
-	namespace = flag.String("namespace", "", "Optional: Specify namespace to be able to use this value in Template. E.g. {{resolveOption .Options \"namespace\"}}")
+	namespace = flag.String("namespace", "namespace", "Optional: Specify namespace to be able to use this value in Template. E.g. {{resolveOption .Options \"namespace\"}}")
 )
 
 func main() {
+	// Including content under templates to ensure templates are available after build
+	pkger.Include("/templates/")
+
 	flag.Parse()
 
 	fp, err := filepath.Abs((*path))

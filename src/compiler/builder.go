@@ -3,8 +3,11 @@ package compiler
 import (
 	"bytes"
 	"fmt"
+	"io/ioutil"
 	"strings"
 	"text/template"
+
+	"github.com/markbates/pkger"
 )
 
 // Builder creates files for the specified language
@@ -51,10 +54,20 @@ func buildTemplate(b *Builder) (*template.Template, *string) {
 		"unifyReturnings":       unifyReturnings,
 	}
 
+	f, err := pkger.Open("/templates/" + b.language + ".tmpl")
+	if err != nil {
+		panic(err)
+	}
+
+	r, err := ioutil.ReadAll(f)
+	if err != nil {
+		panic(err)
+	}
+
 	tmpl, err := template.
 		New(b.language + ".tmpl").
 		Funcs(fm).
-		ParseFiles("compiler/" + b.language + ".tmpl")
+		Parse(string(r))
 
 	if err != nil {
 		panic(err)
