@@ -54,6 +54,7 @@ func buildTemplate(b *Builder) (*template.Template, *string) {
 		"unifyReturnings":       unifyReturnings,
 	}
 
+	// pkger.Include("/templates/") is called in main.go
 	f, err := pkger.Open("/templates/" + b.language + ".tmpl")
 	if err != nil {
 		panic(err)

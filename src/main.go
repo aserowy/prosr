@@ -15,8 +15,8 @@ import (
 
 var (
 	path      = flag.String("p", "", "Path to .prosr file.")
-	language  = flag.String("l", "csharp", "Language used for client and hub generation. The given language must have a valid .tmpl file under /compiler/.")
-	namespace = flag.String("namespace", "namespace", "Optional: Specify namespace to be able to use this value in Template. E.g. {{resolveOption .Options \"namespace\"}}")
+	language  = flag.String("l", "csharp", "Language used for client and hub generation. Currently supported: csharp (default)")
+	namespace = flag.String("namespace", "namespace", "Required for csharp: Namespace of generated client und hub bases.")
 )
 
 func main() {

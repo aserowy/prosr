@@ -2,5 +2,13 @@
     "antlr4.generation": {
         "mode": "external",
         "language": "Go"
-    }
+    },
+    "filewatcher.commands": [
+		{
+			"match": "\\.tmpl",
+			"isAsync": true,
+			"cmd": "cd ${workspaceRoot} && pkger",
+			"event": "onFileChange"
+		}		
+	]
 }
