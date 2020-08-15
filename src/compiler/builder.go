@@ -2,7 +2,6 @@ package compiler
 
 import (
 	"bytes"
-	"fmt"
 	"io/ioutil"
 	"strings"
 	"text/template"
@@ -13,15 +12,13 @@ import (
 // Builder creates files for the specified language
 type Builder struct {
 	language string
-	Options  map[string]string
 	Ast      []Node
 }
 
 // NewBuilder ctor for Builder
-func NewBuilder(language string, ast *Ast, Options map[string]string) *Builder {
+func NewBuilder(language string, ast *Ast) *Builder {
 	b := new(Builder)
 	b.language = language
-	b.Options = Options
 	b.Ast = ast.Nodes
 
 	return b
@@ -50,7 +47,6 @@ func buildTemplate(b *Builder) (*template.Template, *string) {
 		"type":                  func(key string) string { return resolveOption(tm, key) },
 
 		"capitalizeFirstLetter": capitalizeFirstLetter,
-		"resolveOption":         resolveOption,
 		"unifyReturnings":       unifyReturnings,
 	}
 
@@ -98,12 +94,10 @@ func capitalizeFirstLetter(v string) string {
 	}
 }
 
-func resolveOption(Options map[string]string, key string) string {
-	if v, ok := Options[key]; ok {
+func resolveOption(options map[string]string, key string) string {
+	if v, ok := options[key]; ok {
 		return v
 	}
-
-	fmt.Println("Options key " + key + " was not found. Returned key instead.")
 
 	return key
 }

@@ -17,6 +17,9 @@ type Prosr1Listener interface {
 	// EnterDefinition is called when entering the definition production.
 	EnterDefinition(c *DefinitionContext)
 
+	// EnterPkg is called when entering the pkg production.
+	EnterPkg(c *PkgContext)
+
 	// EnterHub is called when entering the hub production.
 	EnterHub(c *HubContext)
 
@@ -50,11 +53,14 @@ type Prosr1Listener interface {
 	// EnterQuote is called when entering the quote production.
 	EnterQuote(c *QuoteContext)
 
-	// EnterHubIdent is called when entering the hubIdent production.
-	EnterHubIdent(c *HubIdentContext)
-
 	// EnterFieldIdent is called when entering the fieldIdent production.
 	EnterFieldIdent(c *FieldIdentContext)
+
+	// EnterFullIdent is called when entering the fullIdent production.
+	EnterFullIdent(c *FullIdentContext)
+
+	// EnterHubIdent is called when entering the hubIdent production.
+	EnterHubIdent(c *HubIdentContext)
 
 	// EnterMessageIdent is called when entering the messageIdent production.
 	EnterMessageIdent(c *MessageIdentContext)
@@ -73,6 +79,9 @@ type Prosr1Listener interface {
 
 	// ExitDefinition is called when exiting the definition production.
 	ExitDefinition(c *DefinitionContext)
+
+	// ExitPkg is called when exiting the pkg production.
+	ExitPkg(c *PkgContext)
 
 	// ExitHub is called when exiting the hub production.
 	ExitHub(c *HubContext)
@@ -107,11 +116,14 @@ type Prosr1Listener interface {
 	// ExitQuote is called when exiting the quote production.
 	ExitQuote(c *QuoteContext)
 
-	// ExitHubIdent is called when exiting the hubIdent production.
-	ExitHubIdent(c *HubIdentContext)
-
 	// ExitFieldIdent is called when exiting the fieldIdent production.
 	ExitFieldIdent(c *FieldIdentContext)
+
+	// ExitFullIdent is called when exiting the fullIdent production.
+	ExitFullIdent(c *FullIdentContext)
+
+	// ExitHubIdent is called when exiting the hubIdent production.
+	ExitHubIdent(c *HubIdentContext)
 
 	// ExitMessageIdent is called when exiting the messageIdent production.
 	ExitMessageIdent(c *MessageIdentContext)

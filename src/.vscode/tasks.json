@@ -6,5 +6,8 @@
         "label": "pkger",
         "type": "shell",
         "command": "pkger",
+        "presentation": {
+            "reveal": "never"
+        }
     }]
 }

@@ -25,8 +25,12 @@ func NewProsr1Listener() *Prosr1Listener {
 
 // Ast validates and returns the parsed Ast
 func (l *Prosr1Listener) Ast() *Ast {
-	// TODO: Validate Ast
-	return l.ast
+	return l.ast.Fabricate()
+}
+
+// ExitPkg is called when production pkg is exited.
+func (l *Prosr1Listener) ExitPkg(ctx *parser.PkgContext) {
+	l.ast.Push(NewPackage(ctx))
 }
 
 // ExitHub is called when production hub is exited.
@@ -59,8 +63,7 @@ func (l *Prosr1Listener) ExitContent(ctx *parser.ContentContext) {
 	if l.stack.Filled() {
 		for l.stack.Filled() {
 			n := l.stack.Pop()
-
-			fmt.Println(n.TokenLiteral())
+			fmt.Println(n.String())
 		}
 
 		panic("Stack should be empty but has pending nodes!")

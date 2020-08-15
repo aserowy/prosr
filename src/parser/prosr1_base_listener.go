@@ -39,6 +39,12 @@ func (s *BaseProsr1Listener) EnterDefinition(ctx *DefinitionContext) {}
 // ExitDefinition is called when production definition is exited.
 func (s *BaseProsr1Listener) ExitDefinition(ctx *DefinitionContext) {}
 
+// EnterPkg is called when production pkg is entered.
+func (s *BaseProsr1Listener) EnterPkg(ctx *PkgContext) {}
+
+// ExitPkg is called when production pkg is exited.
+func (s *BaseProsr1Listener) ExitPkg(ctx *PkgContext) {}
+
 // EnterHub is called when production hub is entered.
 func (s *BaseProsr1Listener) EnterHub(ctx *HubContext) {}
 
@@ -105,17 +111,23 @@ func (s *BaseProsr1Listener) EnterQuote(ctx *QuoteContext) {}
 // ExitQuote is called when production quote is exited.
 func (s *BaseProsr1Listener) ExitQuote(ctx *QuoteContext) {}
 
-// EnterHubIdent is called when production hubIdent is entered.
-func (s *BaseProsr1Listener) EnterHubIdent(ctx *HubIdentContext) {}
-
-// ExitHubIdent is called when production hubIdent is exited.
-func (s *BaseProsr1Listener) ExitHubIdent(ctx *HubIdentContext) {}
-
 // EnterFieldIdent is called when production fieldIdent is entered.
 func (s *BaseProsr1Listener) EnterFieldIdent(ctx *FieldIdentContext) {}
 
 // ExitFieldIdent is called when production fieldIdent is exited.
 func (s *BaseProsr1Listener) ExitFieldIdent(ctx *FieldIdentContext) {}
+
+// EnterFullIdent is called when production fullIdent is entered.
+func (s *BaseProsr1Listener) EnterFullIdent(ctx *FullIdentContext) {}
+
+// ExitFullIdent is called when production fullIdent is exited.
+func (s *BaseProsr1Listener) ExitFullIdent(ctx *FullIdentContext) {}
+
+// EnterHubIdent is called when production hubIdent is entered.
+func (s *BaseProsr1Listener) EnterHubIdent(ctx *HubIdentContext) {}
+
+// ExitHubIdent is called when production hubIdent is exited.
+func (s *BaseProsr1Listener) ExitHubIdent(ctx *HubIdentContext) {}
 
 // EnterMessageIdent is called when production messageIdent is entered.
 func (s *BaseProsr1Listener) EnterMessageIdent(ctx *MessageIdentContext) {}

@@ -14,9 +14,8 @@ import (
 )
 
 var (
-	path      = flag.String("p", "", "Path to .prosr file.")
-	language  = flag.String("l", "csharp", "Language used for client and hub generation. Currently supported: csharp (default)")
-	namespace = flag.String("namespace", "namespace", "Required for csharp: Namespace of generated client und hub bases.")
+	path     = flag.String("p", "", "Path to .prosr file.")
+	language = flag.String("l", "csharp", "Language used for client and hub generation. Currently supported: csharp (default)")
 )
 
 func main() {
@@ -44,9 +43,7 @@ func main() {
 	pl := compiler.NewProsr1Listener()
 	antlr.ParseTreeWalkerDefault.Walk(pl, p.Content())
 
-	b := compiler.NewBuilder("csharp", pl.Ast(), map[string]string{
-		"namespace": (*namespace),
-	})
+	b := compiler.NewBuilder((*language), pl.Ast())
 	fe, out := b.Build()
 
 	d, fn := filepath.Split(fp)

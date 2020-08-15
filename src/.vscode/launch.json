@@ -12,7 +12,7 @@
             "mode": "auto",
             "program": "${workspaceFolder}",
             "env": {},
-            "args": ["-p=..\\test\\SearchHub.prosr", "-namespace=Test.TestNamespace"]
+            "args": ["-p=..\\test\\TestHub.prosr"]
         },
         {
             "name": "Test",

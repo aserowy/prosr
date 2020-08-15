@@ -8,10 +8,12 @@ using Microsoft.AspNetCore.SignalR.Client;
 using System;
 using System.Threading.Tasks;
 
-namespace {{resolveOption .Options "namespace"}}
+{{/* namespace {{resolveOption .Options "namespace"}} */}}
 {
 {{- range .Ast -}}
 	{{- if eq .Token "hub" -}}
+	
+	{{- else if eq .Token "hub" -}}
 		{{- template "interface" .}}
 		{{- template "client" .}}
 		{{- template "hub" .}}

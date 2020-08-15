@@ -1,0 +1,29 @@
+syntax = "prosr1";
+
+package Test.Package;
+
+hub TestHub {
+    action Function(FunctionRequest) calls Function(FunctionResponse) on caller;
+    action Trigger();
+    action RefreshFunctionTree() calls FunctionTreeRefreshed() on caller;
+    
+    calls FunctionCalled(FunctionRequest) on all;
+}
+
+message FunctionRequest {
+    string name = 1;
+    int32 page_number = 2;
+    int32 result_per_page = 3;
+}
+
+message FunctionResponse {
+    repeated Result result = 1;
+}
+
+package Test.Package2;
+
+message Result {
+    string url = 1;
+    string title = 2;
+    string snippets = 3;
+}

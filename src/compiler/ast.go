@@ -22,10 +22,45 @@ func (a *Ast) Push(n Node) {
 	a.Nodes = append(a.Nodes, n)
 }
 
+// Fabricate finishes the completly parsed ast
+func (a *Ast) Fabricate() *Ast {
+
+	return a
+}
+
 // Node is the base structure of the compiler ast
 type Node interface {
 	TokenLiteral() string
 	String() string
+}
+
+// Package defines the node for pkgs
+type Package struct {
+	Token string
+	Ident string
+}
+
+// NewPackage ctor for package
+func NewPackage(ctx *parser.PkgContext) *Package {
+	p := new(Package)
+	p.Token = PACKAGE
+	p.Ident = ctx.FullIdent().GetText()
+
+	return p
+}
+
+// TokenLiteral returns token
+func (p *Package) TokenLiteral() string {
+	return p.Token
+}
+
+// String returns string representation of object
+func (p *Package) String() string {
+	b := new(bytes.Buffer)
+	b.WriteString(p.Token + " ")
+	b.WriteString(p.Ident + ";")
+
+	return b.String()
 }
 
 // Hub defines the node for hubs
@@ -80,7 +115,7 @@ type Sending struct {
 	Calls     Node
 }
 
-// NewSending ctor for Sending
+// NewSending ctor for sending
 func NewSending(ctx *parser.SendingContext) *Sending {
 	s := new(Sending)
 	s.Token = SENDING

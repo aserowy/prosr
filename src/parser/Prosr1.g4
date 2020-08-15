@@ -2,6 +2,7 @@ grammar Prosr1;
 
 // token
 SYNTAX : 'syntax';
+PACKAGE : 'package';
 MESSAGE : 'message';
 HUB : 'hub';
 ACTION : 'action';
@@ -16,8 +17,9 @@ WHITESPACE : [ \r\n\t]+ -> skip;
 // parser rules
 content : syntax definition* EOF;
 syntax : SYNTAX '=' quote 'prosr1' quote';';
-definition : (hub | message);
+definition : (pkg | hub | message);
 
+pkg : PACKAGE fullIdent ';';
 hub : HUB hubIdent '{' (sending | returning)+ '}';
 sending : ACTION sendingIdent'('sendingMessageIdent')' (CALLS returningIdent'('returningMessageIdent')' ON sendingTarget)? ';';
 sendingMessageIdent : (messageIdent)?;
@@ -33,8 +35,9 @@ typeIdent : (messageIdent | TYPE);
 // literals & identifier
 quote : '\'' | '"';
 
-hubIdent : IDENT;
 fieldIdent : IDENT;
+fullIdent : IDENT ('.' IDENT)*;
+hubIdent : IDENT;
 messageIdent : IDENT;
 returningIdent : IDENT;
 sendingIdent : IDENT;
