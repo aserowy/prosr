@@ -24,7 +24,7 @@ func NewProsr1Listener() *Prosr1Listener {
 }
 
 // Ast validates and returns the parsed Ast
-func (l *Prosr1Listener) Ast() *Ast {
+func (l *Prosr1Listener) Ast() []Node {
 	return l.ast.Fabricate()
 }
 

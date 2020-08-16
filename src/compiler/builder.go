@@ -12,14 +12,14 @@ import (
 // Builder creates files for the specified language
 type Builder struct {
 	language string
-	Ast      []Node
+	ast      []Node
 }
 
 // NewBuilder ctor for Builder
-func NewBuilder(language string, ast *Ast) *Builder {
+func NewBuilder(language string, ast []Node) *Builder {
 	b := new(Builder)
 	b.language = language
-	b.Ast = ast.Nodes
+	b.ast = ast
 
 	return b
 }
@@ -27,7 +27,7 @@ func NewBuilder(language string, ast *Ast) *Builder {
 // Build creates files by Ast
 func (b *Builder) Build() (*string, string) {
 	tmpl, fe := buildTemplate(b)
-	out := executeParse(tmpl, b)
+	out := executeParse(tmpl, b.ast)
 	out = strings.Trim(out, " \r\n")
 
 	if *fe == "" {

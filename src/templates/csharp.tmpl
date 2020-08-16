@@ -7,22 +7,28 @@ using Microsoft.AspNetCore.SignalR;
 using Microsoft.AspNetCore.SignalR.Client;
 using System;
 using System.Threading.Tasks;
-
-{{/* namespace {{resolveOption .Options "namespace"}} */}}
+{{range . -}}
+	{{- if eq .Token "package"}}
+namespace {{.Ident}}
 {
-{{- range .Ast -}}
+		{{- range .Nodes -}}
+			{{template "classes" .}}
+		{{- end -}}
+}
+	{{else -}}
+		{{template "classes" .}}
+	{{end -}}
+{{- end -}}
+
+{{define "classes"}}
 	{{- if eq .Token "hub" -}}
-	
-	{{- else if eq .Token "hub" -}}
 		{{- template "interface" .}}
 		{{- template "client" .}}
 		{{- template "hub" .}}
 	{{- else if eq .Token "message" -}}
 		{{- template "message" .}}
 	{{- end -}}
-{{- end -}}
-}
-
+{{end}}
 {{define "interface"}}
 	public interface I{{- .Ident -}}Client : I{{- .Ident -}}ClientBase, IDisposable
 	{
@@ -156,8 +162,10 @@ using System.Threading.Tasks;
 		{{- range .Nodes -}}
 			{{- if eq .Token "sending" -}}
 				{{template "hubSending" .}}
+
 			{{- else if eq .Token "returning" -}}
 				{{template "hubReturning" .}}
+
 			{{- end -}}
 		{{- end}}
 	}
@@ -176,11 +184,10 @@ using System.Threading.Tasks;
 				.ConfigureAwait(false);
 		{{- end}}
 		}
-		{{- if eq .Calls nil}}
 
+		{{if eq .Calls nil -}}
 		protected abstract Task Handle{{- .Ident -}}Async({{if .InputType}}{{- .InputType}} message{{end}});
-		{{- else}}
-
+		{{else -}}
 		protected abstract Task{{if .Calls.ResponseType}}<{{- .Calls.ResponseType -}}>{{end}} Handle{{- .Ident -}}Async({{if .InputType}}{{- .InputType}} message{{end}});
 		{{end -}}
 {{end}}
