@@ -135,6 +135,12 @@ func (s *BaseProsr1Listener) EnterMessageIdent(ctx *MessageIdentContext) {}
 // ExitMessageIdent is called when production messageIdent is exited.
 func (s *BaseProsr1Listener) ExitMessageIdent(ctx *MessageIdentContext) {}
 
+// EnterPackageIdent is called when production packageIdent is entered.
+func (s *BaseProsr1Listener) EnterPackageIdent(ctx *PackageIdentContext) {}
+
+// ExitPackageIdent is called when production packageIdent is exited.
+func (s *BaseProsr1Listener) ExitPackageIdent(ctx *PackageIdentContext) {}
+
 // EnterReturningIdent is called when production returningIdent is entered.
 func (s *BaseProsr1Listener) EnterReturningIdent(ctx *ReturningIdentContext) {}
 

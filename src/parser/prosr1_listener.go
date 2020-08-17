@@ -65,6 +65,9 @@ type Prosr1Listener interface {
 	// EnterMessageIdent is called when entering the messageIdent production.
 	EnterMessageIdent(c *MessageIdentContext)
 
+	// EnterPackageIdent is called when entering the packageIdent production.
+	EnterPackageIdent(c *PackageIdentContext)
+
 	// EnterReturningIdent is called when entering the returningIdent production.
 	EnterReturningIdent(c *ReturningIdentContext)
 
@@ -127,6 +130,9 @@ type Prosr1Listener interface {
 
 	// ExitMessageIdent is called when exiting the messageIdent production.
 	ExitMessageIdent(c *MessageIdentContext)
+
+	// ExitPackageIdent is called when exiting the packageIdent production.
+	ExitPackageIdent(c *PackageIdentContext)
 
 	// ExitReturningIdent is called when exiting the returningIdent production.
 	ExitReturningIdent(c *ReturningIdentContext)

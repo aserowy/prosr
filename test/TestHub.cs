@@ -17,9 +17,9 @@ namespace Test.Package
 
 	public interface ITestHubClientBase
 	{
+		Task FunctionCalledOnAllAsync(FunctionRequest message);
 		Task FunctionTreeRefreshedOnCallerAsync();
 		Task FunctionOnCallerAsync(FunctionResponse message);
-		Task FunctionCalledOnAllAsync(FunctionRequest message);
 	}
 
 	public abstract class TestHubClientBase : ITestHubClient
@@ -41,11 +41,11 @@ namespace Test.Package
 			await GetConnection().ConfigureAwait(false);
 		}
 
+		public abstract Task FunctionOnCallerAsync(FunctionResponse message);
+
 		public abstract Task FunctionCalledOnAllAsync(FunctionRequest message);
 
 		public abstract Task FunctionTreeRefreshedOnCallerAsync();
-
-		public abstract Task FunctionOnCallerAsync(FunctionResponse message);
 
 		public async Task CallRefreshFunctionTreeOnHub()
 		{
@@ -102,9 +102,9 @@ namespace Test.Package
 
 		private HubConnection BindClientMethods(ref HubConnection connection)
 		{
+			connection.On<FunctionResponse>("FunctionOnCallerAsync", message => FunctionOnCallerAsync(message));
 			connection.On<FunctionRequest>("FunctionCalledOnAllAsync", message => FunctionCalledOnAllAsync(message));
 			connection.On("FunctionTreeRefreshedOnCallerAsync", () => FunctionTreeRefreshedOnCallerAsync());
-			connection.On<FunctionResponse>("FunctionOnCallerAsync", message => FunctionOnCallerAsync(message));
 
 			return connection;
 		}
@@ -193,7 +193,7 @@ namespace Test.Package
 
 	public class FunctionResponse
 	{
-		public IEnumerable<Result> result { get; set; }
+		public IEnumerable<Test.Package2.Result> result { get; set; }
 	}
 }
 	

@@ -30,7 +30,7 @@ returningTarget : 'all';
 
 message : MESSAGE messageIdent '{' (field)* '}';
 field : (REPEATED)? typeIdent fieldIdent '=' NUMBER';';
-typeIdent : (messageIdent | TYPE);
+typeIdent : (packageIdent messageIdent | TYPE);
 
 // literals & identifier
 quote : '\'' | '"';
@@ -39,5 +39,7 @@ fieldIdent : IDENT;
 fullIdent : IDENT ('.' IDENT)*;
 hubIdent : IDENT;
 messageIdent : IDENT;
+// packageIdent : ('.')? (IDENT '.')*;
+packageIdent : (IDENT '.')*;
 returningIdent : IDENT;
 sendingIdent : IDENT;

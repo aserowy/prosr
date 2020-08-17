@@ -17,7 +17,7 @@ message FunctionRequest {
 }
 
 message FunctionResponse {
-    repeated Result result = 1;
+    repeated Test.Package2.Result result = 1;
 }
 
 package Test.Package2;

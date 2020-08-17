@@ -26,7 +26,9 @@ Packages define blocks used for name resolution and e.g. namespaces in C# and ot
 package Search.SignalR;
 ```
 
-## Message types
+## Messages
+
+### Types
 
 As in [proto3](https://developers.google.com/protocol-buffers/docs/proto3#simple), messages form the basis of a class that can be used in a hub or hub client.
 
@@ -38,7 +40,7 @@ message SearchRequest {
 }
 ```
 
-## [Scalar Value Types](https://developers.google.com/protocol-buffers/docs/proto3#scalar)
+### [Scalar Value Types](https://developers.google.com/protocol-buffers/docs/proto3#scalar)
 
 |.prosr type | C# type |
 |---|---|
@@ -46,7 +48,7 @@ message SearchRequest {
 | bool | bool |
 | string | string |
 
-## Enumeration with repeated
+### Enumeration with repeated
 
 With repeated every type can be enumerated. The listing retains the sequence.
 
@@ -60,7 +62,7 @@ message SearchResponse {
 |---|---|
 | repeated | IEnumerable<> |
 
-## Using other message types
+### Using other message types
 
 References to complex objects must be resolved [exactly as in proto3](https://developers.google.com/protocol-buffers/docs/proto3#other).
 

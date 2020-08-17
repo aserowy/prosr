@@ -224,6 +224,7 @@ func (m *Message) String() string {
 // Field defines the node for fields
 type Field struct {
 	Token      string
+	TypePkg    string
 	Type       string
 	Ident      string
 	IsRepeated bool
