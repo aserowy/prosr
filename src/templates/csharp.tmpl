@@ -6,6 +6,7 @@
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.AspNetCore.SignalR.Client;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 {{range . -}}
 	{{- if eq .Token "package"}}
@@ -43,7 +44,7 @@ namespace {{.Ident}}
 	public interface I{{- .Ident -}}ClientBase
 	{
 		{{- range .Nodes | unifyReturnings}}
-		Task {{.Ident -}}On{{- .Target | capitalizeFirstLetter -}}Async({{if .ResponseType}}{{- .ResponseType}} message{{end}});
+		Task {{.Ident -}}({{if .ResponseType}}{{- .ResponseType}} message{{end}});
 		{{- end}}
 	}
 {{end}}
@@ -69,7 +70,7 @@ namespace {{.Ident}}
 
 		{{- range .Nodes | unifyReturnings}}
 
-		public abstract Task {{.Ident -}}On{{- .Target | capitalizeFirstLetter -}}Async({{- if .ResponseType}}{{- .ResponseType}} message{{end -}});
+		public abstract Task {{.Ident -}}({{- if .ResponseType}}{{- .ResponseType}} message{{end -}});
 		{{- end}}
 
 		{{- range .Nodes -}}
@@ -115,7 +116,7 @@ namespace {{.Ident}}
 		private HubConnection BindClientMethods(ref HubConnection connection)
 		{
 			{{- range .Nodes | unifyReturnings}}
-			connection.On{{if .ResponseType}}<{{- .ResponseType -}}>{{end}}("{{.Ident -}}On{{- .Target | capitalizeFirstLetter -}}Async", {{if .ResponseType}}message{{else}}(){{end}} => {{.Ident -}}On{{- .Target | capitalizeFirstLetter -}}Async({{- if .ResponseType -}}message{{- end -}}));
+			connection.On{{if .ResponseType}}<{{- .ResponseType -}}>{{end}}("{{.Ident -}}", {{if .ResponseType}}message{{else}}(){{end}} => {{.Ident -}}({{- if .ResponseType -}}message{{- end -}}));
 			{{- end}}
 
 			return connection;
@@ -180,7 +181,7 @@ namespace {{.Ident}}
 
 			await Clients
 				.{{- .Calls.Target | capitalizeFirstLetter}}
-				.{{.Calls.Ident -}}On{{- .Calls.Target | capitalizeFirstLetter -}}Async({{if .Calls.ResponseType}}result{{end}})
+				.{{.Calls.Ident -}}({{if .Calls.ResponseType}}result{{end}})
 				.ConfigureAwait(false);
 		{{- end}}
 		}
@@ -194,7 +195,7 @@ namespace {{.Ident}}
 {{define "hubReturning"}}
 		protected Task Send{{- .Ident -}}On{{- .Target | capitalizeFirstLetter -}}Async({{- .ResponseType}} message)
 		{
-			return Clients.{{- .Target | capitalizeFirstLetter -}}.{{.Ident -}}On{{- .Target | capitalizeFirstLetter -}}Async(message);
+			return Clients.{{- .Target | capitalizeFirstLetter -}}.{{.Ident -}}(message);
 		}
 {{end}}
 {{define "message"}}

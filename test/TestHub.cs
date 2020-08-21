@@ -3,6 +3,7 @@
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.AspNetCore.SignalR.Client;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Test.Package
@@ -17,9 +18,9 @@ namespace Test.Package
 
 	public interface ITestHubClientBase
 	{
-		Task FunctionCalledOnAllAsync(FunctionRequest message);
-		Task FunctionTreeRefreshedOnCallerAsync();
-		Task FunctionOnCallerAsync(FunctionResponse message);
+		Task FunctionCalled(FunctionRequest message);
+		Task FunctionTreeRefreshed();
+		Task Function(FunctionResponse message);
 	}
 
 	public abstract class TestHubClientBase : ITestHubClient
@@ -41,11 +42,11 @@ namespace Test.Package
 			await GetConnection().ConfigureAwait(false);
 		}
 
-		public abstract Task FunctionOnCallerAsync(FunctionResponse message);
+		public abstract Task FunctionCalled(FunctionRequest message);
 
-		public abstract Task FunctionCalledOnAllAsync(FunctionRequest message);
+		public abstract Task FunctionTreeRefreshed();
 
-		public abstract Task FunctionTreeRefreshedOnCallerAsync();
+		public abstract Task Function(FunctionResponse message);
 
 		public async Task CallRefreshFunctionTreeOnHub()
 		{
@@ -102,9 +103,9 @@ namespace Test.Package
 
 		private HubConnection BindClientMethods(ref HubConnection connection)
 		{
-			connection.On<FunctionResponse>("FunctionOnCallerAsync", message => FunctionOnCallerAsync(message));
-			connection.On<FunctionRequest>("FunctionCalledOnAllAsync", message => FunctionCalledOnAllAsync(message));
-			connection.On("FunctionTreeRefreshedOnCallerAsync", () => FunctionTreeRefreshedOnCallerAsync());
+			connection.On<FunctionRequest>("FunctionCalled", message => FunctionCalled(message));
+			connection.On("FunctionTreeRefreshed", () => FunctionTreeRefreshed());
+			connection.On<FunctionResponse>("Function", message => Function(message));
 
 			return connection;
 		}
@@ -148,7 +149,7 @@ namespace Test.Package
 	{
 		protected Task SendFunctionCalledOnAllAsync(FunctionRequest message)
 		{
-			return Clients.All.FunctionCalledOnAllAsync(message);
+			return Clients.All.FunctionCalled(message);
 		}
 
 		public async Task RefreshFunctionTree()
@@ -157,7 +158,7 @@ namespace Test.Package
 
 			await Clients
 				.Caller
-				.FunctionTreeRefreshedOnCallerAsync()
+				.FunctionTreeRefreshed()
 				.ConfigureAwait(false);
 		}
 
@@ -176,7 +177,7 @@ namespace Test.Package
 
 			await Clients
 				.Caller
-				.FunctionOnCallerAsync(result)
+				.Function(result)
 				.ConfigureAwait(false);
 		}
 
