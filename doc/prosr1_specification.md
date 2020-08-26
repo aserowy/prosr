@@ -2,9 +2,7 @@
 
 ## Introduction
 
-prosr is a descriptive language for defining SignalR hubs and clients. The language is mainly based on [proto](https://developers.google.com/protocol-buffers) from GRPC and takes over a large part of the feature set.
-
-prosr1 is based on [proto3](https://developers.google.com/protocol-buffers/docs/proto3) and takes over only rudimentary features in the first step to build a compiler for e.g. C# clients.
+prosr is a descriptive language for defining SignalR hubs and clients. The language is mainly based on [proto3](https://developers.google.com/protocol-buffers/docs/proto3) and takes over only rudimentary features in the first step to build a compiler for e.g. C# clients.
 
 > ### Important
 >
@@ -40,7 +38,9 @@ message SearchRequest {
 }
 ```
 
-### [Scalar Value Types](https://developers.google.com/protocol-buffers/docs/proto3#scalar)
+### Scalar Value Types
+
+Message fields can have the following types. Like in [proto3](https://developers.google.com/protocol-buffers/docs/proto3#scalar) type conversersions are given in the following table.
 
 |.prosr type | C# type |
 |---|---|
@@ -50,7 +50,7 @@ message SearchRequest {
 
 ### Enumeration with repeated
 
-With repeated every type can be enumerated. The listing retains the sequence.
+With repeated every type except maps can be enumerated. The listing retains the sequence.
 
 ```prosr1
 message SearchResponse {
@@ -99,7 +99,9 @@ An action consists of a method name and an optional transfer parameter. The tran
 You can also define a "calls" with an identifier and a type for an action. Like the transfer parameter, the return type must be of type message. For the call, the target must also be described using "on".
 The following values are currently supported as possible targets: caller, all
 
-Unlike the proto definitions of grpc services, the concept of stream does not exist in SignalR. Each definition of an action and corresponding responses under hub can be executed multiple times. For example, multiple requests can be sent to the hub without each request getting its own response.
+Each definition of an action and corresponding responses under hub can be executed multiple times. For example, multiple requests can be sent to the hub without each request getting its own response.
+
+Streams are not supported yet.
 
 ```prosr1
 action ActionWithParameterAndReturnToCaller(OptionalParameter) calls CallIdent(OptionalParameter) on caller;
