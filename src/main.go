@@ -43,7 +43,7 @@ func main() {
 	pl := compiler.NewProsr1Listener()
 	antlr.ParseTreeWalkerDefault.Walk(pl, p.Content())
 
-	b := compiler.NewBuilder((*language), pl.Ast())
+	b := compiler.NewBuilder((*language), pl.Packages(), p.Content())
 	fe, out := b.Build()
 
 	d, fn := filepath.Split(fp)

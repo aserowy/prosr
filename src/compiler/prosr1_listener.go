@@ -1,8 +1,6 @@
 package compiler
 
 import (
-	"fmt"
-
 	"prosr/parser"
 )
 
@@ -10,62 +8,22 @@ import (
 type Prosr1Listener struct {
 	*parser.BaseProsr1Listener
 
-	ast   *Ast
-	stack *Stack
+	packages []string
 }
 
 // NewProsr1Listener ctor for Prosr1Listener
 func NewProsr1Listener() *Prosr1Listener {
 	l := new(Prosr1Listener)
-	l.ast = NewAst()
-	l.stack = NewStack()
 
 	return l
 }
 
-// Ast validates and returns the parsed Ast
-func (l *Prosr1Listener) Ast() []Node {
-	return l.ast.Fabricate()
+// Packages returns registered package idents
+func (l *Prosr1Listener) Packages() []string {
+	return l.packages
 }
 
-// ExitPkg is called when production pkg is exited.
-func (l *Prosr1Listener) ExitPkg(ctx *parser.PkgContext) {
-	l.ast.Push(NewPackage(ctx))
-}
-
-// ExitHub is called when production hub is exited.
-func (l *Prosr1Listener) ExitHub(ctx *parser.HubContext) {
-	l.ast.Push(NewHub(ctx, l.stack))
-}
-
-// ExitSending is called when production sending is exited.
-func (l *Prosr1Listener) ExitSending(ctx *parser.SendingContext) {
-	l.stack.Push(NewSending(ctx))
-}
-
-// ExitReturning is called when production returning is exited.
-func (l *Prosr1Listener) ExitReturning(ctx *parser.ReturningContext) {
-	l.stack.Push(NewReturning(ctx))
-}
-
-// ExitMessage is called when production message is exited.
-func (l *Prosr1Listener) ExitMessage(ctx *parser.MessageContext) {
-	l.ast.Push(NewMessage(ctx, l.stack))
-}
-
-// ExitField is called when production field is exited.
-func (l *Prosr1Listener) ExitField(ctx *parser.FieldContext) {
-	l.stack.Push(NewField(ctx))
-}
-
-// ExitContent is called when production content is exited.
-func (l *Prosr1Listener) ExitContent(ctx *parser.ContentContext) {
-	if l.stack.Filled() {
-		for l.stack.Filled() {
-			n := l.stack.Pop()
-			fmt.Println(n.String())
-		}
-
-		panic("Stack should be empty but has pending nodes!")
-	}
+// EnterPackageDefinition is called when production packageDefinition is entered.
+func (l *Prosr1Listener) EnterPackageDefinition(ctx *parser.PackageDefinitionContext) {
+	l.packages = append(l.packages, ctx.FullIdent().GetText())
 }

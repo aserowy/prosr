@@ -17,62 +17,32 @@ type Prosr1Listener interface {
 	// EnterDefinition is called when entering the definition production.
 	EnterDefinition(c *DefinitionContext)
 
-	// EnterPkg is called when entering the pkg production.
-	EnterPkg(c *PkgContext)
+	// EnterPackageDefinition is called when entering the packageDefinition production.
+	EnterPackageDefinition(c *PackageDefinitionContext)
 
-	// EnterHub is called when entering the hub production.
-	EnterHub(c *HubContext)
+	// EnterHubDefinition is called when entering the hubDefinition production.
+	EnterHubDefinition(c *HubDefinitionContext)
 
-	// EnterSending is called when entering the sending production.
-	EnterSending(c *SendingContext)
+	// EnterActionDefinition is called when entering the actionDefinition production.
+	EnterActionDefinition(c *ActionDefinitionContext)
 
-	// EnterSendingMessageIdent is called when entering the sendingMessageIdent production.
-	EnterSendingMessageIdent(c *SendingMessageIdentContext)
+	// EnterCallsDefinition is called when entering the callsDefinition production.
+	EnterCallsDefinition(c *CallsDefinitionContext)
 
-	// EnterSendingTarget is called when entering the sendingTarget production.
-	EnterSendingTarget(c *SendingTargetContext)
+	// EnterMessageDefinition is called when entering the messageDefinition production.
+	EnterMessageDefinition(c *MessageDefinitionContext)
 
-	// EnterReturning is called when entering the returning production.
-	EnterReturning(c *ReturningContext)
-
-	// EnterReturningMessageIdent is called when entering the returningMessageIdent production.
-	EnterReturningMessageIdent(c *ReturningMessageIdentContext)
-
-	// EnterReturningTarget is called when entering the returningTarget production.
-	EnterReturningTarget(c *ReturningTargetContext)
-
-	// EnterMessage is called when entering the message production.
-	EnterMessage(c *MessageContext)
-
-	// EnterField is called when entering the field production.
-	EnterField(c *FieldContext)
-
-	// EnterTypeIdent is called when entering the typeIdent production.
-	EnterTypeIdent(c *TypeIdentContext)
+	// EnterFieldDefinition is called when entering the fieldDefinition production.
+	EnterFieldDefinition(c *FieldDefinitionContext)
 
 	// EnterQuote is called when entering the quote production.
 	EnterQuote(c *QuoteContext)
 
-	// EnterFieldIdent is called when entering the fieldIdent production.
-	EnterFieldIdent(c *FieldIdentContext)
-
 	// EnterFullIdent is called when entering the fullIdent production.
 	EnterFullIdent(c *FullIdentContext)
 
-	// EnterHubIdent is called when entering the hubIdent production.
-	EnterHubIdent(c *HubIdentContext)
-
-	// EnterMessageIdent is called when entering the messageIdent production.
-	EnterMessageIdent(c *MessageIdentContext)
-
-	// EnterPackageIdent is called when entering the packageIdent production.
-	EnterPackageIdent(c *PackageIdentContext)
-
-	// EnterReturningIdent is called when entering the returningIdent production.
-	EnterReturningIdent(c *ReturningIdentContext)
-
-	// EnterSendingIdent is called when entering the sendingIdent production.
-	EnterSendingIdent(c *SendingIdentContext)
+	// EnterTypeIdent is called when entering the typeIdent production.
+	EnterTypeIdent(c *TypeIdentContext)
 
 	// ExitContent is called when exiting the content production.
 	ExitContent(c *ContentContext)
@@ -83,60 +53,30 @@ type Prosr1Listener interface {
 	// ExitDefinition is called when exiting the definition production.
 	ExitDefinition(c *DefinitionContext)
 
-	// ExitPkg is called when exiting the pkg production.
-	ExitPkg(c *PkgContext)
+	// ExitPackageDefinition is called when exiting the packageDefinition production.
+	ExitPackageDefinition(c *PackageDefinitionContext)
 
-	// ExitHub is called when exiting the hub production.
-	ExitHub(c *HubContext)
+	// ExitHubDefinition is called when exiting the hubDefinition production.
+	ExitHubDefinition(c *HubDefinitionContext)
 
-	// ExitSending is called when exiting the sending production.
-	ExitSending(c *SendingContext)
+	// ExitActionDefinition is called when exiting the actionDefinition production.
+	ExitActionDefinition(c *ActionDefinitionContext)
 
-	// ExitSendingMessageIdent is called when exiting the sendingMessageIdent production.
-	ExitSendingMessageIdent(c *SendingMessageIdentContext)
+	// ExitCallsDefinition is called when exiting the callsDefinition production.
+	ExitCallsDefinition(c *CallsDefinitionContext)
 
-	// ExitSendingTarget is called when exiting the sendingTarget production.
-	ExitSendingTarget(c *SendingTargetContext)
+	// ExitMessageDefinition is called when exiting the messageDefinition production.
+	ExitMessageDefinition(c *MessageDefinitionContext)
 
-	// ExitReturning is called when exiting the returning production.
-	ExitReturning(c *ReturningContext)
-
-	// ExitReturningMessageIdent is called when exiting the returningMessageIdent production.
-	ExitReturningMessageIdent(c *ReturningMessageIdentContext)
-
-	// ExitReturningTarget is called when exiting the returningTarget production.
-	ExitReturningTarget(c *ReturningTargetContext)
-
-	// ExitMessage is called when exiting the message production.
-	ExitMessage(c *MessageContext)
-
-	// ExitField is called when exiting the field production.
-	ExitField(c *FieldContext)
-
-	// ExitTypeIdent is called when exiting the typeIdent production.
-	ExitTypeIdent(c *TypeIdentContext)
+	// ExitFieldDefinition is called when exiting the fieldDefinition production.
+	ExitFieldDefinition(c *FieldDefinitionContext)
 
 	// ExitQuote is called when exiting the quote production.
 	ExitQuote(c *QuoteContext)
 
-	// ExitFieldIdent is called when exiting the fieldIdent production.
-	ExitFieldIdent(c *FieldIdentContext)
-
 	// ExitFullIdent is called when exiting the fullIdent production.
 	ExitFullIdent(c *FullIdentContext)
 
-	// ExitHubIdent is called when exiting the hubIdent production.
-	ExitHubIdent(c *HubIdentContext)
-
-	// ExitMessageIdent is called when exiting the messageIdent production.
-	ExitMessageIdent(c *MessageIdentContext)
-
-	// ExitPackageIdent is called when exiting the packageIdent production.
-	ExitPackageIdent(c *PackageIdentContext)
-
-	// ExitReturningIdent is called when exiting the returningIdent production.
-	ExitReturningIdent(c *ReturningIdentContext)
-
-	// ExitSendingIdent is called when exiting the sendingIdent production.
-	ExitSendingIdent(c *SendingIdentContext)
+	// ExitTypeIdent is called when exiting the typeIdent production.
+	ExitTypeIdent(c *TypeIdentContext)
 }

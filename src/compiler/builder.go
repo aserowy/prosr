@@ -6,20 +6,24 @@ import (
 	"strings"
 	"text/template"
 
+	"prosr/parser"
+
 	"github.com/markbates/pkger"
 )
 
 // Builder creates files for the specified language
 type Builder struct {
 	language string
-	ast      []Node
+	packages []string
+	content  parser.ContentContext
 }
 
 // NewBuilder ctor for Builder
-func NewBuilder(language string, ast []Node) *Builder {
+func NewBuilder(language string, packages []string, content parser.ContentContext) *Builder {
 	b := new(Builder)
 	b.language = language
-	b.ast = ast
+	b.packages = packages
+	b.content = content
 
 	return b
 }
@@ -27,7 +31,7 @@ func NewBuilder(language string, ast []Node) *Builder {
 // Build creates files by Ast
 func (b *Builder) Build() (*string, string) {
 	tmpl, fe := buildTemplate(b)
-	out := executeParse(tmpl, b.ast)
+	out := executeParse(tmpl, b.content)
 	out = strings.Trim(out, " \r\n")
 
 	if *fe == "" {
@@ -47,7 +51,6 @@ func buildTemplate(b *Builder) (*template.Template, *string) {
 		"type":                  func(key string) string { return resolveOption(tm, key) },
 
 		"capitalizeFirstLetter": capitalizeFirstLetter,
-		"unifyReturnings":       unifyReturnings,
 	}
 
 	// pkger.Include("/templates/") is called in main.go
@@ -100,38 +103,4 @@ func resolveOption(options map[string]string, key string) string {
 	}
 
 	return key
-}
-
-func unifyReturnings(nodes []Node) []*Returning {
-	ns := map[string]*Returning{}
-	for _, n := range nodes {
-		re := resolveReturning(n)
-		if re == nil {
-			continue
-		}
-
-		ns[re.String()] = re
-	}
-
-	r := []*Returning{}
-	for _, n := range ns {
-		r = append(r, n)
-	}
-
-	return r
-}
-
-func resolveReturning(node Node) *Returning {
-	switch n := node.(type) {
-	case *Sending:
-		if n.Calls == nil {
-			return nil
-		}
-
-		return resolveReturning(n.Calls)
-	case *Returning:
-		return n
-	default:
-		return nil
-	}
 }

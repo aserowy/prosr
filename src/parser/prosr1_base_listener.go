@@ -39,71 +39,41 @@ func (s *BaseProsr1Listener) EnterDefinition(ctx *DefinitionContext) {}
 // ExitDefinition is called when production definition is exited.
 func (s *BaseProsr1Listener) ExitDefinition(ctx *DefinitionContext) {}
 
-// EnterPkg is called when production pkg is entered.
-func (s *BaseProsr1Listener) EnterPkg(ctx *PkgContext) {}
+// EnterPackageDefinition is called when production packageDefinition is entered.
+func (s *BaseProsr1Listener) EnterPackageDefinition(ctx *PackageDefinitionContext) {}
 
-// ExitPkg is called when production pkg is exited.
-func (s *BaseProsr1Listener) ExitPkg(ctx *PkgContext) {}
+// ExitPackageDefinition is called when production packageDefinition is exited.
+func (s *BaseProsr1Listener) ExitPackageDefinition(ctx *PackageDefinitionContext) {}
 
-// EnterHub is called when production hub is entered.
-func (s *BaseProsr1Listener) EnterHub(ctx *HubContext) {}
+// EnterHubDefinition is called when production hubDefinition is entered.
+func (s *BaseProsr1Listener) EnterHubDefinition(ctx *HubDefinitionContext) {}
 
-// ExitHub is called when production hub is exited.
-func (s *BaseProsr1Listener) ExitHub(ctx *HubContext) {}
+// ExitHubDefinition is called when production hubDefinition is exited.
+func (s *BaseProsr1Listener) ExitHubDefinition(ctx *HubDefinitionContext) {}
 
-// EnterSending is called when production sending is entered.
-func (s *BaseProsr1Listener) EnterSending(ctx *SendingContext) {}
+// EnterActionDefinition is called when production actionDefinition is entered.
+func (s *BaseProsr1Listener) EnterActionDefinition(ctx *ActionDefinitionContext) {}
 
-// ExitSending is called when production sending is exited.
-func (s *BaseProsr1Listener) ExitSending(ctx *SendingContext) {}
+// ExitActionDefinition is called when production actionDefinition is exited.
+func (s *BaseProsr1Listener) ExitActionDefinition(ctx *ActionDefinitionContext) {}
 
-// EnterSendingMessageIdent is called when production sendingMessageIdent is entered.
-func (s *BaseProsr1Listener) EnterSendingMessageIdent(ctx *SendingMessageIdentContext) {}
+// EnterCallsDefinition is called when production callsDefinition is entered.
+func (s *BaseProsr1Listener) EnterCallsDefinition(ctx *CallsDefinitionContext) {}
 
-// ExitSendingMessageIdent is called when production sendingMessageIdent is exited.
-func (s *BaseProsr1Listener) ExitSendingMessageIdent(ctx *SendingMessageIdentContext) {}
+// ExitCallsDefinition is called when production callsDefinition is exited.
+func (s *BaseProsr1Listener) ExitCallsDefinition(ctx *CallsDefinitionContext) {}
 
-// EnterSendingTarget is called when production sendingTarget is entered.
-func (s *BaseProsr1Listener) EnterSendingTarget(ctx *SendingTargetContext) {}
+// EnterMessageDefinition is called when production messageDefinition is entered.
+func (s *BaseProsr1Listener) EnterMessageDefinition(ctx *MessageDefinitionContext) {}
 
-// ExitSendingTarget is called when production sendingTarget is exited.
-func (s *BaseProsr1Listener) ExitSendingTarget(ctx *SendingTargetContext) {}
+// ExitMessageDefinition is called when production messageDefinition is exited.
+func (s *BaseProsr1Listener) ExitMessageDefinition(ctx *MessageDefinitionContext) {}
 
-// EnterReturning is called when production returning is entered.
-func (s *BaseProsr1Listener) EnterReturning(ctx *ReturningContext) {}
+// EnterFieldDefinition is called when production fieldDefinition is entered.
+func (s *BaseProsr1Listener) EnterFieldDefinition(ctx *FieldDefinitionContext) {}
 
-// ExitReturning is called when production returning is exited.
-func (s *BaseProsr1Listener) ExitReturning(ctx *ReturningContext) {}
-
-// EnterReturningMessageIdent is called when production returningMessageIdent is entered.
-func (s *BaseProsr1Listener) EnterReturningMessageIdent(ctx *ReturningMessageIdentContext) {}
-
-// ExitReturningMessageIdent is called when production returningMessageIdent is exited.
-func (s *BaseProsr1Listener) ExitReturningMessageIdent(ctx *ReturningMessageIdentContext) {}
-
-// EnterReturningTarget is called when production returningTarget is entered.
-func (s *BaseProsr1Listener) EnterReturningTarget(ctx *ReturningTargetContext) {}
-
-// ExitReturningTarget is called when production returningTarget is exited.
-func (s *BaseProsr1Listener) ExitReturningTarget(ctx *ReturningTargetContext) {}
-
-// EnterMessage is called when production message is entered.
-func (s *BaseProsr1Listener) EnterMessage(ctx *MessageContext) {}
-
-// ExitMessage is called when production message is exited.
-func (s *BaseProsr1Listener) ExitMessage(ctx *MessageContext) {}
-
-// EnterField is called when production field is entered.
-func (s *BaseProsr1Listener) EnterField(ctx *FieldContext) {}
-
-// ExitField is called when production field is exited.
-func (s *BaseProsr1Listener) ExitField(ctx *FieldContext) {}
-
-// EnterTypeIdent is called when production typeIdent is entered.
-func (s *BaseProsr1Listener) EnterTypeIdent(ctx *TypeIdentContext) {}
-
-// ExitTypeIdent is called when production typeIdent is exited.
-func (s *BaseProsr1Listener) ExitTypeIdent(ctx *TypeIdentContext) {}
+// ExitFieldDefinition is called when production fieldDefinition is exited.
+func (s *BaseProsr1Listener) ExitFieldDefinition(ctx *FieldDefinitionContext) {}
 
 // EnterQuote is called when production quote is entered.
 func (s *BaseProsr1Listener) EnterQuote(ctx *QuoteContext) {}
@@ -111,44 +81,14 @@ func (s *BaseProsr1Listener) EnterQuote(ctx *QuoteContext) {}
 // ExitQuote is called when production quote is exited.
 func (s *BaseProsr1Listener) ExitQuote(ctx *QuoteContext) {}
 
-// EnterFieldIdent is called when production fieldIdent is entered.
-func (s *BaseProsr1Listener) EnterFieldIdent(ctx *FieldIdentContext) {}
-
-// ExitFieldIdent is called when production fieldIdent is exited.
-func (s *BaseProsr1Listener) ExitFieldIdent(ctx *FieldIdentContext) {}
-
 // EnterFullIdent is called when production fullIdent is entered.
 func (s *BaseProsr1Listener) EnterFullIdent(ctx *FullIdentContext) {}
 
 // ExitFullIdent is called when production fullIdent is exited.
 func (s *BaseProsr1Listener) ExitFullIdent(ctx *FullIdentContext) {}
 
-// EnterHubIdent is called when production hubIdent is entered.
-func (s *BaseProsr1Listener) EnterHubIdent(ctx *HubIdentContext) {}
+// EnterTypeIdent is called when production typeIdent is entered.
+func (s *BaseProsr1Listener) EnterTypeIdent(ctx *TypeIdentContext) {}
 
-// ExitHubIdent is called when production hubIdent is exited.
-func (s *BaseProsr1Listener) ExitHubIdent(ctx *HubIdentContext) {}
-
-// EnterMessageIdent is called when production messageIdent is entered.
-func (s *BaseProsr1Listener) EnterMessageIdent(ctx *MessageIdentContext) {}
-
-// ExitMessageIdent is called when production messageIdent is exited.
-func (s *BaseProsr1Listener) ExitMessageIdent(ctx *MessageIdentContext) {}
-
-// EnterPackageIdent is called when production packageIdent is entered.
-func (s *BaseProsr1Listener) EnterPackageIdent(ctx *PackageIdentContext) {}
-
-// ExitPackageIdent is called when production packageIdent is exited.
-func (s *BaseProsr1Listener) ExitPackageIdent(ctx *PackageIdentContext) {}
-
-// EnterReturningIdent is called when production returningIdent is entered.
-func (s *BaseProsr1Listener) EnterReturningIdent(ctx *ReturningIdentContext) {}
-
-// ExitReturningIdent is called when production returningIdent is exited.
-func (s *BaseProsr1Listener) ExitReturningIdent(ctx *ReturningIdentContext) {}
-
-// EnterSendingIdent is called when production sendingIdent is entered.
-func (s *BaseProsr1Listener) EnterSendingIdent(ctx *SendingIdentContext) {}
-
-// ExitSendingIdent is called when production sendingIdent is exited.
-func (s *BaseProsr1Listener) ExitSendingIdent(ctx *SendingIdentContext) {}
+// ExitTypeIdent is called when production typeIdent is exited.
+func (s *BaseProsr1Listener) ExitTypeIdent(ctx *TypeIdentContext) {}
