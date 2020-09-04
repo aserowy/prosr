@@ -16,71 +16,70 @@ var _ = reflect.Copy
 var _ = strconv.Itoa
 
 var parserATN = []uint16{
-	3, 24715, 42794, 33075, 47597, 16764, 15335, 30598, 22884, 3, 26, 118,
+	3, 24715, 42794, 33075, 47597, 16764, 15335, 30598, 22884, 3, 25, 115,
 	4, 2, 9, 2, 4, 3, 9, 3, 4, 4, 9, 4, 4, 5, 9, 5, 4, 6, 9, 6, 4, 7, 9, 7,
-	4, 8, 9, 8, 4, 9, 9, 9, 4, 10, 9, 10, 4, 11, 9, 11, 4, 12, 9, 12, 4, 13,
-	9, 13, 3, 2, 3, 2, 7, 2, 29, 10, 2, 12, 2, 14, 2, 32, 11, 2, 3, 2, 3, 2,
-	3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 3, 4, 3, 4, 5, 4, 46, 10,
-	4, 3, 5, 3, 5, 3, 5, 3, 5, 3, 6, 3, 6, 3, 6, 3, 6, 3, 6, 6, 6, 57, 10,
-	6, 13, 6, 14, 6, 58, 3, 6, 3, 6, 3, 7, 3, 7, 3, 7, 3, 7, 5, 7, 67, 10,
-	7, 3, 7, 3, 7, 5, 7, 71, 10, 7, 3, 7, 3, 7, 3, 8, 3, 8, 3, 8, 3, 8, 3,
-	8, 3, 8, 3, 8, 3, 8, 3, 8, 3, 9, 3, 9, 3, 9, 3, 9, 7, 9, 88, 10, 9, 12,
-	9, 14, 9, 91, 11, 9, 3, 9, 3, 9, 3, 10, 5, 10, 96, 10, 10, 3, 10, 3, 10,
-	3, 10, 3, 10, 3, 10, 3, 10, 3, 11, 3, 11, 3, 12, 3, 12, 3, 12, 7, 12, 109,
-	10, 12, 12, 12, 14, 12, 112, 11, 12, 3, 13, 3, 13, 5, 13, 116, 10, 13,
-	3, 13, 2, 2, 14, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 2, 4, 3, 2,
-	16, 17, 3, 2, 19, 20, 2, 116, 2, 26, 3, 2, 2, 2, 4, 35, 3, 2, 2, 2, 6,
-	45, 3, 2, 2, 2, 8, 47, 3, 2, 2, 2, 10, 51, 3, 2, 2, 2, 12, 62, 3, 2, 2,
-	2, 14, 74, 3, 2, 2, 2, 16, 83, 3, 2, 2, 2, 18, 95, 3, 2, 2, 2, 20, 103,
-	3, 2, 2, 2, 22, 105, 3, 2, 2, 2, 24, 115, 3, 2, 2, 2, 26, 30, 5, 4, 3,
-	2, 27, 29, 5, 6, 4, 2, 28, 27, 3, 2, 2, 2, 29, 32, 3, 2, 2, 2, 30, 28,
-	3, 2, 2, 2, 30, 31, 3, 2, 2, 2, 31, 33, 3, 2, 2, 2, 32, 30, 3, 2, 2, 2,
-	33, 34, 7, 2, 2, 3, 34, 3, 3, 2, 2, 2, 35, 36, 7, 3, 2, 2, 36, 37, 7, 4,
-	2, 2, 37, 38, 5, 20, 11, 2, 38, 39, 7, 5, 2, 2, 39, 40, 5, 20, 11, 2, 40,
-	41, 7, 6, 2, 2, 41, 5, 3, 2, 2, 2, 42, 46, 5, 8, 5, 2, 43, 46, 5, 10, 6,
-	2, 44, 46, 5, 16, 9, 2, 45, 42, 3, 2, 2, 2, 45, 43, 3, 2, 2, 2, 45, 44,
-	3, 2, 2, 2, 46, 7, 3, 2, 2, 2, 47, 48, 7, 7, 2, 2, 48, 49, 5, 22, 12, 2,
-	49, 50, 7, 6, 2, 2, 50, 9, 3, 2, 2, 2, 51, 52, 7, 8, 2, 2, 52, 53, 7, 24,
-	2, 2, 53, 56, 7, 9, 2, 2, 54, 57, 5, 12, 7, 2, 55, 57, 5, 14, 8, 2, 56,
-	54, 3, 2, 2, 2, 56, 55, 3, 2, 2, 2, 57, 58, 3, 2, 2, 2, 58, 56, 3, 2, 2,
-	2, 58, 59, 3, 2, 2, 2, 59, 60, 3, 2, 2, 2, 60, 61, 7, 10, 2, 2, 61, 11,
-	3, 2, 2, 2, 62, 63, 7, 11, 2, 2, 63, 64, 7, 24, 2, 2, 64, 66, 7, 12, 2,
-	2, 65, 67, 5, 22, 12, 2, 66, 65, 3, 2, 2, 2, 66, 67, 3, 2, 2, 2, 67, 68,
-	3, 2, 2, 2, 68, 70, 7, 13, 2, 2, 69, 71, 5, 14, 8, 2, 70, 69, 3, 2, 2,
-	2, 70, 71, 3, 2, 2, 2, 71, 72, 3, 2, 2, 2, 72, 73, 7, 6, 2, 2, 73, 13,
-	3, 2, 2, 2, 74, 75, 7, 14, 2, 2, 75, 76, 7, 24, 2, 2, 76, 77, 7, 12, 2,
-	2, 77, 78, 5, 22, 12, 2, 78, 79, 7, 13, 2, 2, 79, 80, 7, 15, 2, 2, 80,
-	81, 9, 2, 2, 2, 81, 82, 7, 6, 2, 2, 82, 15, 3, 2, 2, 2, 83, 84, 7, 18,
-	2, 2, 84, 85, 7, 24, 2, 2, 85, 89, 7, 9, 2, 2, 86, 88, 5, 18, 10, 2, 87,
-	86, 3, 2, 2, 2, 88, 91, 3, 2, 2, 2, 89, 87, 3, 2, 2, 2, 89, 90, 3, 2, 2,
-	2, 90, 92, 3, 2, 2, 2, 91, 89, 3, 2, 2, 2, 92, 93, 7, 10, 2, 2, 93, 17,
-	3, 2, 2, 2, 94, 96, 7, 22, 2, 2, 95, 94, 3, 2, 2, 2, 95, 96, 3, 2, 2, 2,
-	96, 97, 3, 2, 2, 2, 97, 98, 5, 24, 13, 2, 98, 99, 5, 22, 12, 2, 99, 100,
-	7, 4, 2, 2, 100, 101, 7, 25, 2, 2, 101, 102, 7, 6, 2, 2, 102, 19, 3, 2,
-	2, 2, 103, 104, 9, 3, 2, 2, 104, 21, 3, 2, 2, 2, 105, 110, 7, 24, 2, 2,
-	106, 107, 7, 21, 2, 2, 107, 109, 7, 24, 2, 2, 108, 106, 3, 2, 2, 2, 109,
-	112, 3, 2, 2, 2, 110, 108, 3, 2, 2, 2, 110, 111, 3, 2, 2, 2, 111, 23, 3,
-	2, 2, 2, 112, 110, 3, 2, 2, 2, 113, 116, 5, 22, 12, 2, 114, 116, 7, 23,
-	2, 2, 115, 113, 3, 2, 2, 2, 115, 114, 3, 2, 2, 2, 116, 25, 3, 2, 2, 2,
-	12, 30, 45, 56, 58, 66, 70, 89, 95, 110, 115,
+	4, 8, 9, 8, 4, 9, 9, 9, 4, 10, 9, 10, 4, 11, 9, 11, 4, 12, 9, 12, 3, 2,
+	3, 2, 7, 2, 27, 10, 2, 12, 2, 14, 2, 30, 11, 2, 3, 2, 3, 2, 3, 3, 3, 3,
+	3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 3, 4, 3, 4, 5, 4, 44, 10, 4, 3, 5,
+	3, 5, 3, 5, 3, 5, 3, 6, 3, 6, 3, 6, 3, 6, 3, 6, 6, 6, 55, 10, 6, 13, 6,
+	14, 6, 56, 3, 6, 3, 6, 3, 7, 3, 7, 3, 7, 3, 7, 5, 7, 65, 10, 7, 3, 7, 3,
+	7, 3, 7, 5, 7, 70, 10, 7, 3, 8, 3, 8, 3, 8, 3, 8, 5, 8, 76, 10, 8, 3, 8,
+	3, 8, 3, 8, 3, 8, 3, 8, 3, 9, 3, 9, 3, 9, 3, 9, 7, 9, 87, 10, 9, 12, 9,
+	14, 9, 90, 11, 9, 3, 9, 3, 9, 3, 10, 5, 10, 95, 10, 10, 3, 10, 3, 10, 3,
+	10, 3, 10, 3, 10, 3, 10, 3, 11, 3, 11, 3, 11, 7, 11, 106, 10, 11, 12, 11,
+	14, 11, 109, 11, 11, 3, 12, 3, 12, 5, 12, 113, 10, 12, 3, 12, 2, 2, 13,
+	2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 2, 3, 3, 2, 17, 18, 2, 115, 2,
+	24, 3, 2, 2, 2, 4, 33, 3, 2, 2, 2, 6, 43, 3, 2, 2, 2, 8, 45, 3, 2, 2, 2,
+	10, 49, 3, 2, 2, 2, 12, 60, 3, 2, 2, 2, 14, 71, 3, 2, 2, 2, 16, 82, 3,
+	2, 2, 2, 18, 94, 3, 2, 2, 2, 20, 102, 3, 2, 2, 2, 22, 112, 3, 2, 2, 2,
+	24, 28, 5, 4, 3, 2, 25, 27, 5, 6, 4, 2, 26, 25, 3, 2, 2, 2, 27, 30, 3,
+	2, 2, 2, 28, 26, 3, 2, 2, 2, 28, 29, 3, 2, 2, 2, 29, 31, 3, 2, 2, 2, 30,
+	28, 3, 2, 2, 2, 31, 32, 7, 2, 2, 3, 32, 3, 3, 2, 2, 2, 33, 34, 7, 3, 2,
+	2, 34, 35, 7, 4, 2, 2, 35, 36, 7, 5, 2, 2, 36, 37, 7, 6, 2, 2, 37, 38,
+	7, 5, 2, 2, 38, 39, 7, 7, 2, 2, 39, 5, 3, 2, 2, 2, 40, 44, 5, 8, 5, 2,
+	41, 44, 5, 10, 6, 2, 42, 44, 5, 16, 9, 2, 43, 40, 3, 2, 2, 2, 43, 41, 3,
+	2, 2, 2, 43, 42, 3, 2, 2, 2, 44, 7, 3, 2, 2, 2, 45, 46, 7, 8, 2, 2, 46,
+	47, 5, 20, 11, 2, 47, 48, 7, 7, 2, 2, 48, 9, 3, 2, 2, 2, 49, 50, 7, 9,
+	2, 2, 50, 51, 7, 23, 2, 2, 51, 54, 7, 10, 2, 2, 52, 55, 5, 12, 7, 2, 53,
+	55, 5, 14, 8, 2, 54, 52, 3, 2, 2, 2, 54, 53, 3, 2, 2, 2, 55, 56, 3, 2,
+	2, 2, 56, 54, 3, 2, 2, 2, 56, 57, 3, 2, 2, 2, 57, 58, 3, 2, 2, 2, 58, 59,
+	7, 11, 2, 2, 59, 11, 3, 2, 2, 2, 60, 61, 7, 12, 2, 2, 61, 62, 7, 23, 2,
+	2, 62, 64, 7, 13, 2, 2, 63, 65, 5, 20, 11, 2, 64, 63, 3, 2, 2, 2, 64, 65,
+	3, 2, 2, 2, 65, 66, 3, 2, 2, 2, 66, 69, 7, 14, 2, 2, 67, 70, 5, 14, 8,
+	2, 68, 70, 7, 7, 2, 2, 69, 67, 3, 2, 2, 2, 69, 68, 3, 2, 2, 2, 70, 13,
+	3, 2, 2, 2, 71, 72, 7, 15, 2, 2, 72, 73, 7, 23, 2, 2, 73, 75, 7, 13, 2,
+	2, 74, 76, 5, 20, 11, 2, 75, 74, 3, 2, 2, 2, 75, 76, 3, 2, 2, 2, 76, 77,
+	3, 2, 2, 2, 77, 78, 7, 14, 2, 2, 78, 79, 7, 16, 2, 2, 79, 80, 9, 2, 2,
+	2, 80, 81, 7, 7, 2, 2, 81, 15, 3, 2, 2, 2, 82, 83, 7, 19, 2, 2, 83, 84,
+	7, 23, 2, 2, 84, 88, 7, 10, 2, 2, 85, 87, 5, 18, 10, 2, 86, 85, 3, 2, 2,
+	2, 87, 90, 3, 2, 2, 2, 88, 86, 3, 2, 2, 2, 88, 89, 3, 2, 2, 2, 89, 91,
+	3, 2, 2, 2, 90, 88, 3, 2, 2, 2, 91, 92, 7, 11, 2, 2, 92, 17, 3, 2, 2, 2,
+	93, 95, 7, 21, 2, 2, 94, 93, 3, 2, 2, 2, 94, 95, 3, 2, 2, 2, 95, 96, 3,
+	2, 2, 2, 96, 97, 5, 22, 12, 2, 97, 98, 5, 20, 11, 2, 98, 99, 7, 4, 2, 2,
+	99, 100, 7, 24, 2, 2, 100, 101, 7, 7, 2, 2, 101, 19, 3, 2, 2, 2, 102, 107,
+	7, 23, 2, 2, 103, 104, 7, 20, 2, 2, 104, 106, 7, 23, 2, 2, 105, 103, 3,
+	2, 2, 2, 106, 109, 3, 2, 2, 2, 107, 105, 3, 2, 2, 2, 107, 108, 3, 2, 2,
+	2, 108, 21, 3, 2, 2, 2, 109, 107, 3, 2, 2, 2, 110, 113, 5, 20, 11, 2, 111,
+	113, 7, 22, 2, 2, 112, 110, 3, 2, 2, 2, 112, 111, 3, 2, 2, 2, 113, 23,
+	3, 2, 2, 2, 13, 28, 43, 54, 56, 64, 69, 75, 88, 94, 107, 112,
 }
 var deserializer = antlr.NewATNDeserializer(nil)
 var deserializedATN = deserializer.DeserializeFromUInt16(parserATN)
 
 var literalNames = []string{
-	"", "'syntax'", "'='", "'prosr1'", "';'", "'package'", "'hub'", "'{'",
-	"'}'", "'action'", "'('", "')'", "'calls'", "'on'", "'caller'", "'all'",
-	"'message'", "'''", "'\"'", "'.'", "'repeated'",
+	"", "'syntax'", "'='", "'\"'", "'prosr1'", "';'", "'package'", "'hub'",
+	"'{'", "'}'", "'action'", "'('", "')'", "'calls'", "'on'", "'caller'",
+	"'all'", "'message'", "'.'", "'repeated'",
 }
 var symbolicNames = []string{
 	"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "",
-	"", "", "REPEATED", "TYPE", "IDENT", "NUMBER", "WHITESPACE",
+	"", "REPEATED", "TYPE", "IDENT", "NUMBER", "WHITESPACE",
 }
 
 var ruleNames = []string{
-	"content", "syntax", "definition", "packageDefinition", "hubDefinition",
+	"content", "syntaxDefinition", "bodyDefinition", "packageDefinition", "hubDefinition",
 	"actionDefinition", "callsDefinition", "messageDefinition", "fieldDefinition",
-	"quote", "fullIdent", "typeIdent",
+	"fullIdent", "typeIdent",
 }
 var decisionToDFA = make([]*antlr.DFA, len(deserializedATN.DecisionToState))
 
@@ -129,28 +128,26 @@ const (
 	Prosr1ParserT__15      = 16
 	Prosr1ParserT__16      = 17
 	Prosr1ParserT__17      = 18
-	Prosr1ParserT__18      = 19
-	Prosr1ParserREPEATED   = 20
-	Prosr1ParserTYPE       = 21
-	Prosr1ParserIDENT      = 22
-	Prosr1ParserNUMBER     = 23
-	Prosr1ParserWHITESPACE = 24
+	Prosr1ParserREPEATED   = 19
+	Prosr1ParserTYPE       = 20
+	Prosr1ParserIDENT      = 21
+	Prosr1ParserNUMBER     = 22
+	Prosr1ParserWHITESPACE = 23
 )
 
 // Prosr1Parser rules.
 const (
 	Prosr1ParserRULE_content           = 0
-	Prosr1ParserRULE_syntax            = 1
-	Prosr1ParserRULE_definition        = 2
+	Prosr1ParserRULE_syntaxDefinition  = 1
+	Prosr1ParserRULE_bodyDefinition    = 2
 	Prosr1ParserRULE_packageDefinition = 3
 	Prosr1ParserRULE_hubDefinition     = 4
 	Prosr1ParserRULE_actionDefinition  = 5
 	Prosr1ParserRULE_callsDefinition   = 6
 	Prosr1ParserRULE_messageDefinition = 7
 	Prosr1ParserRULE_fieldDefinition   = 8
-	Prosr1ParserRULE_quote             = 9
-	Prosr1ParserRULE_fullIdent         = 10
-	Prosr1ParserRULE_typeIdent         = 11
+	Prosr1ParserRULE_fullIdent         = 9
+	Prosr1ParserRULE_typeIdent         = 10
 )
 
 // IContentContext is an interface to support dynamic dispatch.
@@ -160,13 +157,20 @@ type IContentContext interface {
 	// GetParser returns the parser.
 	GetParser() antlr.Parser
 
+	// GetDefinitions returns the definitions rule contexts.
+	GetDefinitions() IBodyDefinitionContext
+
+	// SetDefinitions sets the definitions rule contexts.
+	SetDefinitions(IBodyDefinitionContext)
+
 	// IsContentContext differentiates from other interfaces.
 	IsContentContext()
 }
 
 type ContentContext struct {
 	*antlr.BaseParserRuleContext
-	parser antlr.Parser
+	parser      antlr.Parser
+	definitions IBodyDefinitionContext
 }
 
 func NewEmptyContentContext() *ContentContext {
@@ -191,41 +195,45 @@ func NewContentContext(parser antlr.Parser, parent antlr.ParserRuleContext, invo
 
 func (s *ContentContext) GetParser() antlr.Parser { return s.parser }
 
-func (s *ContentContext) Syntax() ISyntaxContext {
-	var t = s.GetTypedRuleContext(reflect.TypeOf((*ISyntaxContext)(nil)).Elem(), 0)
+func (s *ContentContext) GetDefinitions() IBodyDefinitionContext { return s.definitions }
+
+func (s *ContentContext) SetDefinitions(v IBodyDefinitionContext) { s.definitions = v }
+
+func (s *ContentContext) SyntaxDefinition() ISyntaxDefinitionContext {
+	var t = s.GetTypedRuleContext(reflect.TypeOf((*ISyntaxDefinitionContext)(nil)).Elem(), 0)
 
 	if t == nil {
 		return nil
 	}
 
-	return t.(ISyntaxContext)
+	return t.(ISyntaxDefinitionContext)
 }
 
 func (s *ContentContext) EOF() antlr.TerminalNode {
 	return s.GetToken(Prosr1ParserEOF, 0)
 }
 
-func (s *ContentContext) AllDefinition() []IDefinitionContext {
-	var ts = s.GetTypedRuleContexts(reflect.TypeOf((*IDefinitionContext)(nil)).Elem())
-	var tst = make([]IDefinitionContext, len(ts))
+func (s *ContentContext) AllBodyDefinition() []IBodyDefinitionContext {
+	var ts = s.GetTypedRuleContexts(reflect.TypeOf((*IBodyDefinitionContext)(nil)).Elem())
+	var tst = make([]IBodyDefinitionContext, len(ts))
 
 	for i, t := range ts {
 		if t != nil {
-			tst[i] = t.(IDefinitionContext)
+			tst[i] = t.(IBodyDefinitionContext)
 		}
 	}
 
 	return tst
 }
 
-func (s *ContentContext) Definition(i int) IDefinitionContext {
-	var t = s.GetTypedRuleContext(reflect.TypeOf((*IDefinitionContext)(nil)).Elem(), i)
+func (s *ContentContext) BodyDefinition(i int) IBodyDefinitionContext {
+	var t = s.GetTypedRuleContext(reflect.TypeOf((*IBodyDefinitionContext)(nil)).Elem(), i)
 
 	if t == nil {
 		return nil
 	}
 
-	return t.(IDefinitionContext)
+	return t.(IBodyDefinitionContext)
 }
 
 func (s *ContentContext) GetRuleContext() antlr.RuleContext {
@@ -271,115 +279,94 @@ func (p *Prosr1Parser) Content() (localctx IContentContext) {
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(24)
-		p.Syntax()
+		p.SetState(22)
+		p.SyntaxDefinition()
 	}
-	p.SetState(28)
+	p.SetState(26)
 	p.GetErrorHandler().Sync(p)
 	_la = p.GetTokenStream().LA(1)
 
-	for ((_la)&-(0x1f+1)) == 0 && ((1<<uint(_la))&((1<<Prosr1ParserT__4)|(1<<Prosr1ParserT__5)|(1<<Prosr1ParserT__15))) != 0 {
+	for ((_la)&-(0x1f+1)) == 0 && ((1<<uint(_la))&((1<<Prosr1ParserT__5)|(1<<Prosr1ParserT__6)|(1<<Prosr1ParserT__16))) != 0 {
 		{
-			p.SetState(25)
-			p.Definition()
+			p.SetState(23)
+
+			var _x = p.BodyDefinition()
+
+			localctx.(*ContentContext).definitions = _x
 		}
 
-		p.SetState(30)
+		p.SetState(28)
 		p.GetErrorHandler().Sync(p)
 		_la = p.GetTokenStream().LA(1)
 	}
 	{
-		p.SetState(31)
+		p.SetState(29)
 		p.Match(Prosr1ParserEOF)
 	}
 
 	return localctx
 }
 
-// ISyntaxContext is an interface to support dynamic dispatch.
-type ISyntaxContext interface {
+// ISyntaxDefinitionContext is an interface to support dynamic dispatch.
+type ISyntaxDefinitionContext interface {
 	antlr.ParserRuleContext
 
 	// GetParser returns the parser.
 	GetParser() antlr.Parser
 
-	// IsSyntaxContext differentiates from other interfaces.
-	IsSyntaxContext()
+	// IsSyntaxDefinitionContext differentiates from other interfaces.
+	IsSyntaxDefinitionContext()
 }
 
-type SyntaxContext struct {
+type SyntaxDefinitionContext struct {
 	*antlr.BaseParserRuleContext
 	parser antlr.Parser
 }
 
-func NewEmptySyntaxContext() *SyntaxContext {
-	var p = new(SyntaxContext)
+func NewEmptySyntaxDefinitionContext() *SyntaxDefinitionContext {
+	var p = new(SyntaxDefinitionContext)
 	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(nil, -1)
-	p.RuleIndex = Prosr1ParserRULE_syntax
+	p.RuleIndex = Prosr1ParserRULE_syntaxDefinition
 	return p
 }
 
-func (*SyntaxContext) IsSyntaxContext() {}
+func (*SyntaxDefinitionContext) IsSyntaxDefinitionContext() {}
 
-func NewSyntaxContext(parser antlr.Parser, parent antlr.ParserRuleContext, invokingState int) *SyntaxContext {
-	var p = new(SyntaxContext)
+func NewSyntaxDefinitionContext(parser antlr.Parser, parent antlr.ParserRuleContext, invokingState int) *SyntaxDefinitionContext {
+	var p = new(SyntaxDefinitionContext)
 
 	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(parent, invokingState)
 
 	p.parser = parser
-	p.RuleIndex = Prosr1ParserRULE_syntax
+	p.RuleIndex = Prosr1ParserRULE_syntaxDefinition
 
 	return p
 }
 
-func (s *SyntaxContext) GetParser() antlr.Parser { return s.parser }
-
-func (s *SyntaxContext) AllQuote() []IQuoteContext {
-	var ts = s.GetTypedRuleContexts(reflect.TypeOf((*IQuoteContext)(nil)).Elem())
-	var tst = make([]IQuoteContext, len(ts))
-
-	for i, t := range ts {
-		if t != nil {
-			tst[i] = t.(IQuoteContext)
-		}
-	}
-
-	return tst
-}
-
-func (s *SyntaxContext) Quote(i int) IQuoteContext {
-	var t = s.GetTypedRuleContext(reflect.TypeOf((*IQuoteContext)(nil)).Elem(), i)
-
-	if t == nil {
-		return nil
-	}
-
-	return t.(IQuoteContext)
-}
-
-func (s *SyntaxContext) GetRuleContext() antlr.RuleContext {
+func (s *SyntaxDefinitionContext) GetParser() antlr.Parser { return s.parser }
+func (s *SyntaxDefinitionContext) GetRuleContext() antlr.RuleContext {
 	return s
 }
 
-func (s *SyntaxContext) ToStringTree(ruleNames []string, recog antlr.Recognizer) string {
+func (s *SyntaxDefinitionContext) ToStringTree(ruleNames []string, recog antlr.Recognizer) string {
 	return antlr.TreesStringTree(s, ruleNames, recog)
 }
 
-func (s *SyntaxContext) EnterRule(listener antlr.ParseTreeListener) {
+func (s *SyntaxDefinitionContext) EnterRule(listener antlr.ParseTreeListener) {
 	if listenerT, ok := listener.(Prosr1Listener); ok {
-		listenerT.EnterSyntax(s)
+		listenerT.EnterSyntaxDefinition(s)
 	}
 }
 
-func (s *SyntaxContext) ExitRule(listener antlr.ParseTreeListener) {
+func (s *SyntaxDefinitionContext) ExitRule(listener antlr.ParseTreeListener) {
 	if listenerT, ok := listener.(Prosr1Listener); ok {
-		listenerT.ExitSyntax(s)
+		listenerT.ExitSyntaxDefinition(s)
 	}
 }
 
-func (p *Prosr1Parser) Syntax() (localctx ISyntaxContext) {
-	localctx = NewSyntaxContext(p, p.GetParserRuleContext(), p.GetState())
-	p.EnterRule(localctx, 2, Prosr1ParserRULE_syntax)
+func (p *Prosr1Parser) SyntaxDefinition() (localctx ISyntaxDefinitionContext) {
+	localctx = NewSyntaxDefinitionContext(p, p.GetParserRuleContext(), p.GetState())
+	p.EnterRule(localctx, 2, Prosr1ParserRULE_syntaxDefinition)
 
 	defer func() {
 		p.ExitRule()
@@ -399,72 +386,72 @@ func (p *Prosr1Parser) Syntax() (localctx ISyntaxContext) {
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(33)
+		p.SetState(31)
 		p.Match(Prosr1ParserT__0)
 	}
 	{
-		p.SetState(34)
+		p.SetState(32)
 		p.Match(Prosr1ParserT__1)
 	}
 	{
-		p.SetState(35)
-		p.Quote()
-	}
-	{
-		p.SetState(36)
+		p.SetState(33)
 		p.Match(Prosr1ParserT__2)
 	}
 	{
-		p.SetState(37)
-		p.Quote()
+		p.SetState(34)
+		p.Match(Prosr1ParserT__3)
 	}
 	{
-		p.SetState(38)
-		p.Match(Prosr1ParserT__3)
+		p.SetState(35)
+		p.Match(Prosr1ParserT__2)
+	}
+	{
+		p.SetState(36)
+		p.Match(Prosr1ParserT__4)
 	}
 
 	return localctx
 }
 
-// IDefinitionContext is an interface to support dynamic dispatch.
-type IDefinitionContext interface {
+// IBodyDefinitionContext is an interface to support dynamic dispatch.
+type IBodyDefinitionContext interface {
 	antlr.ParserRuleContext
 
 	// GetParser returns the parser.
 	GetParser() antlr.Parser
 
-	// IsDefinitionContext differentiates from other interfaces.
-	IsDefinitionContext()
+	// IsBodyDefinitionContext differentiates from other interfaces.
+	IsBodyDefinitionContext()
 }
 
-type DefinitionContext struct {
+type BodyDefinitionContext struct {
 	*antlr.BaseParserRuleContext
 	parser antlr.Parser
 }
 
-func NewEmptyDefinitionContext() *DefinitionContext {
-	var p = new(DefinitionContext)
+func NewEmptyBodyDefinitionContext() *BodyDefinitionContext {
+	var p = new(BodyDefinitionContext)
 	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(nil, -1)
-	p.RuleIndex = Prosr1ParserRULE_definition
+	p.RuleIndex = Prosr1ParserRULE_bodyDefinition
 	return p
 }
 
-func (*DefinitionContext) IsDefinitionContext() {}
+func (*BodyDefinitionContext) IsBodyDefinitionContext() {}
 
-func NewDefinitionContext(parser antlr.Parser, parent antlr.ParserRuleContext, invokingState int) *DefinitionContext {
-	var p = new(DefinitionContext)
+func NewBodyDefinitionContext(parser antlr.Parser, parent antlr.ParserRuleContext, invokingState int) *BodyDefinitionContext {
+	var p = new(BodyDefinitionContext)
 
 	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(parent, invokingState)
 
 	p.parser = parser
-	p.RuleIndex = Prosr1ParserRULE_definition
+	p.RuleIndex = Prosr1ParserRULE_bodyDefinition
 
 	return p
 }
 
-func (s *DefinitionContext) GetParser() antlr.Parser { return s.parser }
+func (s *BodyDefinitionContext) GetParser() antlr.Parser { return s.parser }
 
-func (s *DefinitionContext) PackageDefinition() IPackageDefinitionContext {
+func (s *BodyDefinitionContext) PackageDefinition() IPackageDefinitionContext {
 	var t = s.GetTypedRuleContext(reflect.TypeOf((*IPackageDefinitionContext)(nil)).Elem(), 0)
 
 	if t == nil {
@@ -474,7 +461,7 @@ func (s *DefinitionContext) PackageDefinition() IPackageDefinitionContext {
 	return t.(IPackageDefinitionContext)
 }
 
-func (s *DefinitionContext) HubDefinition() IHubDefinitionContext {
+func (s *BodyDefinitionContext) HubDefinition() IHubDefinitionContext {
 	var t = s.GetTypedRuleContext(reflect.TypeOf((*IHubDefinitionContext)(nil)).Elem(), 0)
 
 	if t == nil {
@@ -484,7 +471,7 @@ func (s *DefinitionContext) HubDefinition() IHubDefinitionContext {
 	return t.(IHubDefinitionContext)
 }
 
-func (s *DefinitionContext) MessageDefinition() IMessageDefinitionContext {
+func (s *BodyDefinitionContext) MessageDefinition() IMessageDefinitionContext {
 	var t = s.GetTypedRuleContext(reflect.TypeOf((*IMessageDefinitionContext)(nil)).Elem(), 0)
 
 	if t == nil {
@@ -494,29 +481,29 @@ func (s *DefinitionContext) MessageDefinition() IMessageDefinitionContext {
 	return t.(IMessageDefinitionContext)
 }
 
-func (s *DefinitionContext) GetRuleContext() antlr.RuleContext {
+func (s *BodyDefinitionContext) GetRuleContext() antlr.RuleContext {
 	return s
 }
 
-func (s *DefinitionContext) ToStringTree(ruleNames []string, recog antlr.Recognizer) string {
+func (s *BodyDefinitionContext) ToStringTree(ruleNames []string, recog antlr.Recognizer) string {
 	return antlr.TreesStringTree(s, ruleNames, recog)
 }
 
-func (s *DefinitionContext) EnterRule(listener antlr.ParseTreeListener) {
+func (s *BodyDefinitionContext) EnterRule(listener antlr.ParseTreeListener) {
 	if listenerT, ok := listener.(Prosr1Listener); ok {
-		listenerT.EnterDefinition(s)
+		listenerT.EnterBodyDefinition(s)
 	}
 }
 
-func (s *DefinitionContext) ExitRule(listener antlr.ParseTreeListener) {
+func (s *BodyDefinitionContext) ExitRule(listener antlr.ParseTreeListener) {
 	if listenerT, ok := listener.(Prosr1Listener); ok {
-		listenerT.ExitDefinition(s)
+		listenerT.ExitBodyDefinition(s)
 	}
 }
 
-func (p *Prosr1Parser) Definition() (localctx IDefinitionContext) {
-	localctx = NewDefinitionContext(p, p.GetParserRuleContext(), p.GetState())
-	p.EnterRule(localctx, 4, Prosr1ParserRULE_definition)
+func (p *Prosr1Parser) BodyDefinition() (localctx IBodyDefinitionContext) {
+	localctx = NewBodyDefinitionContext(p, p.GetParserRuleContext(), p.GetState())
+	p.EnterRule(localctx, 4, Prosr1ParserRULE_bodyDefinition)
 
 	defer func() {
 		p.ExitRule()
@@ -534,26 +521,28 @@ func (p *Prosr1Parser) Definition() (localctx IDefinitionContext) {
 		}
 	}()
 
-	p.EnterOuterAlt(localctx, 1)
-	p.SetState(43)
+	p.SetState(41)
 	p.GetErrorHandler().Sync(p)
 
 	switch p.GetTokenStream().LA(1) {
-	case Prosr1ParserT__4:
+	case Prosr1ParserT__5:
+		p.EnterOuterAlt(localctx, 1)
 		{
-			p.SetState(40)
+			p.SetState(38)
 			p.PackageDefinition()
 		}
 
-	case Prosr1ParserT__5:
+	case Prosr1ParserT__6:
+		p.EnterOuterAlt(localctx, 2)
 		{
-			p.SetState(41)
+			p.SetState(39)
 			p.HubDefinition()
 		}
 
-	case Prosr1ParserT__15:
+	case Prosr1ParserT__16:
+		p.EnterOuterAlt(localctx, 3)
 		{
-			p.SetState(42)
+			p.SetState(40)
 			p.MessageDefinition()
 		}
 
@@ -654,16 +643,16 @@ func (p *Prosr1Parser) PackageDefinition() (localctx IPackageDefinitionContext) 
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(45)
-		p.Match(Prosr1ParserT__4)
+		p.SetState(43)
+		p.Match(Prosr1ParserT__5)
 	}
 	{
-		p.SetState(46)
+		p.SetState(44)
 		p.FullIdent()
 	}
 	{
-		p.SetState(47)
-		p.Match(Prosr1ParserT__3)
+		p.SetState(45)
+		p.Match(Prosr1ParserT__4)
 	}
 
 	return localctx
@@ -800,35 +789,35 @@ func (p *Prosr1Parser) HubDefinition() (localctx IHubDefinitionContext) {
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(49)
-		p.Match(Prosr1ParserT__5)
+		p.SetState(47)
+		p.Match(Prosr1ParserT__6)
 	}
 	{
-		p.SetState(50)
+		p.SetState(48)
 		p.Match(Prosr1ParserIDENT)
 	}
 	{
-		p.SetState(51)
-		p.Match(Prosr1ParserT__6)
+		p.SetState(49)
+		p.Match(Prosr1ParserT__7)
 	}
-	p.SetState(54)
+	p.SetState(52)
 	p.GetErrorHandler().Sync(p)
 	_la = p.GetTokenStream().LA(1)
 
-	for ok := true; ok; ok = _la == Prosr1ParserT__8 || _la == Prosr1ParserT__11 {
-		p.SetState(54)
+	for ok := true; ok; ok = _la == Prosr1ParserT__9 || _la == Prosr1ParserT__12 {
+		p.SetState(52)
 		p.GetErrorHandler().Sync(p)
 
 		switch p.GetTokenStream().LA(1) {
-		case Prosr1ParserT__8:
+		case Prosr1ParserT__9:
 			{
-				p.SetState(52)
+				p.SetState(50)
 				p.ActionDefinition()
 			}
 
-		case Prosr1ParserT__11:
+		case Prosr1ParserT__12:
 			{
-				p.SetState(53)
+				p.SetState(51)
 				p.CallsDefinition()
 			}
 
@@ -836,13 +825,13 @@ func (p *Prosr1Parser) HubDefinition() (localctx IHubDefinitionContext) {
 			panic(antlr.NewNoViableAltException(p, nil, nil, nil, nil, nil))
 		}
 
-		p.SetState(56)
+		p.SetState(54)
 		p.GetErrorHandler().Sync(p)
 		_la = p.GetTokenStream().LA(1)
 	}
 	{
-		p.SetState(58)
-		p.Match(Prosr1ParserT__7)
+		p.SetState(56)
+		p.Match(Prosr1ParserT__8)
 	}
 
 	return localctx
@@ -890,16 +879,6 @@ func (s *ActionDefinitionContext) IDENT() antlr.TerminalNode {
 	return s.GetToken(Prosr1ParserIDENT, 0)
 }
 
-func (s *ActionDefinitionContext) FullIdent() IFullIdentContext {
-	var t = s.GetTypedRuleContext(reflect.TypeOf((*IFullIdentContext)(nil)).Elem(), 0)
-
-	if t == nil {
-		return nil
-	}
-
-	return t.(IFullIdentContext)
-}
-
 func (s *ActionDefinitionContext) CallsDefinition() ICallsDefinitionContext {
 	var t = s.GetTypedRuleContext(reflect.TypeOf((*ICallsDefinitionContext)(nil)).Elem(), 0)
 
@@ -908,6 +887,16 @@ func (s *ActionDefinitionContext) CallsDefinition() ICallsDefinitionContext {
 	}
 
 	return t.(ICallsDefinitionContext)
+}
+
+func (s *ActionDefinitionContext) FullIdent() IFullIdentContext {
+	var t = s.GetTypedRuleContext(reflect.TypeOf((*IFullIdentContext)(nil)).Elem(), 0)
+
+	if t == nil {
+		return nil
+	}
+
+	return t.(IFullIdentContext)
 }
 
 func (s *ActionDefinitionContext) GetRuleContext() antlr.RuleContext {
@@ -953,46 +942,50 @@ func (p *Prosr1Parser) ActionDefinition() (localctx IActionDefinitionContext) {
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(60)
-		p.Match(Prosr1ParserT__8)
+		p.SetState(58)
+		p.Match(Prosr1ParserT__9)
 	}
 	{
-		p.SetState(61)
+		p.SetState(59)
 		p.Match(Prosr1ParserIDENT)
 	}
 	{
-		p.SetState(62)
-		p.Match(Prosr1ParserT__9)
+		p.SetState(60)
+		p.Match(Prosr1ParserT__10)
 	}
-	p.SetState(64)
+	p.SetState(62)
 	p.GetErrorHandler().Sync(p)
 	_la = p.GetTokenStream().LA(1)
 
 	if _la == Prosr1ParserIDENT {
 		{
-			p.SetState(63)
+			p.SetState(61)
 			p.FullIdent()
 		}
 
 	}
 	{
-		p.SetState(66)
-		p.Match(Prosr1ParserT__10)
+		p.SetState(64)
+		p.Match(Prosr1ParserT__11)
 	}
-	p.SetState(68)
+	p.SetState(67)
 	p.GetErrorHandler().Sync(p)
-	_la = p.GetTokenStream().LA(1)
 
-	if _la == Prosr1ParserT__11 {
+	switch p.GetTokenStream().LA(1) {
+	case Prosr1ParserT__12:
 		{
-			p.SetState(67)
+			p.SetState(65)
 			p.CallsDefinition()
 		}
 
-	}
-	{
-		p.SetState(70)
-		p.Match(Prosr1ParserT__3)
+	case Prosr1ParserT__4:
+		{
+			p.SetState(66)
+			p.Match(Prosr1ParserT__4)
+		}
+
+	default:
+		panic(antlr.NewNoViableAltException(p, nil, nil, nil, nil, nil))
 	}
 
 	return localctx
@@ -1104,31 +1097,38 @@ func (p *Prosr1Parser) CallsDefinition() (localctx ICallsDefinitionContext) {
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(72)
-		p.Match(Prosr1ParserT__11)
-	}
-	{
-		p.SetState(73)
-		p.Match(Prosr1ParserIDENT)
-	}
-	{
-		p.SetState(74)
-		p.Match(Prosr1ParserT__9)
-	}
-	{
-		p.SetState(75)
-		p.FullIdent()
-	}
-	{
-		p.SetState(76)
-		p.Match(Prosr1ParserT__10)
-	}
-	{
-		p.SetState(77)
+		p.SetState(69)
 		p.Match(Prosr1ParserT__12)
 	}
 	{
-		p.SetState(78)
+		p.SetState(70)
+		p.Match(Prosr1ParserIDENT)
+	}
+	{
+		p.SetState(71)
+		p.Match(Prosr1ParserT__10)
+	}
+	p.SetState(73)
+	p.GetErrorHandler().Sync(p)
+	_la = p.GetTokenStream().LA(1)
+
+	if _la == Prosr1ParserIDENT {
+		{
+			p.SetState(72)
+			p.FullIdent()
+		}
+
+	}
+	{
+		p.SetState(75)
+		p.Match(Prosr1ParserT__11)
+	}
+	{
+		p.SetState(76)
+		p.Match(Prosr1ParserT__13)
+	}
+	{
+		p.SetState(77)
 
 		var _lt = p.GetTokenStream().LT(1)
 
@@ -1136,7 +1136,7 @@ func (p *Prosr1Parser) CallsDefinition() (localctx ICallsDefinitionContext) {
 
 		_la = p.GetTokenStream().LA(1)
 
-		if !(_la == Prosr1ParserT__13 || _la == Prosr1ParserT__14) {
+		if !(_la == Prosr1ParserT__14 || _la == Prosr1ParserT__15) {
 			var _ri = p.GetErrorHandler().RecoverInline(p)
 
 			localctx.(*CallsDefinitionContext).target = _ri
@@ -1146,8 +1146,8 @@ func (p *Prosr1Parser) CallsDefinition() (localctx ICallsDefinitionContext) {
 		}
 	}
 	{
-		p.SetState(79)
-		p.Match(Prosr1ParserT__3)
+		p.SetState(78)
+		p.Match(Prosr1ParserT__4)
 	}
 
 	return localctx
@@ -1261,34 +1261,34 @@ func (p *Prosr1Parser) MessageDefinition() (localctx IMessageDefinitionContext) 
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(81)
-		p.Match(Prosr1ParserT__15)
+		p.SetState(80)
+		p.Match(Prosr1ParserT__16)
 	}
 	{
-		p.SetState(82)
+		p.SetState(81)
 		p.Match(Prosr1ParserIDENT)
 	}
 	{
-		p.SetState(83)
-		p.Match(Prosr1ParserT__6)
+		p.SetState(82)
+		p.Match(Prosr1ParserT__7)
 	}
-	p.SetState(87)
+	p.SetState(86)
 	p.GetErrorHandler().Sync(p)
 	_la = p.GetTokenStream().LA(1)
 
 	for ((_la)&-(0x1f+1)) == 0 && ((1<<uint(_la))&((1<<Prosr1ParserREPEATED)|(1<<Prosr1ParserTYPE)|(1<<Prosr1ParserIDENT))) != 0 {
 		{
-			p.SetState(84)
+			p.SetState(83)
 			p.FieldDefinition()
 		}
 
-		p.SetState(89)
+		p.SetState(88)
 		p.GetErrorHandler().Sync(p)
 		_la = p.GetTokenStream().LA(1)
 	}
 	{
-		p.SetState(90)
-		p.Match(Prosr1ParserT__7)
+		p.SetState(89)
+		p.Match(Prosr1ParserT__8)
 	}
 
 	return localctx
@@ -1402,130 +1402,36 @@ func (p *Prosr1Parser) FieldDefinition() (localctx IFieldDefinitionContext) {
 	}()
 
 	p.EnterOuterAlt(localctx, 1)
-	p.SetState(93)
+	p.SetState(92)
 	p.GetErrorHandler().Sync(p)
 	_la = p.GetTokenStream().LA(1)
 
 	if _la == Prosr1ParserREPEATED {
 		{
-			p.SetState(92)
+			p.SetState(91)
 			p.Match(Prosr1ParserREPEATED)
 		}
 
 	}
 	{
-		p.SetState(95)
+		p.SetState(94)
 		p.TypeIdent()
 	}
 	{
-		p.SetState(96)
+		p.SetState(95)
 		p.FullIdent()
 	}
 	{
-		p.SetState(97)
+		p.SetState(96)
 		p.Match(Prosr1ParserT__1)
 	}
 	{
-		p.SetState(98)
+		p.SetState(97)
 		p.Match(Prosr1ParserNUMBER)
 	}
 	{
-		p.SetState(99)
-		p.Match(Prosr1ParserT__3)
-	}
-
-	return localctx
-}
-
-// IQuoteContext is an interface to support dynamic dispatch.
-type IQuoteContext interface {
-	antlr.ParserRuleContext
-
-	// GetParser returns the parser.
-	GetParser() antlr.Parser
-
-	// IsQuoteContext differentiates from other interfaces.
-	IsQuoteContext()
-}
-
-type QuoteContext struct {
-	*antlr.BaseParserRuleContext
-	parser antlr.Parser
-}
-
-func NewEmptyQuoteContext() *QuoteContext {
-	var p = new(QuoteContext)
-	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(nil, -1)
-	p.RuleIndex = Prosr1ParserRULE_quote
-	return p
-}
-
-func (*QuoteContext) IsQuoteContext() {}
-
-func NewQuoteContext(parser antlr.Parser, parent antlr.ParserRuleContext, invokingState int) *QuoteContext {
-	var p = new(QuoteContext)
-
-	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(parent, invokingState)
-
-	p.parser = parser
-	p.RuleIndex = Prosr1ParserRULE_quote
-
-	return p
-}
-
-func (s *QuoteContext) GetParser() antlr.Parser { return s.parser }
-func (s *QuoteContext) GetRuleContext() antlr.RuleContext {
-	return s
-}
-
-func (s *QuoteContext) ToStringTree(ruleNames []string, recog antlr.Recognizer) string {
-	return antlr.TreesStringTree(s, ruleNames, recog)
-}
-
-func (s *QuoteContext) EnterRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(Prosr1Listener); ok {
-		listenerT.EnterQuote(s)
-	}
-}
-
-func (s *QuoteContext) ExitRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(Prosr1Listener); ok {
-		listenerT.ExitQuote(s)
-	}
-}
-
-func (p *Prosr1Parser) Quote() (localctx IQuoteContext) {
-	localctx = NewQuoteContext(p, p.GetParserRuleContext(), p.GetState())
-	p.EnterRule(localctx, 18, Prosr1ParserRULE_quote)
-	var _la int
-
-	defer func() {
-		p.ExitRule()
-	}()
-
-	defer func() {
-		if err := recover(); err != nil {
-			if v, ok := err.(antlr.RecognitionException); ok {
-				localctx.SetException(v)
-				p.GetErrorHandler().ReportError(p, v)
-				p.GetErrorHandler().Recover(p, v)
-			} else {
-				panic(err)
-			}
-		}
-	}()
-
-	p.EnterOuterAlt(localctx, 1)
-	{
-		p.SetState(101)
-		_la = p.GetTokenStream().LA(1)
-
-		if !(_la == Prosr1ParserT__16 || _la == Prosr1ParserT__17) {
-			p.GetErrorHandler().RecoverInline(p)
-		} else {
-			p.GetErrorHandler().ReportMatch(p)
-			p.Consume()
-		}
+		p.SetState(98)
+		p.Match(Prosr1ParserT__4)
 	}
 
 	return localctx
@@ -1599,7 +1505,7 @@ func (s *FullIdentContext) ExitRule(listener antlr.ParseTreeListener) {
 
 func (p *Prosr1Parser) FullIdent() (localctx IFullIdentContext) {
 	localctx = NewFullIdentContext(p, p.GetParserRuleContext(), p.GetState())
-	p.EnterRule(localctx, 20, Prosr1ParserRULE_fullIdent)
+	p.EnterRule(localctx, 18, Prosr1ParserRULE_fullIdent)
 	var _la int
 
 	defer func() {
@@ -1620,24 +1526,24 @@ func (p *Prosr1Parser) FullIdent() (localctx IFullIdentContext) {
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(103)
+		p.SetState(100)
 		p.Match(Prosr1ParserIDENT)
 	}
-	p.SetState(108)
+	p.SetState(105)
 	p.GetErrorHandler().Sync(p)
 	_la = p.GetTokenStream().LA(1)
 
-	for _la == Prosr1ParserT__18 {
+	for _la == Prosr1ParserT__17 {
 		{
-			p.SetState(104)
-			p.Match(Prosr1ParserT__18)
+			p.SetState(101)
+			p.Match(Prosr1ParserT__17)
 		}
 		{
-			p.SetState(105)
+			p.SetState(102)
 			p.Match(Prosr1ParserIDENT)
 		}
 
-		p.SetState(110)
+		p.SetState(107)
 		p.GetErrorHandler().Sync(p)
 		_la = p.GetTokenStream().LA(1)
 	}
@@ -1719,7 +1625,7 @@ func (s *TypeIdentContext) ExitRule(listener antlr.ParseTreeListener) {
 
 func (p *Prosr1Parser) TypeIdent() (localctx ITypeIdentContext) {
 	localctx = NewTypeIdentContext(p, p.GetParserRuleContext(), p.GetState())
-	p.EnterRule(localctx, 22, Prosr1ParserRULE_typeIdent)
+	p.EnterRule(localctx, 20, Prosr1ParserRULE_typeIdent)
 
 	defer func() {
 		p.ExitRule()
@@ -1737,21 +1643,21 @@ func (p *Prosr1Parser) TypeIdent() (localctx ITypeIdentContext) {
 		}
 	}()
 
-	p.SetState(113)
+	p.SetState(110)
 	p.GetErrorHandler().Sync(p)
 
 	switch p.GetTokenStream().LA(1) {
 	case Prosr1ParserIDENT:
 		p.EnterOuterAlt(localctx, 1)
 		{
-			p.SetState(111)
+			p.SetState(108)
 			p.FullIdent()
 		}
 
 	case Prosr1ParserTYPE:
 		p.EnterOuterAlt(localctx, 2)
 		{
-			p.SetState(112)
+			p.SetState(109)
 			p.Match(Prosr1ParserTYPE)
 		}
 

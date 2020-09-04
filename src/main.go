@@ -25,20 +25,16 @@ func main() {
 	flag.Parse()
 
 	fp, err := filepath.Abs((*path))
-	if err != nil {
-		panic(err)
-	}
+	check(err)
 
 	is, err := antlr.NewFileStream(fp)
-	if err != nil {
-		panic(err)
-	}
+	check(err)
 
 	l := parser.NewProsr1Lexer(is)
 	s := antlr.NewCommonTokenStream(l, antlr.TokenDefaultChannel)
 
 	p := parser.NewProsr1Parser(s)
-	p.BuildParseTrees = true
+	p.AddErrorListener(antlr.NewDiagnosticErrorListener(true))
 
 	pl := compiler.NewProsr1Listener()
 	antlr.ParseTreeWalkerDefault.Walk(pl, p.Content())
@@ -50,7 +46,11 @@ func main() {
 	nfn := d + strings.Replace(fn, ".prosr", *fe, -1)
 
 	err = ioutil.WriteFile(nfn, []byte(out), 0644)
-	if err != nil {
-		panic(err)
+	check(err)
+}
+
+func check(e error) {
+	if e != nil {
+		panic(e)
 	}
 }

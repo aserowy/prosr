@@ -15,11 +15,11 @@ import (
 type Builder struct {
 	language string
 	packages []string
-	content  parser.ContentContext
+	content  parser.IContentContext
 }
 
 // NewBuilder ctor for Builder
-func NewBuilder(language string, packages []string, content parser.ContentContext) *Builder {
+func NewBuilder(language string, packages []string, content parser.IContentContext) *Builder {
 	b := new(Builder)
 	b.language = language
 	b.packages = packages

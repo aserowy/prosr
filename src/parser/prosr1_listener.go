@@ -11,11 +11,11 @@ type Prosr1Listener interface {
 	// EnterContent is called when entering the content production.
 	EnterContent(c *ContentContext)
 
-	// EnterSyntax is called when entering the syntax production.
-	EnterSyntax(c *SyntaxContext)
+	// EnterSyntaxDefinition is called when entering the syntaxDefinition production.
+	EnterSyntaxDefinition(c *SyntaxDefinitionContext)
 
-	// EnterDefinition is called when entering the definition production.
-	EnterDefinition(c *DefinitionContext)
+	// EnterBodyDefinition is called when entering the bodyDefinition production.
+	EnterBodyDefinition(c *BodyDefinitionContext)
 
 	// EnterPackageDefinition is called when entering the packageDefinition production.
 	EnterPackageDefinition(c *PackageDefinitionContext)
@@ -35,9 +35,6 @@ type Prosr1Listener interface {
 	// EnterFieldDefinition is called when entering the fieldDefinition production.
 	EnterFieldDefinition(c *FieldDefinitionContext)
 
-	// EnterQuote is called when entering the quote production.
-	EnterQuote(c *QuoteContext)
-
 	// EnterFullIdent is called when entering the fullIdent production.
 	EnterFullIdent(c *FullIdentContext)
 
@@ -47,11 +44,11 @@ type Prosr1Listener interface {
 	// ExitContent is called when exiting the content production.
 	ExitContent(c *ContentContext)
 
-	// ExitSyntax is called when exiting the syntax production.
-	ExitSyntax(c *SyntaxContext)
+	// ExitSyntaxDefinition is called when exiting the syntaxDefinition production.
+	ExitSyntaxDefinition(c *SyntaxDefinitionContext)
 
-	// ExitDefinition is called when exiting the definition production.
-	ExitDefinition(c *DefinitionContext)
+	// ExitBodyDefinition is called when exiting the bodyDefinition production.
+	ExitBodyDefinition(c *BodyDefinitionContext)
 
 	// ExitPackageDefinition is called when exiting the packageDefinition production.
 	ExitPackageDefinition(c *PackageDefinitionContext)
@@ -70,9 +67,6 @@ type Prosr1Listener interface {
 
 	// ExitFieldDefinition is called when exiting the fieldDefinition production.
 	ExitFieldDefinition(c *FieldDefinitionContext)
-
-	// ExitQuote is called when exiting the quote production.
-	ExitQuote(c *QuoteContext)
 
 	// ExitFullIdent is called when exiting the fullIdent production.
 	ExitFullIdent(c *FullIdentContext)

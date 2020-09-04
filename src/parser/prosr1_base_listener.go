@@ -27,17 +27,17 @@ func (s *BaseProsr1Listener) EnterContent(ctx *ContentContext) {}
 // ExitContent is called when production content is exited.
 func (s *BaseProsr1Listener) ExitContent(ctx *ContentContext) {}
 
-// EnterSyntax is called when production syntax is entered.
-func (s *BaseProsr1Listener) EnterSyntax(ctx *SyntaxContext) {}
+// EnterSyntaxDefinition is called when production syntaxDefinition is entered.
+func (s *BaseProsr1Listener) EnterSyntaxDefinition(ctx *SyntaxDefinitionContext) {}
 
-// ExitSyntax is called when production syntax is exited.
-func (s *BaseProsr1Listener) ExitSyntax(ctx *SyntaxContext) {}
+// ExitSyntaxDefinition is called when production syntaxDefinition is exited.
+func (s *BaseProsr1Listener) ExitSyntaxDefinition(ctx *SyntaxDefinitionContext) {}
 
-// EnterDefinition is called when production definition is entered.
-func (s *BaseProsr1Listener) EnterDefinition(ctx *DefinitionContext) {}
+// EnterBodyDefinition is called when production bodyDefinition is entered.
+func (s *BaseProsr1Listener) EnterBodyDefinition(ctx *BodyDefinitionContext) {}
 
-// ExitDefinition is called when production definition is exited.
-func (s *BaseProsr1Listener) ExitDefinition(ctx *DefinitionContext) {}
+// ExitBodyDefinition is called when production bodyDefinition is exited.
+func (s *BaseProsr1Listener) ExitBodyDefinition(ctx *BodyDefinitionContext) {}
 
 // EnterPackageDefinition is called when production packageDefinition is entered.
 func (s *BaseProsr1Listener) EnterPackageDefinition(ctx *PackageDefinitionContext) {}
@@ -74,12 +74,6 @@ func (s *BaseProsr1Listener) EnterFieldDefinition(ctx *FieldDefinitionContext) {
 
 // ExitFieldDefinition is called when production fieldDefinition is exited.
 func (s *BaseProsr1Listener) ExitFieldDefinition(ctx *FieldDefinitionContext) {}
-
-// EnterQuote is called when production quote is entered.
-func (s *BaseProsr1Listener) EnterQuote(ctx *QuoteContext) {}
-
-// ExitQuote is called when production quote is exited.
-func (s *BaseProsr1Listener) ExitQuote(ctx *QuoteContext) {}
 
 // EnterFullIdent is called when production fullIdent is entered.
 func (s *BaseProsr1Listener) EnterFullIdent(ctx *FullIdentContext) {}
