@@ -37,9 +37,10 @@ func main() {
 	p.AddErrorListener(antlr.NewDiagnosticErrorListener(true))
 
 	pl := compiler.NewProsr1Listener()
-	antlr.ParseTreeWalkerDefault.Walk(pl, p.Content())
+	c := p.Content()
+	antlr.ParseTreeWalkerDefault.Walk(pl, c)
 
-	b := compiler.NewBuilder((*language), pl.Packages(), p.Content())
+	b := compiler.NewBuilder((*language), pl.Packages(), c)
 	fe, out := b.Build()
 
 	d, fn := filepath.Split(fp)
