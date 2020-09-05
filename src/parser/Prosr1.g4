@@ -8,7 +8,7 @@ NUMBER : [0-9]+;
 WHITESPACE : [ \r\n\t]+ -> skip;
 
 // parser rules
-content : syntaxDefinition definitions=bodyDefinition* EOF;
+content : syntaxDefinition definitions+=bodyDefinition* EOF;
 syntaxDefinition : 'syntax' '=' '"' 'prosr1' '"' ';';
 bodyDefinition : packageDefinition | hubDefinition | messageDefinition;
 

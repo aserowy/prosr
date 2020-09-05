@@ -1,6 +1,8 @@
 {{- registerFileExtension ".cs" -}}
 {{- addType "int32" "int" -}}
 
+{{- $package := false -}}
+
 // Generated with prosr1 by compiler 0.9, template csharp.tmpl 0.1
 
 using Microsoft.AspNetCore.SignalR;
@@ -8,55 +10,64 @@ using Microsoft.AspNetCore.SignalR.Client;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-{{range . -}}
-	{{- if eq .Token "package"}}
-namespace {{.Ident}}
+
+{{- range .GetDefinitions -}}
+	{{- $child := .GetChild 0 -}}
+	{{- if is $child "packageDefinition" -}}
+		{{- if $package -}} } {{- end -}}
+		{{- $package = true}}
+
+namespace {{$child.FullIdent.GetText}}
 {
-		{{- range .Nodes -}}
-			{{template "classes" .}}
-		{{- end -}}
-}
-	{{else -}}
-		{{template "classes" .}}
-	{{end -}}
+	{{- else -}}
+		{{template "classes" $child}}
+	{{- end -}}
 {{- end -}}
 
+{{- if $package -}}
+}
+{{end -}}
+
 {{define "classes"}}
-	{{- if eq .Token "hub" -}}
+	{{- if is . "hubDefinition" -}}
 		{{- template "interface" .}}
-		{{- template "client" .}}
-		{{- template "hub" .}}
-	{{- else if eq .Token "message" -}}
-		{{- template "message" .}}
+		{{/* {{- template "client" .}} */}}
+		{{- template "hub" . -}}
+	{{- else if is . "messageDefinition" -}}
+		{{- template "message" . -}}
 	{{- end -}}
 {{end}}
 {{define "interface"}}
-	public interface I{{- .Ident -}}Client : I{{- .Ident -}}ClientBase, IDisposable
+	public interface I{{- .IDENT.GetText -}}Client : I{{- .IDENT.GetText -}}ClientBase, IDisposable
 	{
 		Task InitializeHubConnection();
-		{{- range .Nodes }}
-		{{- if eq .Token "sending" }}
-		Task Call{{.Ident -}}OnHub({{if .InputType}}{{- .InputType}} message{{end}});
-		{{- end}}
+		{{- range .AllActionDefinition }}
+		Task Call{{.IDENT.GetText -}}OnHub({{if .FullIdent}}{{- .FullIdent.GetText}} message{{end}});
 		{{- end}}
 	}
 
-	public interface I{{- .Ident -}}ClientBase
+	public interface I{{- .IDENT.GetText -}}ClientBase
 	{
-		{{- range .Nodes | unifyReturnings}}
-		Task {{.Ident -}}({{if .ResponseType}}{{- .ResponseType}} message{{end}});
+		{{- range .AllActionDefinition -}}
+			{{- if .CallsDefinition}}
+		Task {{.CallsDefinition.IDENT.GetText -}}({{if .CallsDefinition.FullIdent}}{{- .CallsDefinition.FullIdent.GetText}} message{{end}});
+			{{- end -}}
+		{{- end}}
+		{{- range .AllCallsDefinition}}
+		Task {{.IDENT.GetText -}}({{if .FullIdent}}{{- .FullIdent.GetText}} message{{end}});
 		{{- end}}
 	}
 {{end}}
+{{/* 
 {{define "client"}}
-	public abstract class {{.Ident -}}ClientBase : I{{- .Ident -}}Client
+	public abstract class {{.IDENT.GetText -}}ClientBase : I{{- .IDENT.GetText -}}Client
 	{
 		private readonly IHubConnectionBuilder _hubConnectionBuilder;
 
 		private bool _disposed = false;
 		private HubConnection _connection;
 
-		protected {{.Ident -}}ClientBase(IHubConnectionBuilder hubConnectionBuilder)
+		protected {{.IDENT.GetText -}}ClientBase(IHubConnectionBuilder hubConnectionBuilder)
 		{
 			_hubConnectionBuilder = hubConnectionBuilder;
 		}
@@ -70,18 +81,18 @@ namespace {{.Ident}}
 
 		{{- range .Nodes | unifyReturnings}}
 
-		public abstract Task {{.Ident -}}({{- if .ResponseType}}{{- .ResponseType}} message{{end -}});
+		public abstract Task {{.IDENT.GetText -}}({{- if .ResponseType}}{{- .ResponseType}} message{{end -}});
 		{{- end}}
 
 		{{- range .Nodes -}}
 		{{- if eq .Token "sending"}}
 
-		public async Task Call{{.Ident -}}OnHub({{if .InputType}}{{- .InputType}} message{{end}})
+		public async Task Call{{.IDENT.GetText -}}OnHub({{if .InputType}}{{- .InputType}} message{{end}})
 		{
 			var connection = await GetConnection().ConfigureAwait(false);
 
 			await connection
-				.SendAsync("{{- .Ident -}}"{{if .InputType}}, message{{end}})
+				.SendAsync("{{- .IDENT.GetText -}}"{{if .InputType}}, message{{end}})
 				.ConfigureAwait(false);
 		}
 		{{- end}}
@@ -116,7 +127,7 @@ namespace {{.Ident}}
 		private HubConnection BindClientMethods(ref HubConnection connection)
 		{
 			{{- range .Nodes | unifyReturnings}}
-			connection.On{{if .ResponseType}}<{{- .ResponseType -}}>{{end}}("{{.Ident -}}", {{if .ResponseType}}message{{else}}(){{end}} => {{.Ident -}}({{- if .ResponseType -}}message{{- end -}}));
+			connection.On{{if .ResponseType}}<{{- .ResponseType -}}>{{end}}("{{.IDENT.GetText -}}", {{if .ResponseType}}message{{else}}(){{end}} => {{.IDENT.GetText -}}({{- if .ResponseType -}}message{{- end -}}));
 			{{- end}}
 
 			return connection;
@@ -151,58 +162,55 @@ namespace {{.Ident}}
 			}
 		}
 		
-		~{{.Ident -}}ClientBase()
+		~{{.IDENT.GetText -}}ClientBase()
 		{
 			Dispose(false);
 		}
 	}
-{{end}}
+{{end}} */}}
 {{define "hub"}}
-	public abstract class {{.Ident -}}Base : Hub<I{{- .Ident -}}ClientBase>
+	public abstract class {{.IDENT.GetText -}}Base : Hub<I{{- .IDENT.GetText -}}ClientBase>
 	{
-		{{- range .Nodes -}}
-			{{- if eq .Token "sending" -}}
-				{{template "hubSending" .}}
-
-			{{- else if eq .Token "returning" -}}
-				{{template "hubReturning" .}}
-
-			{{- end -}}
+		{{- range .AllActionDefinition -}}
+			{{template "action" .}}
+		{{- end}}
+		{{- range .AllCallsDefinition -}}
+			{{template "calls" .}}
 		{{- end}}
 	}
 {{end}}
-{{define "hubSending"}}
-		public async Task {{.Ident -}}({{if .InputType}}{{- .InputType}} message{{end}})
+{{define "action"}}
+		public async Task {{.IDENT.GetText -}}({{if .FullIdent}}{{- .FullIdent.GetText}} message{{end}})
 		{
-		{{- if eq .Calls nil}}
-			await Handle{{- .Ident -}}Async({{if .InputType}}message{{end}}).ConfigureAwait(false);
-		{{- else}}
-			{{if .Calls.ResponseType}}var result = {{end}}await Handle{{- .Ident -}}Async({{if .InputType}}message{{end}}).ConfigureAwait(false);
+		{{- if .CallsDefinition}}
+			{{if .CallsDefinition.FullIdent}}var result = {{end}}await Handle{{- .IDENT.GetText -}}Async({{if .FullIdent}}message{{end}}).ConfigureAwait(false);
 
 			await Clients
-				.{{- .Calls.Target | capitalizeFirstLetter}}
-				.{{.Calls.Ident -}}({{if .Calls.ResponseType}}result{{end}})
+				.{{- .CallsDefinition.GetTarget.GetText | capitalizeFirstLetter}}
+				.{{- .CallsDefinition.IDENT.GetText -}}({{if .CallsDefinition.FullIdent}}result{{end}})
 				.ConfigureAwait(false);
+		{{- else}}
+			await Handle{{- .IDENT.GetText -}}Async({{if .FullIdent}}message{{end}}).ConfigureAwait(false);
 		{{- end}}
 		}
 
-		{{if eq .Calls nil -}}
-		protected abstract Task Handle{{- .Ident -}}Async({{if .InputType}}{{- .InputType}} message{{end}});
+		{{if .CallsDefinition -}}
+		protected abstract Task{{if .CallsDefinition.FullIdent}}<{{- .CallsDefinition.FullIdent.GetText -}}>{{end}} Handle{{- .IDENT.GetText -}}Async({{if .FullIdent}}{{- .FullIdent.GetText}} message{{end}});
 		{{else -}}
-		protected abstract Task{{if .Calls.ResponseType}}<{{- .Calls.ResponseType -}}>{{end}} Handle{{- .Ident -}}Async({{if .InputType}}{{- .InputType}} message{{end}});
+		protected abstract Task Handle{{- .IDENT.GetText -}}Async({{if .FullIdent}}{{- .FullIdent.GetText}} message{{end}});
 		{{end -}}
 {{end}}
-{{define "hubReturning"}}
-		protected Task Send{{- .Ident -}}On{{- .Target | capitalizeFirstLetter -}}Async({{- .ResponseType}} message)
+{{define "calls"}}
+		protected Task Send{{- .IDENT.GetText -}}On{{- .GetTarget.GetText | capitalizeFirstLetter -}}Async({{if .FullIdent}}{{- .FullIdent.GetText}} message{{end}})
 		{
-			return Clients.{{- .Target | capitalizeFirstLetter -}}.{{.Ident -}}(message);
+			return Clients.{{- .GetTarget.GetText | capitalizeFirstLetter -}}.{{.IDENT.GetText -}}({{if .FullIdent}}message{{end}});
 		}
 {{end}}
 {{define "message"}}
-	public class {{.Ident}}
+	public class {{.IDENT.GetText}}
 	{
-		{{- range .Nodes}}
-		public {{if .IsRepeated}}IEnumerable<{{- .Type | type -}}>{{else}}{{.Type | type}}{{end}} {{.Ident}} { get; set; }
+		{{- range .AllFieldDefinition}}
+		public {{if .REPEATED}}IEnumerable<{{- .TypeIdent.GetText | type -}}>{{else}}{{.TypeIdent.GetText | type}}{{end}} {{.FullIdent.GetText}} { get; set; }
 		{{- end}}
 	}
 {{end}}

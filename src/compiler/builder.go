@@ -8,6 +8,7 @@ import (
 
 	"prosr/parser"
 
+	"github.com/antlr/antlr4/runtime/Go/antlr"
 	"github.com/markbates/pkger"
 )
 
@@ -51,6 +52,7 @@ func buildTemplate(b *Builder) (*template.Template, *string) {
 		"type":                  func(key string) string { return resolveOption(tm, key) },
 
 		"capitalizeFirstLetter": capitalizeFirstLetter,
+		"is":                    isOfType,
 	}
 
 	// pkger.Include("/templates/") is called in main.go
@@ -95,6 +97,29 @@ func capitalizeFirstLetter(v string) string {
 	default:
 		return strings.ToUpper(string(v[0])) + v[1:]
 	}
+}
+
+var ruleToIndexMap = map[string]int{
+	"content":           0,
+	"syntaxDefinition":  1,
+	"bodyDefinition":    2,
+	"packageDefinition": 3,
+	"hubDefinition":     4,
+	"actionDefinition":  5,
+	"callsDefinition":   6,
+	"messageDefinition": 7,
+	"fieldDefinition":   8,
+	"fullIdent":         9,
+	"typeIdent":         10,
+}
+
+func isOfType(ctx antlr.RuleContext, typeDefinition string) bool {
+	indx, cntns := ruleToIndexMap[typeDefinition]
+	if !cntns {
+		return false
+	}
+
+	return ctx.GetRuleIndex() == indx
 }
 
 func resolveOption(options map[string]string, key string) string {

@@ -157,11 +157,17 @@ type IContentContext interface {
 	// GetParser returns the parser.
 	GetParser() antlr.Parser
 
-	// GetDefinitions returns the definitions rule contexts.
-	GetDefinitions() IBodyDefinitionContext
+	// Get_bodyDefinition returns the _bodyDefinition rule contexts.
+	Get_bodyDefinition() IBodyDefinitionContext
 
-	// SetDefinitions sets the definitions rule contexts.
-	SetDefinitions(IBodyDefinitionContext)
+	// Set_bodyDefinition sets the _bodyDefinition rule contexts.
+	Set_bodyDefinition(IBodyDefinitionContext)
+
+	// GetDefinitions returns the definitions rule context list.
+	GetDefinitions() []IBodyDefinitionContext
+
+	// SetDefinitions sets the definitions rule context list.
+	SetDefinitions([]IBodyDefinitionContext)
 
 	// IsContentContext differentiates from other interfaces.
 	IsContentContext()
@@ -169,8 +175,9 @@ type IContentContext interface {
 
 type ContentContext struct {
 	*antlr.BaseParserRuleContext
-	parser      antlr.Parser
-	definitions IBodyDefinitionContext
+	parser          antlr.Parser
+	_bodyDefinition IBodyDefinitionContext
+	definitions     []IBodyDefinitionContext
 }
 
 func NewEmptyContentContext() *ContentContext {
@@ -195,9 +202,13 @@ func NewContentContext(parser antlr.Parser, parent antlr.ParserRuleContext, invo
 
 func (s *ContentContext) GetParser() antlr.Parser { return s.parser }
 
-func (s *ContentContext) GetDefinitions() IBodyDefinitionContext { return s.definitions }
+func (s *ContentContext) Get_bodyDefinition() IBodyDefinitionContext { return s._bodyDefinition }
 
-func (s *ContentContext) SetDefinitions(v IBodyDefinitionContext) { s.definitions = v }
+func (s *ContentContext) Set_bodyDefinition(v IBodyDefinitionContext) { s._bodyDefinition = v }
+
+func (s *ContentContext) GetDefinitions() []IBodyDefinitionContext { return s.definitions }
+
+func (s *ContentContext) SetDefinitions(v []IBodyDefinitionContext) { s.definitions = v }
 
 func (s *ContentContext) SyntaxDefinition() ISyntaxDefinitionContext {
 	var t = s.GetTypedRuleContext(reflect.TypeOf((*ISyntaxDefinitionContext)(nil)).Elem(), 0)
@@ -292,8 +303,9 @@ func (p *Prosr1Parser) Content() (localctx IContentContext) {
 
 			var _x = p.BodyDefinition()
 
-			localctx.(*ContentContext).definitions = _x
+			localctx.(*ContentContext)._bodyDefinition = _x
 		}
+		localctx.(*ContentContext).definitions = append(localctx.(*ContentContext).definitions, localctx.(*ContentContext)._bodyDefinition)
 
 		p.SetState(28)
 		p.GetErrorHandler().Sync(p)
