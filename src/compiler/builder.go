@@ -49,10 +49,11 @@ func buildTemplate(b *Builder) (*template.Template, *string) {
 	fm := template.FuncMap{
 		"registerFileExtension": func(extension string) string { fe = extension; return "" },
 		"addType":               func(key string, value string) string { tm[key] = value; return "" },
-		"type":                  func(key string) string { return resolveOption(tm, key) },
+		"type":                  func(key string) string { return resolveType(tm, key) },
 
 		"capitalizeFirstLetter": capitalizeFirstLetter,
 		"is":                    isOfType,
+		"unifyCallDefinition":   unifyCallDefinition,
 	}
 
 	// pkger.Include("/templates/") is called in main.go
@@ -122,7 +123,42 @@ func isOfType(ctx antlr.RuleContext, typeDefinition string) bool {
 	return ctx.GetRuleIndex() == indx
 }
 
-func resolveOption(options map[string]string, key string) string {
+func unifyCallDefinition(ctx parser.HubDefinitionContext) []*parser.CallsDefinitionContext {
+	m := map[string]*parser.CallsDefinitionContext{}
+	for _, vl := range ctx.AllActionDefinition() {
+		action := vl.(*parser.ActionDefinitionContext)
+		if action.CallsDefinition() == nil {
+			continue
+		}
+
+		calls := action.CallsDefinition().(*parser.CallsDefinitionContext)
+		key := calls.IDENT().GetText()
+		if _, ok := m[key]; ok {
+			continue
+		}
+
+		m[key] = calls
+	}
+
+	for _, vl := range ctx.AllCallsDefinition() {
+		calls := vl.(*parser.CallsDefinitionContext)
+		key := calls.IDENT().GetText()
+		if _, ok := m[key]; ok {
+			continue
+		}
+
+		m[key] = calls
+	}
+
+	r := []*parser.CallsDefinitionContext{}
+	for _, vl := range m {
+		r = append(r, vl)
+	}
+
+	return r
+}
+
+func resolveType(options map[string]string, key string) string {
 	if v, ok := options[key]; ok {
 		return v
 	}

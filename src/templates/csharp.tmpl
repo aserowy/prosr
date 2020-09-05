@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 
 {{- range .GetDefinitions -}}
+	{{- /* Important to resolve the underlying type of bodyDefinition */ -}}
 	{{- $child := .GetChild 0 -}}
 	{{- if is $child "packageDefinition" -}}
 		{{- if $package -}} } {{- end -}}
@@ -31,8 +32,8 @@ namespace {{$child.FullIdent.GetText}}
 {{define "classes"}}
 	{{- if is . "hubDefinition" -}}
 		{{- template "interface" .}}
-		{{/* {{- template "client" .}} */}}
-		{{- template "hub" . -}}
+		{{- template "client" .}}
+		{{- template "hub" .}}
 	{{- else if is . "messageDefinition" -}}
 		{{- template "message" . -}}
 	{{- end -}}
@@ -48,17 +49,11 @@ namespace {{$child.FullIdent.GetText}}
 
 	public interface I{{- .IDENT.GetText -}}ClientBase
 	{
-		{{- range .AllActionDefinition -}}
-			{{- if .CallsDefinition}}
-		Task {{.CallsDefinition.IDENT.GetText -}}({{if .CallsDefinition.FullIdent}}{{- .CallsDefinition.FullIdent.GetText}} message{{end}});
-			{{- end -}}
-		{{- end}}
-		{{- range .AllCallsDefinition}}
+		{{- range unifyCallDefinition .}}
 		Task {{.IDENT.GetText -}}({{if .FullIdent}}{{- .FullIdent.GetText}} message{{end}});
 		{{- end}}
 	}
 {{end}}
-{{/* 
 {{define "client"}}
 	public abstract class {{.IDENT.GetText -}}ClientBase : I{{- .IDENT.GetText -}}Client
 	{
@@ -79,23 +74,21 @@ namespace {{$child.FullIdent.GetText}}
 			await GetConnection().ConfigureAwait(false);
 		}
 
-		{{- range .Nodes | unifyReturnings}}
+		{{- range unifyCallDefinition .}}
 
-		public abstract Task {{.IDENT.GetText -}}({{- if .ResponseType}}{{- .ResponseType}} message{{end -}});
+		public abstract Task {{.IDENT.GetText -}}({{if .FullIdent}}{{- .FullIdent.GetText}} message{{end}});
 		{{- end}}
 
-		{{- range .Nodes -}}
-		{{- if eq .Token "sending"}}
+		{{- range .AllActionDefinition}}
 
-		public async Task Call{{.IDENT.GetText -}}OnHub({{if .InputType}}{{- .InputType}} message{{end}})
+		public async Task Call{{.IDENT.GetText -}}OnHub({{if .FullIdent}}{{- .FullIdent.GetText}} message{{end}})
 		{
 			var connection = await GetConnection().ConfigureAwait(false);
 
 			await connection
-				.SendAsync("{{- .IDENT.GetText -}}"{{if .InputType}}, message{{end}})
+				.SendAsync("{{- .IDENT.GetText -}}"{{if .FullIdent}}, message{{end}})
 				.ConfigureAwait(false);
 		}
-		{{- end}}
 		{{- end}}
 
 		private async Task<HubConnection> GetConnection()
@@ -126,8 +119,8 @@ namespace {{$child.FullIdent.GetText}}
 
 		private HubConnection BindClientMethods(ref HubConnection connection)
 		{
-			{{- range .Nodes | unifyReturnings}}
-			connection.On{{if .ResponseType}}<{{- .ResponseType -}}>{{end}}("{{.IDENT.GetText -}}", {{if .ResponseType}}message{{else}}(){{end}} => {{.IDENT.GetText -}}({{- if .ResponseType -}}message{{- end -}}));
+			{{- range unifyCallDefinition .}}
+			connection.On{{if .FullIdent}}<{{- .FullIdent.GetText -}}>{{end}}("{{.IDENT.GetText -}}", {{if .FullIdent}}message{{else}}(){{end}} => {{.IDENT.GetText -}}({{- if .FullIdent -}}message{{- end -}}));
 			{{- end}}
 
 			return connection;
@@ -167,7 +160,7 @@ namespace {{$child.FullIdent.GetText}}
 			Dispose(false);
 		}
 	}
-{{end}} */}}
+{{end}}
 {{define "hub"}}
 	public abstract class {{.IDENT.GetText -}}Base : Hub<I{{- .IDENT.GetText -}}ClientBase>
 	{

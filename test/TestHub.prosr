@@ -8,6 +8,7 @@ hub TestHub {
     action RefreshFunctionTree() calls FunctionTreeRefreshed() on caller;
     
     calls FunctionCalled(FunctionRequest) on all;
+    calls Function(FunctionResponse) on all;
 }
 
 message FunctionRequest {

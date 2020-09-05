@@ -18,12 +18,133 @@ namespace Test.Package
 
 	public interface ITestHubClientBase
 	{
+		Task FunctionCalled(FunctionRequest message);
 		Task Function(FunctionResponse message);
 		Task FunctionTreeRefreshed();
-		Task FunctionCalled(FunctionRequest message);
 	}
 
+	public abstract class TestHubClientBase : ITestHubClient
+	{
+		private readonly IHubConnectionBuilder _hubConnectionBuilder;
+
+		private bool _disposed = false;
+		private HubConnection _connection;
+
+		protected TestHubClientBase(IHubConnectionBuilder hubConnectionBuilder)
+		{
+			_hubConnectionBuilder = hubConnectionBuilder;
+		}
+
+		protected abstract Uri HubUrl { get; }
+
+		public async Task InitializeHubConnection()
+		{
+			await GetConnection().ConfigureAwait(false);
+		}
+
+		public abstract Task Function(FunctionResponse message);
+
+		public abstract Task FunctionTreeRefreshed();
+
+		public abstract Task FunctionCalled(FunctionRequest message);
+
+		public async Task CallFunctionOnHub(FunctionRequest message)
+		{
+			var connection = await GetConnection().ConfigureAwait(false);
+
+			await connection
+				.SendAsync("Function", message)
+				.ConfigureAwait(false);
+		}
+
+		public async Task CallTriggerOnHub()
+		{
+			var connection = await GetConnection().ConfigureAwait(false);
+
+			await connection
+				.SendAsync("Trigger")
+				.ConfigureAwait(false);
+		}
+
+		public async Task CallRefreshFunctionTreeOnHub()
+		{
+			var connection = await GetConnection().ConfigureAwait(false);
+
+			await connection
+				.SendAsync("RefreshFunctionTree")
+				.ConfigureAwait(false);
+		}
+
+		private async Task<HubConnection> GetConnection()
+		{
+			if (_connection == null)
+			{
+				_connection = await CreateHubConnectionAsync().ConfigureAwait(false);
+			}
 		
+			return _connection;
+		}
+
+		private async Task<HubConnection> CreateHubConnectionAsync()
+		{
+			var connection = _hubConnectionBuilder
+				.WithUrl(HubUrl)
+				.WithAutomaticReconnect(new[] { TimeSpan.Zero, TimeSpan.Zero, TimeSpan.FromSeconds(10) })
+				.Build();
+
+			BindClientMethods(ref connection);
+
+			await connection
+				.StartAsync()
+				.ConfigureAwait(false);
+
+			return connection;
+		}
+
+		private HubConnection BindClientMethods(ref HubConnection connection)
+		{
+			connection.On<FunctionResponse>("Function", message => Function(message));
+			connection.On("FunctionTreeRefreshed", () => FunctionTreeRefreshed());
+			connection.On<FunctionRequest>("FunctionCalled", message => FunctionCalled(message));
+
+			return connection;
+		}
+
+		public void Dispose()
+		{
+			Dispose(true);
+			GC.SuppressFinalize(this);
+		}
+		
+		protected virtual void Dispose(bool disposing)
+		{
+			if (!_disposed)
+			{
+				if (disposing)
+				{
+					if (!(_connection is null))
+					{
+						var result = _connection
+							.DisposeAsync()
+							.Wait(1000);
+
+						if (!result)
+						{
+							throw new TimeoutException($"Timeout of one second reached while closing hub connection for {HubUrl}!");
+						}
+					}
+				}
+
+				_disposed = true;
+			}
+		}
+		
+		~TestHubClientBase()
+		{
+			Dispose(false);
+		}
+	}
+
 	public abstract class TestHubBase : Hub<ITestHubClientBase>
 	{
 		public async Task Function(FunctionRequest message)
@@ -60,6 +181,11 @@ namespace Test.Package
 		protected Task SendFunctionCalledOnAllAsync(FunctionRequest message)
 		{
 			return Clients.All.FunctionCalled(message);
+		}
+
+		protected Task SendFunctionOnAllAsync(FunctionResponse message)
+		{
+			return Clients.All.Function(message);
 		}
 
 	}
