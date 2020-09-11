@@ -1,0 +1,28 @@
+{{- registerFileExtension ".go" -}}
+{{- addType "int32" "int" -}}
+
+{{- range .GetDefinitions -}}
+	{{- /* Important to resolve the underlying type of bodyDefinition */ -}}
+	{{- $child := .GetChild 0 -}}
+	{{template "classes" $child}}
+{{- end -}}
+
+{{define "classes"}}
+	{{- if is . "packageDefinition" -}}
+		{{- template "package" .}}
+	{{- else if is . "messageDefinition" -}}
+		{{- template "message" . -}}
+	{{- end -}}
+{{end}}
+
+{{define "package"}}
+package {{.FullIdent.GetText}}
+{{end}}
+
+{{define "message"}}
+type {{.IDENT.GetText}} struct {
+	{{- range .AllFieldDefinition}}
+	{{.IDENT.GetText}} {{.TypeIdent.GetText | type}} {{- if .REPEATED}}[]{{end}}
+	{{- end}}
+}
+{{end}}
