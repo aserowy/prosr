@@ -203,7 +203,7 @@ namespace {{$child.FullIdent.GetText}}
 	public class {{.IDENT.GetText}}
 	{
 		{{- range .AllFieldDefinition}}
-		public {{if .REPEATED}}IEnumerable<{{- .TypeIdent.GetText | type -}}>{{else}}{{.TypeIdent.GetText | type}}{{end}} {{.FullIdent.GetText}} { get; set; }
+		public {{if .REPEATED}}IEnumerable<{{- .TypeIdent.GetText | type -}}>{{else}}{{.TypeIdent.GetText | type}}{{end}} {{.IDENT.GetText}} { get; set; }
 		{{- end}}
 	}
 {{end}}

@@ -19,7 +19,7 @@ actionDefinition : 'action' IDENT'('fullIdent?')' (callsDefinition | ';');
 callsDefinition : 'calls' IDENT'('fullIdent?')' 'on' target=('caller' | 'all') ';';
 
 messageDefinition : 'message' IDENT '{' fieldDefinition* '}';
-fieldDefinition : REPEATED? typeIdent fullIdent '=' NUMBER';';
+fieldDefinition : REPEATED? typeIdent IDENT '=' NUMBER';';
 
 // literals & identifier
 fullIdent : IDENT ('.' IDENT)*;

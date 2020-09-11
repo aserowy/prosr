@@ -55,7 +55,7 @@ var parserATN = []uint16{
 	2, 87, 90, 3, 2, 2, 2, 88, 86, 3, 2, 2, 2, 88, 89, 3, 2, 2, 2, 89, 91,
 	3, 2, 2, 2, 90, 88, 3, 2, 2, 2, 91, 92, 7, 11, 2, 2, 92, 17, 3, 2, 2, 2,
 	93, 95, 7, 21, 2, 2, 94, 93, 3, 2, 2, 2, 94, 95, 3, 2, 2, 2, 95, 96, 3,
-	2, 2, 2, 96, 97, 5, 22, 12, 2, 97, 98, 5, 20, 11, 2, 98, 99, 7, 4, 2, 2,
+	2, 2, 2, 96, 97, 5, 22, 12, 2, 97, 98, 7, 23, 2, 2, 98, 99, 7, 4, 2, 2,
 	99, 100, 7, 24, 2, 2, 100, 101, 7, 7, 2, 2, 101, 19, 3, 2, 2, 2, 102, 107,
 	7, 23, 2, 2, 103, 104, 7, 20, 2, 2, 104, 106, 7, 23, 2, 2, 105, 103, 3,
 	2, 2, 2, 106, 109, 3, 2, 2, 2, 107, 105, 3, 2, 2, 2, 107, 108, 3, 2, 2,
@@ -1354,14 +1354,8 @@ func (s *FieldDefinitionContext) TypeIdent() ITypeIdentContext {
 	return t.(ITypeIdentContext)
 }
 
-func (s *FieldDefinitionContext) FullIdent() IFullIdentContext {
-	var t = s.GetTypedRuleContext(reflect.TypeOf((*IFullIdentContext)(nil)).Elem(), 0)
-
-	if t == nil {
-		return nil
-	}
-
-	return t.(IFullIdentContext)
+func (s *FieldDefinitionContext) IDENT() antlr.TerminalNode {
+	return s.GetToken(Prosr1ParserIDENT, 0)
 }
 
 func (s *FieldDefinitionContext) NUMBER() antlr.TerminalNode {
@@ -1431,7 +1425,7 @@ func (p *Prosr1Parser) FieldDefinition() (localctx IFieldDefinitionContext) {
 	}
 	{
 		p.SetState(95)
-		p.FullIdent()
+		p.Match(Prosr1ParserIDENT)
 	}
 	{
 		p.SetState(96)
