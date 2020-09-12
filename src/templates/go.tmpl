@@ -22,7 +22,7 @@ package {{.FullIdent.GetText}}
 {{define "message"}}
 type {{.IDENT.GetText}} struct {
 	{{- range .AllFieldDefinition}}
-	{{.IDENT.GetText}} {{.TypeIdent.GetText | type}} {{- if .REPEATED}}[]{{end}}
+	{{.IDENT.GetText}} {{if .REPEATED}}[]{{end -}}{{.TypeIdent.GetText | type}}
 	{{- end}}
 }
 {{end}}
