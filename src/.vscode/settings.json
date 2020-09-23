@@ -1,14 +1,18 @@
 {
-    "antlr4.generation": {
-        "mode": "external",
-        "language": "Go"
-    },
-    "filewatcher.commands": [
+	"antlr4.generation": {
+		"language": "Go",
+		"mode": "external"
+	},
+	"filewatcher.commands": [
 		{
-			"match": "\\.tmpl",
-			"isAsync": true,
 			"cmd": "cd ${workspaceRoot} && pkger",
-			"event": "onFileChange"
-		}		
-	]
+			"event": "onFileChange",
+			"isAsync": true,
+			"match": "\\.tmpl"
+		}
+	],
+	"go.lintFlags": [
+		"--fast"
+	],
+	"go.lintTool": "golangci-lint"
 }
