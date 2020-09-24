@@ -62,6 +62,20 @@ message SearchResponse {
 |---|---|
 | repeated | IEnumerable<> |
 
+### Maps/Dictionaries
+
+To create a map, use the keyword map and specify the types of the map. The first type must be int32 or string.
+
+```prosr1
+message SearchRequest {
+    map<string, string> filter = 4;
+}
+```
+
+|.prosr | C# type |
+|---|---|
+| map<,> | IDictionary<,> |
+
 ### Using other message types
 
 References to complex objects must be resolved [exactly as in proto3](https://developers.google.com/protocol-buffers/docs/proto3#other).
