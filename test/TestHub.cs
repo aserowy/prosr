@@ -103,9 +103,9 @@ namespace Test.Package
 
 		private HubConnection BindClientMethods(ref HubConnection connection)
 		{
+			connection.On<FunctionResponse>("Function", message => Function(message));
 			connection.On("FunctionTreeRefreshed", () => FunctionTreeRefreshed());
 			connection.On<FunctionRequest>("FunctionCalled", message => FunctionCalled(message));
-			connection.On<FunctionResponse>("Function", message => Function(message));
 
 			return connection;
 		}
@@ -195,6 +195,7 @@ namespace Test.Package
 		public string name { get; set; }
 		public int page_number { get; set; }
 		public int result_per_page { get; set; }
+		public IDictionary<string, string> filter { get; set; }
 	}
 
 	public class FunctionResponse

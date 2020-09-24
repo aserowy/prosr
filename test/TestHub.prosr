@@ -15,6 +15,7 @@ message FunctionRequest {
     string name = 1;
     int32 page_number = 2;
     int32 result_per_page = 3;
+    map<string, string> filter = 4;
 }
 
 message FunctionResponse {
