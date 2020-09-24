@@ -1,4 +1,4 @@
-// Code generated from c:\Users\serow_000\source\repos\prosr\src\parser\Prosr1.g4 by ANTLR 4.8. DO NOT EDIT.
+// Code generated from e:\source\prosr\src\parser\Prosr1.g4 by ANTLR 4.8. DO NOT EDIT.
 
 package parser // Prosr1
 
@@ -35,6 +35,9 @@ type Prosr1Listener interface {
 	// EnterFieldDefinition is called when entering the fieldDefinition production.
 	EnterFieldDefinition(c *FieldDefinitionContext)
 
+	// EnterMapDefinition is called when entering the mapDefinition production.
+	EnterMapDefinition(c *MapDefinitionContext)
+
 	// EnterFullIdent is called when entering the fullIdent production.
 	EnterFullIdent(c *FullIdentContext)
 
@@ -67,6 +70,9 @@ type Prosr1Listener interface {
 
 	// ExitFieldDefinition is called when exiting the fieldDefinition production.
 	ExitFieldDefinition(c *FieldDefinitionContext)
+
+	// ExitMapDefinition is called when exiting the mapDefinition production.
+	ExitMapDefinition(c *MapDefinitionContext)
 
 	// ExitFullIdent is called when exiting the fullIdent production.
 	ExitFullIdent(c *FullIdentContext)

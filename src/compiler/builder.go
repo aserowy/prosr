@@ -100,6 +100,7 @@ func capitalizeFirstLetter(v string) string {
 	}
 }
 
+// Conversion found in prosr1_parser.go under comment "// Prosr1Parser rules."
 var ruleToIndexMap = map[string]int{
 	"content":           0,
 	"syntaxDefinition":  1,
@@ -110,8 +111,9 @@ var ruleToIndexMap = map[string]int{
 	"callsDefinition":   6,
 	"messageDefinition": 7,
 	"fieldDefinition":   8,
-	"fullIdent":         9,
-	"typeIdent":         10,
+	"mapDefinition":     9,
+	"fullIdent":         10,
+	"typeIdent":         11,
 }
 
 func isOfType(ctx antlr.RuleContext, typeDefinition string) bool {

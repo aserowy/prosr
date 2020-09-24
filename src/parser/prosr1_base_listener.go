@@ -1,4 +1,4 @@
-// Code generated from c:\Users\serow_000\source\repos\prosr\src\parser\Prosr1.g4 by ANTLR 4.8. DO NOT EDIT.
+// Code generated from e:\source\prosr\src\parser\Prosr1.g4 by ANTLR 4.8. DO NOT EDIT.
 
 package parser // Prosr1
 
@@ -74,6 +74,12 @@ func (s *BaseProsr1Listener) EnterFieldDefinition(ctx *FieldDefinitionContext) {
 
 // ExitFieldDefinition is called when production fieldDefinition is exited.
 func (s *BaseProsr1Listener) ExitFieldDefinition(ctx *FieldDefinitionContext) {}
+
+// EnterMapDefinition is called when production mapDefinition is entered.
+func (s *BaseProsr1Listener) EnterMapDefinition(ctx *MapDefinitionContext) {}
+
+// ExitMapDefinition is called when production mapDefinition is exited.
+func (s *BaseProsr1Listener) ExitMapDefinition(ctx *MapDefinitionContext) {}
 
 // EnterFullIdent is called when production fullIdent is entered.
 func (s *BaseProsr1Listener) EnterFullIdent(ctx *FullIdentContext) {}

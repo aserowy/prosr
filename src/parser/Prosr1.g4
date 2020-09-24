@@ -2,7 +2,8 @@ grammar Prosr1;
 
 // token
 REPEATED : 'repeated';
-TYPE : 'string' | 'bool' | 'int32';
+KEYTYPE : 'int32' | 'string';
+TYPE : 'bool';
 IDENT : [a-zA-Z]([a-zA-Z0-9_])+;
 NUMBER : [0-9]+;
 WHITESPACE : [ \r\n\t]+ -> skip;
@@ -18,9 +19,10 @@ hubDefinition : 'hub' IDENT '{' (actionDefinition | callsDefinition)+ '}';
 actionDefinition : 'action' IDENT'('fullIdent?')' (callsDefinition | ';');
 callsDefinition : 'calls' IDENT'('fullIdent?')' 'on' target=('caller' | 'all') ';';
 
-messageDefinition : 'message' IDENT '{' fieldDefinition* '}';
+messageDefinition : 'message' IDENT '{' (fieldDefinition | mapDefinition)* '}';
 fieldDefinition : REPEATED? typeIdent IDENT '=' NUMBER';';
+mapDefinition : 'map' '<' KEYTYPE ',' typeIdent '>' IDENT '=' NUMBER';';
 
 // literals & identifier
 fullIdent : IDENT ('.' IDENT)*;
-typeIdent : fullIdent | TYPE;
+typeIdent : fullIdent | KEYTYPE | TYPE;

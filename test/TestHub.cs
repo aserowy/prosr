@@ -18,9 +18,9 @@ namespace Test.Package
 
 	public interface ITestHubClientBase
 	{
-		Task FunctionCalled(FunctionRequest message);
 		Task Function(FunctionResponse message);
 		Task FunctionTreeRefreshed();
+		Task FunctionCalled(FunctionRequest message);
 	}
 
 	public abstract class TestHubClientBase : ITestHubClient
@@ -103,9 +103,9 @@ namespace Test.Package
 
 		private HubConnection BindClientMethods(ref HubConnection connection)
 		{
-			connection.On<FunctionResponse>("Function", message => Function(message));
 			connection.On("FunctionTreeRefreshed", () => FunctionTreeRefreshed());
 			connection.On<FunctionRequest>("FunctionCalled", message => FunctionCalled(message));
+			connection.On<FunctionResponse>("Function", message => Function(message));
 
 			return connection;
 		}
