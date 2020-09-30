@@ -68,6 +68,7 @@ To create a map, use the keyword map and specify the types of the map. The first
 
 ```prosr1
 message SearchRequest {
+    ...
     map<string, string> filter = 4;
 }
 ```
